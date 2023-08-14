@@ -17,14 +17,30 @@ public class Player : MonoBehaviour
             stage.fallBoost = 1f;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
-            stage.MoveColumn(+1);
-        }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                stage.rotateBlock(+90f);
+            }
 
-        if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                stage.rotateBlock(-90f);
+            }
+        }
+        else
         {
-            stage.MoveColumn(-1);
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                stage.moveColumn(+1);
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                stage.moveColumn(-1);
+            }
         }
     }
 }
