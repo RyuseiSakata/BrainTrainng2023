@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Block : MonoBehaviour
 {
+    [SerializeField] private Text text; //テキストを格納する
+
     public string chara = " ";    //所持している文字
     public bool BlockState  = true;
     [SerializeField] private int currentRow = 1; //現在の行
@@ -13,7 +16,6 @@ public class Block : MonoBehaviour
     public int DestinationRow  = 1;    //目標行数
     private float fallSpeed = 0.1f;   //落下速度
 
-    private float alpha = 1;
     public Stage stage;
 
     //getter,setter
@@ -70,24 +72,25 @@ public class Block : MonoBehaviour
     //x座標から列番号を求める
     public int getColFrom(float posX)
     {
-        return (int)Mathf.Floor((Config.maxCol-1) / 2f + 7f * posX);
+        return (int)Mathf.Floor((Config.maxCol-1) / 2f + Config.maxCol * posX);
     }
 
     //y座標から行番号を求める
     public int getRowFrom(float posY)
     {
-        return (int)Mathf.Floor((Config.maxRow-1) / 2f + 1 - 10f * posY);
+        return (int)Mathf.Floor((Config.maxRow-1) / 2f + 1 - Config.maxRow * posY);
     }
     
     //y座標から番号遷移ラインの行番号を求める
     public int getRowLineFrom(float posY)
     {
-        return (int)Mathf.Floor((Config.maxRow) / 2f + 1 - 10f * posY + 0.5f);
+        return (int)Mathf.Floor((Config.maxRow) / 2f + 1 - Config.maxRow * posY + 0.5f);
     }
 
     public void Init(string ch=" ", int row = 1, int col = 2)
     {
         chara = ch;
+        text.text = ch;
         BlockState = true;
         CurrentRow = row;
         CurrentCol = col;
@@ -144,7 +147,8 @@ public class Block : MonoBehaviour
     //ブロックを下に移動させる処理
     public void MoveDown()
     {
-        
+
+
         Vector3 destinationPos = getVector3From(CurrentCol, DestinationRow);
         if (!isLocked)
         {
@@ -153,10 +157,19 @@ public class Block : MonoBehaviour
             currentRowLine = getRowLineFrom(transform.localPosition.y);
         }
 
-        if (CurrentRow == DestinationRow)
+        if (Mathf.Abs(this.transform.localPosition.y - getVector3From(0,DestinationRow).y) == 0)
         {
             BlockState = false;
-            stage.BlockArray[CurrentRow, CurrentCol] = this;
+
+            if (CurrentRow == -1)
+            {
+                Debug.Log("GameOver");
+            }
+            else
+            {
+                stage.BlockArray[CurrentRow, CurrentCol] = this;
+            }
+            
         }
     }
 
@@ -188,7 +201,5 @@ public class Block : MonoBehaviour
             currentRow = row;
             currentRowLine = rowLine;
         }
-
-
     }
 }
