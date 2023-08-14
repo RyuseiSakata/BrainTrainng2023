@@ -101,23 +101,30 @@ public class Stage : MonoBehaviour
         if(num != 2)
         {
             var instance = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
-            instance.GetComponent<Block>().Init("0",0,0);
+            instance.GetComponent<Block>().Init(decideCharacter(), 1, 2);
             instance.GetComponent<Block>().stage = this;
             activeBlockList.Add(instance.GetComponent<Block>());
         }
         else
         {
             var instance = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
-            instance.GetComponent<Block>().Init("1", 0, 2);
+            instance.GetComponent<Block>().Init(decideCharacter(), 1, 2);
             instance.GetComponent<Block>().stage = this;
             activeBlockList.Add(instance.GetComponent<Block>());
 
             var instance2 = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
             instance2.GetComponent<Block>().stage = this;
-            instance2.GetComponent<Block>().Init("2", 1, 2);
+            instance2.GetComponent<Block>().Init(decideCharacter(), 1, 3);
             activeBlockList.Add(instance2.GetComponent<Block>());
-        }
-        
+        }   
+    }
+
+    private string decideCharacter()
+    {
+        //各文字に出現率の重みづけしてもいいかも
+        string character = "あいうえおかきくけこがぎぐげごさしすせそざじずぜぞたちつてとだぢづでどなにぬねのはひふへほばびぶべぼぱぴぷぺぽまみむめもやゆよらりるれろわをん";
+        int num = character.Length;
+        return character[Random.Range(0,num)].ToString();
     }
 
     private IEnumerator fall()
@@ -141,6 +148,7 @@ public class Stage : MonoBehaviour
         activeBlockList.Clear();    //activeBlockListの要素を全削除
 
         Debug.Log("着地");
+
 
         // 落ちる処理
         // 判定＆消す処理
