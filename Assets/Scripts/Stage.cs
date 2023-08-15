@@ -19,6 +19,7 @@ public class Stage : MonoBehaviour
 
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow+1, Config.maxCol];  //ステージ全体のブロック配列
     public List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
+    public List<Block> judgeTargetList = new List<Block>(); //判定を行う対象
 
 
     private void Start()
@@ -87,6 +88,7 @@ public class Stage : MonoBehaviour
             instance.GetComponent<Block>().Init(decideCharacter(), 0, 2);
             instance.GetComponent<Block>().stage = this;
             activeBlockList.Add(instance.GetComponent<Block>());
+            judgeTargetList.Add(instance.GetComponent<Block>());
         }
         else
         {
@@ -94,11 +96,13 @@ public class Stage : MonoBehaviour
             instance.GetComponent<Block>().Init(decideCharacter(), 0, 2);
             instance.GetComponent<Block>().stage = this;
             activeBlockList.Add(instance.GetComponent<Block>());
+            judgeTargetList.Add(instance.GetComponent<Block>());
 
             var instance2 = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
             instance2.GetComponent<Block>().stage = this;
             instance2.GetComponent<Block>().Init(decideCharacter(), 0, 3);
             activeBlockList.Add(instance2.GetComponent<Block>());
+            judgeTargetList.Add(instance2.GetComponent<Block>());
         }   
     }
 
@@ -136,7 +140,8 @@ public class Stage : MonoBehaviour
 
             Debug.Log("着地");
 
-            Debug.Log("判定");
+            judgeAndDelete();
+            fallBottom();   //空の場合に下まで下す処理
 
             // 判定＆消す処理
         }
@@ -258,6 +263,124 @@ public class Stage : MonoBehaviour
             }
         }
     }
+
+    private void judgeAndDelete()
+    {
+        List<string> horizontalString = new List<string>();
+        List<string> verticalString = new List<string>();
+
+        List<int> targetRow = new List<int>();
+        List<int> targetCol = new List<int>();
+
+        //横向きの文字列の判定  調べる行の文字列を取得
+        foreach (var block in judgeTargetList) 
+        {
+            //同じ行を行わないようにする
+            if (!targetRow.Contains(block.CurrentRow)) {
+                targetRow.Add(block.CurrentRow);
+                targetCol.Add(block.CurrentCol);
+                string str = getStringFromCol(targetRow[targetRow.Count-1], targetCol[targetCol.Count - 1]);
+                //3文字以上
+                if(str.Length >= 3)
+                {
+                    horizontalString.Add(str);
+                }
+            }
+        }
+        
+        targetRow = new List<int>();
+        targetCol = new List<int>();
+
+        //縦向きの文字列の判定  調べる行の文字列を取得
+        foreach (var block in judgeTargetList)
+        {
+            if (!targetCol.Contains(block.CurrentCol))
+            {
+                targetRow.Add(block.CurrentRow);
+                targetCol.Add(block.CurrentCol);
+                string str = getStringFromRow(targetRow[targetRow.Count - 1], targetCol[targetCol.Count - 1]);
+                //3文字以上
+                if (str.Length >= 3)
+                {
+                    verticalString.Add(str);
+                }
+            }
+        }
+
+        judgeTargetList.Clear();
+        
+    }
+
+    //特定のブロックを含むから横向き（左から右読み）の文字列を取得
+    private string getStringFromCol(int row, int col)
+    {
+        string str = BlockArray[row, col].chara.ToString();
+
+        int c = col;
+        while (0 < c)
+        {
+            c--;
+            if (BlockArray[row, c] != null)
+            {
+                str = BlockArray[row, c].chara.ToString() + str;
+            }
+            else
+            {
+                break;
+            }
+        }
+        c = col;
+        while(c < BlockArray.GetLength(1)-1)
+        {
+            c++;
+            if (BlockArray[row, c] != null)
+            {
+                str = str + BlockArray[row, c].chara.ToString();
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return str;
+    }
+
+    //特定のブロックを含むから縦向き（上から下読み）の文字列を取得
+    private string getStringFromRow(int row, int col)
+    {
+        string str = BlockArray[row, col].chara.ToString();
+
+        int r = row;
+        while (0 < r)
+        {
+            r--;
+            if (BlockArray[r, col] != null)
+            {
+                str = BlockArray[r, col].chara.ToString() + str;
+            }
+            else
+            {
+                break;
+            }
+        }
+        r = row;
+        while (r < BlockArray.GetLength(0) - 1)
+        {
+            r++;
+            if (BlockArray[r, col] != null)
+            {
+                str = str + BlockArray[r, col].chara.ToString();
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return str;
+    }
+
 
     //ブロックを左右に移動させる
     public void moveColumn(int value)

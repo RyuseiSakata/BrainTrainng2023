@@ -96,7 +96,7 @@ public class Block : MonoBehaviour
         CurrentCol = col;
         DestinationRow = row;
         moveProperTransformFrom(CurrentCol, CurrentRow);
-        this.transform.position += new Vector3(0f, 0.2f, 0f);   //出現位置を少し上に
+        this.transform.position += new Vector3(0f, 0.5f, 0f);   //出現位置を少し上に
     }
     /*
         private IEnumerator Fall()
