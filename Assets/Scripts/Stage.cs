@@ -20,31 +20,14 @@ public class Stage : MonoBehaviour
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow+1, Config.maxCol];  //ステージ全体のブロック配列
     public List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
 
+
     private void Start()
     {
-        spawnBlock();
         StartCoroutine("fall");
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            if (activeBlockList.Count == 0)
-            {
-                spawnBlock();
-                StartCoroutine("fall");
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            if (activeBlockList.Count == 0)
-            {
-                spawnBlock(2);
-                StartCoroutine("fall");
-            }
-        }
-
         if (Input.GetKeyDown(KeyCode.I))
         {
 
@@ -101,20 +84,20 @@ public class Stage : MonoBehaviour
         if(num != 2)
         {
             var instance = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
-            instance.GetComponent<Block>().Init(decideCharacter(), 1, 2);
+            instance.GetComponent<Block>().Init(decideCharacter(), 0, 2);
             instance.GetComponent<Block>().stage = this;
             activeBlockList.Add(instance.GetComponent<Block>());
         }
         else
         {
             var instance = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
-            instance.GetComponent<Block>().Init(decideCharacter(), 1, 2);
+            instance.GetComponent<Block>().Init(decideCharacter(), 0, 2);
             instance.GetComponent<Block>().stage = this;
             activeBlockList.Add(instance.GetComponent<Block>());
 
             var instance2 = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
             instance2.GetComponent<Block>().stage = this;
-            instance2.GetComponent<Block>().Init(decideCharacter(), 1, 3);
+            instance2.GetComponent<Block>().Init(decideCharacter(), 0, 3);
             activeBlockList.Add(instance2.GetComponent<Block>());
         }   
     }
@@ -129,32 +112,82 @@ public class Stage : MonoBehaviour
 
     private IEnumerator fall()
     {
-        decideDestination();    //目標行数の決定
-
-        //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
-        while (activeBlockList.Count != activeBlockList.FindAll(x=>x.BlockState==false).Count)
+        while (true)
         {
-            activeBlockList.ForEach(b =>
-            {
-                if(b.BlockState)
-                {
-                    b.MoveDown();
-                }
-            });
+            spawnBlock(2);
 
-            yield return new WaitForEndOfFrame();
+            decideDestination();    //目標行数の決定
+
+            //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
+            while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
+            {
+                activeBlockList.ForEach(b =>
+                {
+                    if (b.BlockState)
+                    {
+                        b.MoveDown();
+                    }
+                });
+
+                yield return new WaitForEndOfFrame();
+            }
+
+            fallBottom();   //横並びのパターンに置いてしたが空の場合に下まで下す処理
+
+            Debug.Log("着地");
+
+            Debug.Log("判定");
+
+            // 判定＆消す処理
+        }
+
+        yield break;
+    }
+
+    public void gameOver()
+    {
+        Debug.Log("game over");
+        StopCoroutine("fall");
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+
+    private void fallBottom()
+    {
+        Block target = null;
+
+        foreach(var block in activeBlockList)
+        {
+            if(checkState(block.CurrentRow+1,block.CurrentCol) == GridState.Null)   target = block;
         }
 
         activeBlockList.Clear();    //activeBlockListの要素を全削除
 
-        Debug.Log("着地");
+        if (target != null)
+        {
+            BlockArray[target.CurrentRow, target.CurrentCol] = null;    //現在位置の削除
+            target.BlockState = true;   //Active状態に
+            activeBlockList.Add(target);
+            
+            decideDestination();
 
+            //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
+            while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
+            {
+                activeBlockList.ForEach(b =>
+                {
+                    if (b.BlockState)
+                    {
+                        b.MoveDown();
+                    }
+                });
+            }
+        }
 
-        // 落ちる処理
-        // 判定＆消す処理
+        activeBlockList.Clear();    //activeBlockListの要素を全削除
 
-
-        yield break;
     }
 
     //activeBlockListのブロック群が何行目まで行くかを決める
@@ -181,7 +214,7 @@ public class Stage : MonoBehaviour
             row = lower.CurrentRow; //下側の行番号を格納
 
             //目標の列番号の決定
-            for(int r=0; r <= BlockArray.GetLength(0); r++)
+            for(int r=row+1; r <= BlockArray.GetLength(0); r++)
             {
                 if(checkState(r, col) != GridState.Null)
                 {
@@ -198,20 +231,19 @@ public class Stage : MonoBehaviour
             int row = -100; //目的の行数(初期値-100)
 
             //目標の列番号の決定
-            for (int r = 0; r <= BlockArray.GetLength(0); r++)
+            for (int r = activeBlockList[0].CurrentRow+1; r <= BlockArray.GetLength(0); r++)
             {
                 foreach (var block in activeBlockList)
                 {
-                    if (checkState(r,block.CurrentCol) != GridState.Null)
+                    if (checkState(r, block.CurrentCol) != GridState.Null)
                     {
                         if (r == 0) Debug.Log("-1が入った");
 
                         row = r - 1;
-                        
+
                         break;
                     }
                 }
-
                 
                 if (row != -100) break; //目標の行数が定まった
             }

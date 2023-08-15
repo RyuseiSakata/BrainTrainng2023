@@ -96,6 +96,7 @@ public class Block : MonoBehaviour
         CurrentCol = col;
         DestinationRow = row;
         moveProperTransformFrom(CurrentCol, CurrentRow);
+        this.transform.position += new Vector3(0f, 0.2f, 0f);   //èoåªà íuÇè≠Çµè„Ç…
     }
     /*
         private IEnumerator Fall()
@@ -163,7 +164,7 @@ public class Block : MonoBehaviour
 
             if (CurrentRow == -1)
             {
-                Debug.Log("GameOver");
+                stage.gameOver();
             }
             else
             {
