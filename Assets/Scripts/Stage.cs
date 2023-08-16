@@ -24,6 +24,12 @@ public class Stage : MonoBehaviour
 
     private void Start()
     {
+        //重みの合計値を格納
+        foreach(var value in Config.probability)
+        {
+            Config.sumProbability += value;
+        }
+        
         StartCoroutine("fall");
     }
 
@@ -106,12 +112,22 @@ public class Stage : MonoBehaviour
         }   
     }
 
+    //文字を決定する
     private string decideCharacter()
     {
-        //各文字に出現率の重みづけしてもいいかも
-        string character = "あいうえおかきくけこがぎぐげごさしすせそざじずぜぞたちつてとだぢづでどなにぬねのはひふへほばびぶべぼぱぴぷぺぽまみむめもやゆよらりるれろわをん";
-        int num = character.Length;
-        return character[Random.Range(0,num)].ToString();
+        float randomNum = Random.Range(0f,Config.sumProbability);
+
+        int ret;    //返却する文字の要素番号
+        int sum = 0;    //ループ時までの合計値
+        for(ret = 0; ret < Config.probability.Length; ret++)
+        {
+            sum += Config.probability[ret];
+            if(randomNum < sum)
+            {
+                break;
+            }
+        }
+        return Config.character[ret].ToString();
     }
 
     private IEnumerator fall()
