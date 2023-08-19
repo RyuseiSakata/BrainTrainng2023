@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.S))
         {
-            stage.fallBoost = 5f;
+            stage.fallBoost = 10f;
         }
         else
         {
@@ -31,7 +31,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-
             if (Input.GetKeyDown(KeyCode.D))
             {
                 stage.moveColumn(+1);

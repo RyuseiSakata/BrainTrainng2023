@@ -12,10 +12,11 @@ public static class Config
     public const float BlockWidth = StageWidth / maxCol;  //ブロックの幅
 
     public static int sumProbability = 0;
-    public const string character = "あいうえおかきくけこがぎぐげごさしすせそざじずぜぞたちつてとだぢづでどなにぬねのはひふへほばびぶべぼぱぴぷぺぽまみむめもやゆよらりるれろわをん";
-    
+    public const string character2 = "あいうえおかきくけこがぎぐげごさしすせそざじずぜぞたちつてとだぢづでどなにぬねのはひふへほばびぶべぼぱぴぷぺぽまみむめもやゆよらりるれろわをん";
+    public const string character = "りんご";
+    public static int[] probability = { 1, 1, 1 };
     //各文字の出現確率の重み
-    public static int[] probability = { 
+    public static int[] probability2 = { 
         1, 1, 1, 1, 1,  //あ行
         1, 1, 1, 1, 1,  //か行
         1, 1, 1, 1, 1,  //が行
