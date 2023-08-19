@@ -87,14 +87,19 @@ public class Block : MonoBehaviour
         return (int)Mathf.Floor((Config.maxRow) / 2f + 1 - Config.maxRow * posY + 0.5f);
     }
 
-    public void Init(string ch = " ", int row = 1, int col = 2)
+    public void init(string ch = " ", int row = 1, int col = 2)
     {
         chara = ch;
         text.text = ch;
-        BlockState = true;
-        CurrentRow = row;
-        CurrentCol = col;
+        BlockState = false;
+        currentRow = row;
+        currentCol = col;
         DestinationRow = row;
+    }
+
+    public void callActive()
+    {
+        BlockState = true;
         moveProperTransformFrom(CurrentCol, CurrentRow);
         this.transform.position += new Vector3(0f, 0.5f, 0f);   //èoåªà íuÇè≠Çµè„Ç…
     }

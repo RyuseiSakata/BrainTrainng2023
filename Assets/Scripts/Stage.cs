@@ -12,14 +12,16 @@ public enum GridState
 }
 
 public class Stage : MonoBehaviour
-{ 
+{
     public float fallBoost = 1;
 
     [SerializeField] GameObject blockPrefab;
 
-    public Block[,] BlockArray { get; set; } = new Block[Config.maxRow+1, Config.maxCol];  //ステージ全体のブロック配列
+    public Block[,] BlockArray { get; set; } = new Block[Config.maxRow + 1, Config.maxCol];  //ステージ全体のブロック配列
     public List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
     public List<Block> judgeTargetList = new List<Block>(); //判定を行う対象
+    public List<Block>[] nextBlock = { new List<Block>(), new List<Block>() }; //次とその次のブロックを格納
+    [SerializeField] private Transform[] SpawnPos;
 
     private bool isChained;  //連鎖をしたかを表すフラグ
 
@@ -31,6 +33,8 @@ public class Stage : MonoBehaviour
         {
             Config.sumProbability += value;
         }
+
+        firstSetBlock();
         
         StartCoroutine("fall");
     }
@@ -88,30 +92,96 @@ public class Stage : MonoBehaviour
         }
     }
 
-    private void spawnBlock(int num=1)
+    //Startで呼び出す,nextBlockにブロックをセットする
+    private void firstSetBlock()
     {
-        if(num != 2)
+        for(int i=0; i<2; i++)
         {
-            var instance = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
-            instance.GetComponent<Block>().Init(decideCharacter(), 0, 2);
-            instance.GetComponent<Block>().stage = this;
-            activeBlockList.Add(instance.GetComponent<Block>());
-            judgeTargetList.Add(instance.GetComponent<Block>());
+            int randNum = Random.Range(0, 2);
+            if (randNum == 0)
+            {
+                var instance = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
+                instance.transform.localPosition = Vector3.zero;
+                instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+                Block block = instance.GetComponent<Block>();
+                block.stage = this;
+                block.init(decideCharacter(), 0, 2);
+                nextBlock[i].Add(block);
+
+            }
+            else
+            {
+                var instance = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
+                instance.transform.localPosition = new Vector3(-(1f / Config.maxCol/2f), 0f, 0f) ;
+                instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+                Block block = instance.GetComponent<Block>();
+                block.stage = this;
+                block.init(decideCharacter(), 0, 2);
+                nextBlock[i].Add(block);
+
+                var instance2 = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
+                instance2.transform.localPosition = new Vector3(1f / Config.maxCol/2f, 0f, 0f);
+                instance2.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+                Block block2 = instance2.GetComponent<Block>();
+                block2.stage = this;
+                block2.init(decideCharacter(), 0, 3);
+                nextBlock[i].Add(block2);
+            }
+        }
+    }
+
+    private void spawnBlock()
+    {
+        //nextBlock[0]をActiveにする
+        foreach(var block in nextBlock[0])
+        {
+            block.transform.SetParent(this.gameObject.transform);
+            block.callActive();
+            activeBlockList.Add(block);
+            judgeTargetList.Add(block);
+        }
+
+        //nextBlock[1]をnextBlock[0]に移す
+        nextBlock[0].Clear();
+        foreach (var block in nextBlock[1])
+        {
+            nextBlock[0].Add(block);
+            block.transform.SetParent(SpawnPos[0].transform);
+            block.transform.localPosition += SpawnPos[0].localPosition - SpawnPos[1].localPosition;
+        }
+
+        //nextBlock[1]に新しいブロックを生成
+        nextBlock[1].Clear();
+        int randNum = Random.Range(0, 2);
+        if (randNum == 0)
+        {
+            var instance = Instantiate(blockPrefab, SpawnPos[1].transform.position, Quaternion.identity, SpawnPos[1].transform);
+            instance.transform.localPosition = Vector3.zero;
+            instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            Block block = instance.GetComponent<Block>();
+            block.stage = this;
+            block.init(decideCharacter(), 0, 2);
+            nextBlock[1].Add(block);
+
         }
         else
         {
-            var instance = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
-            instance.GetComponent<Block>().Init(decideCharacter(), 0, 2);
-            instance.GetComponent<Block>().stage = this;
-            activeBlockList.Add(instance.GetComponent<Block>());
-            judgeTargetList.Add(instance.GetComponent<Block>());
+            var instance = Instantiate(blockPrefab, SpawnPos[1].transform.position, Quaternion.identity, SpawnPos[1].transform);
+            instance.transform.localPosition = new Vector3(-(1f / Config.maxCol/2f), 0f, 0f);
+            instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            Block block = instance.GetComponent<Block>();
+            block.stage = this;
+            block.init(decideCharacter(), 0, 2);
+            nextBlock[1].Add(block);
 
-            var instance2 = Instantiate(blockPrefab, this.transform.localPosition, Quaternion.identity, this.transform);
-            instance2.GetComponent<Block>().stage = this;
-            instance2.GetComponent<Block>().Init(decideCharacter(), 0, 3);
-            activeBlockList.Add(instance2.GetComponent<Block>());
-            judgeTargetList.Add(instance2.GetComponent<Block>());
-        }   
+            var instance2 = Instantiate(blockPrefab, SpawnPos[1].transform.position, Quaternion.identity, SpawnPos[1].transform);
+            instance2.transform.localPosition = new Vector3(1f / Config.maxCol/2f, 0f, 0f);
+            instance2.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            Block block2 = instance2.GetComponent<Block>();
+            block2.stage = this;
+            block2.init(decideCharacter(), 0, 3);
+            nextBlock[1].Add(block2);
+        }
     }
 
     //文字を決定する
@@ -136,7 +206,7 @@ public class Stage : MonoBehaviour
     {
         while (true)
         {
-            spawnBlock(2);
+            spawnBlock();
 
             decideDestination();    //目標行数の決定
 
@@ -312,8 +382,8 @@ public class Stage : MonoBehaviour
                 {
                     verticalString.Add(str);
                     //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
-                    List<string> wordList = new List<string>() { "りんご" };
-                    foreach(var word in wordList)
+                    List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり","ごりごり" };
+                    foreach (var word in wordList)
                     {
                         int index = -1; //str内のwordの出現位置
 
@@ -328,12 +398,20 @@ public class Stage : MonoBehaviour
                             }
                             else
                             {
-                                for(int i = index+head; i < index + head + word.Length; i++)
+                                for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     Block b = BlockArray[i, targetCol.Last()];
                                     b.lightUp();
-                                    if(!destroyList.Contains(b)) destroyList.Add(b);
+                                    if (!destroyList.Contains(b)) destroyList.Add(b);
+                                    yield return new WaitForSeconds(0.3f);
                                 }
+                                for (int i = index + head; i < index + head + word.Length; i++)
+                                {
+                                    Block b = BlockArray[i, targetCol.Last()];
+                                    b.lightDown();
+                                }
+
+
                             }
                         }
                     }
@@ -360,7 +438,7 @@ public class Stage : MonoBehaviour
                 {
                     horizontalString.Add(str);
                     //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
-                    List<string> wordList = new List<string>() { "りんご" };
+                    List<string> wordList = new List<string>() { "りんご", "ごりん","ごんご","りんり","ごりごり" };
                     foreach (var word in wordList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -381,6 +459,12 @@ public class Stage : MonoBehaviour
                                     Block b = BlockArray[targetRow.Last(), i];
                                     b.lightUp();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
+                                    yield return new WaitForSeconds(0.3f);
+                                }
+                                for (int i = index + head; i < index + head + word.Length; i++)
+                                {
+                                    Block b = BlockArray[targetRow.Last(), i];
+                                    b.lightDown();
                                 }
                             }
                         }
