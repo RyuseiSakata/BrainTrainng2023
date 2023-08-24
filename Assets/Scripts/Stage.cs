@@ -35,7 +35,7 @@ public class Stage : MonoBehaviour
         }
 
         firstSetBlock();
-        
+
         StartCoroutine("fall");
     }
 
@@ -65,12 +65,12 @@ public class Stage : MonoBehaviour
         }
 
     }
-    
+
     //指定した(row,col)の状態を獲得する
     public GridState checkState(int row, int col)
     {
         //引数の正確性のチェック
-        if(!( 0 <= row && row < BlockArray.GetLength(0) && 0 <= col && col < Config.maxCol))
+        if (!(0 <= row && row < BlockArray.GetLength(0) && 0 <= col && col < Config.maxCol))
         {
             return GridState.OutStage;
         }
@@ -95,7 +95,7 @@ public class Stage : MonoBehaviour
     //Startで呼び出す,nextBlockにブロックをセットする
     private void firstSetBlock()
     {
-        for(int i=0; i<2; i++)
+        for (int i = 0; i < 2; i++)
         {
             int randNum = Random.Range(0, 2);
             if (randNum == 0)
@@ -112,7 +112,7 @@ public class Stage : MonoBehaviour
             else
             {
                 var instance = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
-                instance.transform.localPosition = new Vector3(-(1f / Config.maxCol/2f), 0f, 0f) ;
+                instance.transform.localPosition = new Vector3(-(1f / Config.maxCol / 2f), 0f, 0f);
                 instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
                 Block block = instance.GetComponent<Block>();
                 block.stage = this;
@@ -120,7 +120,7 @@ public class Stage : MonoBehaviour
                 nextBlock[i].Add(block);
 
                 var instance2 = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
-                instance2.transform.localPosition = new Vector3(1f / Config.maxCol/2f, 0f, 0f);
+                instance2.transform.localPosition = new Vector3(1f / Config.maxCol / 2f, 0f, 0f);
                 instance2.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
                 Block block2 = instance2.GetComponent<Block>();
                 block2.stage = this;
@@ -133,7 +133,7 @@ public class Stage : MonoBehaviour
     private void spawnBlock()
     {
         //nextBlock[0]をActiveにする
-        foreach(var block in nextBlock[0])
+        foreach (var block in nextBlock[0])
         {
             block.transform.SetParent(this.gameObject.transform);
             block.callActive();
@@ -167,7 +167,7 @@ public class Stage : MonoBehaviour
         else
         {
             var instance = Instantiate(blockPrefab, SpawnPos[1].transform.position, Quaternion.identity, SpawnPos[1].transform);
-            instance.transform.localPosition = new Vector3(-(1f / Config.maxCol/2f), 0f, 0f);
+            instance.transform.localPosition = new Vector3(-(1f / Config.maxCol / 2f), 0f, 0f);
             instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
             Block block = instance.GetComponent<Block>();
             block.stage = this;
@@ -175,7 +175,7 @@ public class Stage : MonoBehaviour
             nextBlock[1].Add(block);
 
             var instance2 = Instantiate(blockPrefab, SpawnPos[1].transform.position, Quaternion.identity, SpawnPos[1].transform);
-            instance2.transform.localPosition = new Vector3(1f / Config.maxCol/2f, 0f, 0f);
+            instance2.transform.localPosition = new Vector3(1f / Config.maxCol / 2f, 0f, 0f);
             instance2.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
             Block block2 = instance2.GetComponent<Block>();
             block2.stage = this;
@@ -187,14 +187,14 @@ public class Stage : MonoBehaviour
     //文字を決定する
     private string decideCharacter()
     {
-        float randomNum = Random.Range(0f,Config.sumProbability);
+        float randomNum = Random.Range(0f, Config.sumProbability);
 
         int ret;    //返却する文字の要素番号
         int sum = 0;    //ループ時までの合計値
-        for(ret = 0; ret < Config.probability.Length; ret++)
+        for (ret = 0; ret < Config.probability.Length; ret++)
         {
             sum += Config.probability[ret];
-            if(randomNum < sum)
+            if (randomNum < sum)
             {
                 break;
             }
@@ -229,7 +229,8 @@ public class Stage : MonoBehaviour
             Debug.Log("着地");
 
             isChained = true;
-            while (isChained) {
+            while (isChained)
+            {
                 yield return judgeAndDelete();
             }
 
@@ -255,9 +256,9 @@ public class Stage : MonoBehaviour
     {
         Block target = null;
 
-        foreach(var block in activeBlockList)
+        foreach (var block in activeBlockList)
         {
-            if(checkState(block.CurrentRow+1,block.CurrentCol) == GridState.Null)   target = block;
+            if (checkState(block.CurrentRow + 1, block.CurrentCol) == GridState.Null) target = block;
         }
 
         activeBlockList.Clear();    //activeBlockListの要素を全削除
@@ -267,7 +268,7 @@ public class Stage : MonoBehaviour
             BlockArray[target.CurrentRow, target.CurrentCol] = null;    //現在位置の削除
             target.BlockState = true;   //Active状態に
             activeBlockList.Add(target);
-            
+
             decideDestination();
 
             //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
@@ -291,7 +292,7 @@ public class Stage : MonoBehaviour
     private void decideDestination()
     {
         //落下ブロックの個数が2で,同じ列の時（縦並びブロック(2個)）
-        if(activeBlockList.Count == 2 && (activeBlockList[0].CurrentCol == activeBlockList[1].CurrentCol))
+        if (activeBlockList.Count == 2 && (activeBlockList[0].CurrentCol == activeBlockList[1].CurrentCol))
         {
             Block upper, lower;
             int col = activeBlockList[0].CurrentCol;    //共通の列番号
@@ -311,13 +312,13 @@ public class Stage : MonoBehaviour
             row = lower.CurrentRow; //下側の行番号を格納
 
             //目標の列番号の決定
-            for(int r=row+1; r <= BlockArray.GetLength(0); r++)
+            for (int r = row + 1; r <= BlockArray.GetLength(0); r++)
             {
-                if(checkState(r, col) != GridState.Null)
+                if (checkState(r, col) != GridState.Null)
                 {
                     if (r == 0) Debug.Log("-1が入った");
 
-                    lower.DestinationRow = r-1;
+                    lower.DestinationRow = r - 1;
                     break;
                 };
             }
@@ -328,7 +329,7 @@ public class Stage : MonoBehaviour
             int row = -100; //目的の行数(初期値-100)
 
             //目標の列番号の決定
-            for (int r = activeBlockList[0].CurrentRow+1; r <= BlockArray.GetLength(0); r++)
+            for (int r = activeBlockList[0].CurrentRow + 1; r <= BlockArray.GetLength(0); r++)
             {
                 foreach (var block in activeBlockList)
                 {
@@ -341,14 +342,14 @@ public class Stage : MonoBehaviour
                         break;
                     }
                 }
-                
+
                 if (row != -100) break; //目標の行数が定まった
             }
 
             if (row == -100) Debug.Log("目標が定まらなった");
             else
             {
-                foreach(var block in activeBlockList)
+                foreach (var block in activeBlockList)
                 {
                     block.DestinationRow = row;
                 }
@@ -382,7 +383,7 @@ public class Stage : MonoBehaviour
                 {
                     verticalString.Add(str);
                     //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
-                    List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり","ごりごり" };
+                    List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
                     foreach (var word in wordList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -390,7 +391,7 @@ public class Stage : MonoBehaviour
                         //str内に含まれるwordをすべて探索
                         while (true)
                         {
-                            index = str.IndexOf(word, index+1);
+                            index = str.IndexOf(word, index + 1);
                             //str内にwordが含まれないとき
                             if (index == -1)
                             {
@@ -405,6 +406,7 @@ public class Stage : MonoBehaviour
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
                                 }
+                                yield return new WaitForSeconds(0.3f);
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     Block b = BlockArray[i, targetCol.Last()];
@@ -418,8 +420,8 @@ public class Stage : MonoBehaviour
                 }
             }
         }
-        
-        
+
+
         targetRow = new List<int>();
         targetCol = new List<int>();
 
@@ -438,7 +440,7 @@ public class Stage : MonoBehaviour
                 {
                     horizontalString.Add(str);
                     //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
-                    List<string> wordList = new List<string>() { "りんご", "ごりん","ごんご","りんり","ごりごり" };
+                    List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
                     foreach (var word in wordList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -461,6 +463,7 @@ public class Stage : MonoBehaviour
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
                                 }
+                                yield return new WaitForSeconds(0.3f);
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     Block b = BlockArray[targetRow.Last(), i];
@@ -483,7 +486,7 @@ public class Stage : MonoBehaviour
         });
 
         //ブロック削除後の落下処理
-        if(destroyList.Count > 0)
+        if (destroyList.Count > 0)
         {
             Dictionary<int, int> upperGridDic = new Dictionary<int, int>();   //列ごとに最上部のブロックの行番号を格納
             Dictionary<int, int> deleteNumDic = new Dictionary<int, int>();   //列ごとに消えたブロックの数をカウント
@@ -542,7 +545,7 @@ public class Stage : MonoBehaviour
             //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
             while (fallList.Count != fallList.FindAll(x => x.BlockState == false).Count)
             {
-                foreach(var b in fallList)
+                foreach (var b in fallList)
                 {
                     if (b.BlockState)
                     {
@@ -554,7 +557,7 @@ public class Stage : MonoBehaviour
 
 
         //連鎖なし
-        if(destroyList.Count == 0)
+        if (destroyList.Count == 0)
         {
             isChained = false;
         }
@@ -594,7 +597,7 @@ public class Stage : MonoBehaviour
 
         c = col;
         //右に探索
-        while(c < BlockArray.GetLength(1)-1)
+        while (c < BlockArray.GetLength(1) - 1)
         {
             c++;
             if (BlockArray[row, c] != null)
@@ -648,7 +651,7 @@ public class Stage : MonoBehaviour
     //ブロックを左右に移動させる
     public void moveColumn(int value)
     {
-        foreach(var block in activeBlockList)
+        foreach (var block in activeBlockList)
         {
             //Debug.Log(checkState(block.currentRowLine, block.CurrentCol + value));
             if (checkState(block.currentRowLine, block.CurrentCol + value) == GridState.OutStage || checkState(block.currentRowLine, block.CurrentCol + value) == GridState.Disactive)
@@ -656,7 +659,8 @@ public class Stage : MonoBehaviour
                 return;
             }
         }
-        foreach(var block in activeBlockList){
+        foreach (var block in activeBlockList)
+        {
             block.CurrentCol += value;
             decideDestination();    //移動後の列の目標行数を決定
         }
@@ -680,7 +684,7 @@ public class Stage : MonoBehaviour
         //Vector2 target = new Vector2(activeBlockList[1].CurrentRow, activeBlockList[1].CurrentCol);
 
         activeBlockList[1].rotate(activeBlockList[0], theta);  //回転を反映
-        
+
         activeBlockList.ForEach(e =>
         {
             e.isLocked = false;

@@ -14,14 +14,16 @@ public class Block : MonoBehaviour
     public bool isLocked = false;   // 下に降りる動きを固定するフラグ
     public int currentRowLine = 0;
     public int DestinationRow = 1;    //目標行数
-    private float fallSpeed = 0.1f;   //落下速度
+    private float fallSpeed = 0.15f;   //落下速度
 
     public Stage stage;
 
     //getter,setter
-    public int CurrentRow {
+    public int CurrentRow
+    {
         get { return currentRow; }
-        set {
+        set
+        {
             currentRow = value;
             moveProperTransformFrom(1, CurrentCol, CurrentRow);
         }
@@ -210,11 +212,11 @@ public class Block : MonoBehaviour
 
     public void lightUp()
     {
-        this.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
+        this.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
     }
     public void lightDown()
     {
-        this.GetComponent<SpriteRenderer>().color = new Color(142, 142, 142);
+        this.GetComponent<SpriteRenderer>().color = new Color32(142, 142, 142, 255);
     }
 
     public void DestroyObject()
