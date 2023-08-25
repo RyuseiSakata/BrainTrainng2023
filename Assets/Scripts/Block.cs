@@ -66,7 +66,7 @@ public class Block : MonoBehaviour
     private Vector3 getVector3From(int col, int row)
     {
         Vector3 pos = Vector3.zero;
-        pos.x = (col - (Config.maxCol - 1) / 2f) / Config.maxCol;
+        pos.x = (col - (Config.maxCol - 1) / 2f) / Config.maxCol + Config.deltaX;
         pos.y = -(row - (Config.maxRow - 1) / 2f - 1) / Config.maxRow;
         return pos;
     }
