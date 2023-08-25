@@ -26,6 +26,10 @@ public class Player : MonoBehaviour
     [SerializeField] Text debugText;
     [SerializeField] Text debugText2;
 
+    private void Start()
+    {
+        Input.multiTouchEnabled = false;
+    }
     private void Update()
     {
         //キーボード UIボタン
