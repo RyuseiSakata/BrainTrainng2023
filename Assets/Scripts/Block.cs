@@ -45,19 +45,19 @@ public class Block : MonoBehaviour
         {
             Vector3 pos = getVector3From(CurrentCol, CurrentRow);
             transform.localPosition = new Vector3(pos.x, transform.localPosition.y, 0);
-            transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
         }
         else if (mode == 1)
         {
             Vector3 pos = getVector3From(CurrentCol, CurrentRow);
             transform.localPosition = new Vector3(transform.localPosition.x, pos.y, 0);
-            transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
         }
         else
         {
             Vector3 pos = getVector3From(CurrentCol, CurrentRow);
             transform.localPosition = new Vector3(pos.x, pos.y, 0);
-            transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
         }
 
     }

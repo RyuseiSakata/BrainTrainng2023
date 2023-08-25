@@ -221,6 +221,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stage: {fileID: 3248128852898615348}
+  debugText: {fileID: 0}
+  debugText2: {fileID: 0}
 --- !u!4 &1323665671
 Transform:
   m_ObjectHideFlags: 0
@@ -457,7 +459,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -482,7 +484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallBoost: 1
-  blockPrefab: {fileID: 5838102715733132811, guid: 8c117c9abf974d54d9d39e612b97ba25, type: 3}
+  blockPrefab: {fileID: 62084249457581635, guid: 2738bf8cb71710d4498e87ead6250cd6, type: 3}
   activeBlockList: []
   judgeTargetList: []
   SpawnPos:
