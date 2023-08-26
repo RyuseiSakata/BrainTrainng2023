@@ -2355,6 +2355,7 @@ GameObject:
   - component: {fileID: 2034030744}
   - component: {fileID: 2034030743}
   - component: {fileID: 2034030746}
+  - component: {fileID: 2034030747}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2428,37 +2429,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-
 --- !u!114 &2034030746
 MonoBehaviour:
-
---- !u!1 &2039248818
-GameObject:
-
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-
+  m_GameObject: {fileID: 2034030742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2034030747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2034030742}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 760c42ad93fa44149a78367e73cda3f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sentence: "\u3054\u308A\u3089"
-
+  sentence: "\u308A\u3093\u3054\u308A\u3089"
+--- !u!1 &2039248818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2039248819}
   - component: {fileID: 2039248820}
   m_Layer: 0
-  m_Name: back
+  m_Name: 
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2039248819
 Transform:
   m_ObjectHideFlags: 0
@@ -2526,7 +2538,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
-
 --- !u!4 &909901160485288111
 Transform:
   m_ObjectHideFlags: 0
