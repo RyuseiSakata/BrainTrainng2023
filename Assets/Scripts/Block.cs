@@ -14,14 +14,16 @@ public class Block : MonoBehaviour
     public bool isLocked = false;   // 下に降りる動きを固定するフラグ
     public int currentRowLine = 0;
     public int DestinationRow = 1;    //目標行数
-    private float fallSpeed = 0.1f;   //落下速度
+    private float fallSpeed = 0.15f;   //落下速度
 
     public Stage stage;
 
     //getter,setter
-    public int CurrentRow {
+    public int CurrentRow
+    {
         get { return currentRow; }
-        set {
+        set
+        {
             currentRow = value;
             moveProperTransformFrom(1, CurrentCol, CurrentRow);
         }
@@ -43,19 +45,19 @@ public class Block : MonoBehaviour
         {
             Vector3 pos = getVector3From(CurrentCol, CurrentRow);
             transform.localPosition = new Vector3(pos.x, transform.localPosition.y, 0);
-            transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
         }
         else if (mode == 1)
         {
             Vector3 pos = getVector3From(CurrentCol, CurrentRow);
             transform.localPosition = new Vector3(transform.localPosition.x, pos.y, 0);
-            transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
         }
         else
         {
             Vector3 pos = getVector3From(CurrentCol, CurrentRow);
             transform.localPosition = new Vector3(pos.x, pos.y, 0);
-            transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+            transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
         }
 
     }
@@ -64,7 +66,7 @@ public class Block : MonoBehaviour
     private Vector3 getVector3From(int col, int row)
     {
         Vector3 pos = Vector3.zero;
-        pos.x = (col - (Config.maxCol - 1) / 2f) / Config.maxCol;
+        pos.x = (col - (Config.maxCol - 1) / 2f) / Config.maxCol + Config.deltaX;
         pos.y = -(row - (Config.maxRow - 1) / 2f - 1) / Config.maxRow;
         return pos;
     }
@@ -210,11 +212,11 @@ public class Block : MonoBehaviour
 
     public void lightUp()
     {
-        this.GetComponent<SpriteRenderer>().color = new Color(255, 0, 0);
+        this.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
     }
     public void lightDown()
     {
-        this.GetComponent<SpriteRenderer>().color = new Color(142, 142, 142);
+        this.GetComponent<SpriteRenderer>().color = new Color32(142, 142, 142, 255);
     }
 
     public void DestroyObject()
