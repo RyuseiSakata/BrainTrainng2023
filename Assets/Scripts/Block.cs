@@ -175,6 +175,7 @@ public class Block : MonoBehaviour
             else
             {
                 stage.BlockArray[CurrentRow, CurrentCol] = this;
+                stage.CanUserOperate = false;
             }
 
         }

@@ -24,6 +24,7 @@ public class Stage : MonoBehaviour
     [SerializeField] private Transform[] SpawnPos;
 
     private bool isChained;  //連鎖をしたかを表すフラグ
+    public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
 
 
     private void Start()
@@ -236,7 +237,7 @@ public class Stage : MonoBehaviour
 
             fallBottom();   //空の場合に下まで下す処理
 
-            // 判定＆消す処理
+            CanUserOperate = true;  //ユーザの操作を可能に
         }
 
         yield break;
@@ -578,7 +579,7 @@ public class Stage : MonoBehaviour
         end = (int)BlockArray.GetLongLength(1) - 1;
 
         string str = BlockArray[row, col].chara.ToString();
-
+        Debug.Log(CanUserOperate);
         int c = col;
         //左に探索
         while (0 < c)
@@ -653,6 +654,7 @@ public class Stage : MonoBehaviour
     {
         foreach (var block in activeBlockList)
         {
+            
             //Debug.Log(checkState(block.currentRowLine, block.CurrentCol + value));
             if (checkState(block.currentRowLine, block.CurrentCol + value) == GridState.OutStage || checkState(block.currentRowLine, block.CurrentCol + value) == GridState.Disactive)
             {
