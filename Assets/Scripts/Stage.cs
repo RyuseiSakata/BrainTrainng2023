@@ -386,8 +386,8 @@ public class Stage : MonoBehaviour
                 {
                     verticalString.Add(str);
                     //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
-                    //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> wordList = (new Jage()).Check(str);
+                    List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    //List<string> wordList = (new Jage()).Check(str);
                     wordList.ForEach(e =>
                     {
                         Debug.Log("List:" + e);
@@ -449,8 +449,8 @@ public class Stage : MonoBehaviour
                 {
                     horizontalString.Add(str);
                     //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
-                    //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> wordList = (new Jage()).Check(str);
+                    List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    //List<string> wordList = (new Jage()).Check(str);
                     wordList.ForEach(e =>
                     {
                         Debug.Log("List:"+e);

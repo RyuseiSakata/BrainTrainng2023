@@ -2465,12 +2465,12 @@ GameObject:
   - component: {fileID: 2039248819}
   - component: {fileID: 2039248820}
   m_Layer: 0
-  m_Name: 
+  m_Name: back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2039248819
 Transform:
   m_ObjectHideFlags: 0
@@ -2645,3 +2645,4 @@ MonoBehaviour:
   SpawnPos:
   - {fileID: 1887991234}
   - {fileID: 1421433265}
+  collectList: []
