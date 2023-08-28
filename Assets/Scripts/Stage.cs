@@ -26,6 +26,8 @@ public class Stage : MonoBehaviour
     private bool isChained;  //連鎖をしたかを表すフラグ
     public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
 
+    [SerializeField]List<string> collectList = new List<string>();  //消した文字列
+
 
     private void Start()
     {
@@ -227,7 +229,7 @@ public class Stage : MonoBehaviour
 
             fallBottom();   //横並びのパターンに置いてしたが空の場合に下まで下す処理
 
-            Debug.Log("着地");
+            //Debug.Log("着地");
 
             isChained = true;
             while (isChained)
@@ -384,7 +386,12 @@ public class Stage : MonoBehaviour
                 {
                     verticalString.Add(str);
                     //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
-                    List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    List<string> wordList = (new Jage()).Check(str);
+                    wordList.ForEach(e =>
+                    {
+                        Debug.Log("List:" + e);
+                    });
                     foreach (var word in wordList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -400,6 +407,7 @@ public class Stage : MonoBehaviour
                             }
                             else
                             {
+                                collectList.Add(word);  //消した言葉リストに追加
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     Block b = BlockArray[i, targetCol.Last()];
@@ -441,7 +449,12 @@ public class Stage : MonoBehaviour
                 {
                     horizontalString.Add(str);
                     //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
-                    List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    List<string> wordList = (new Jage()).Check(str);
+                    wordList.ForEach(e =>
+                    {
+                        Debug.Log("List:"+e);
+                    });
                     foreach (var word in wordList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -457,6 +470,7 @@ public class Stage : MonoBehaviour
                             }
                             else
                             {
+                                collectList.Add(word);  //消した言葉リストに追加
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     Block b = BlockArray[targetRow.Last(), i];

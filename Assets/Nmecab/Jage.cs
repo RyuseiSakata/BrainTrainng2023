@@ -117,7 +117,7 @@ public class Jage : MonoBehaviour
               Theta = 1f / 800f / 2f
           };
 
-          var lattice = tagger.ParseToLattice(sentence, prm); // ラティスを取得
+          var lattice = tagger.ParseToLattice(s, prm); // ラティスを取得
 
           // ラティスから、ベスト解を取得し処理
           foreach (var node in lattice.GetBestNodes())
