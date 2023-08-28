@@ -2453,7 +2453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 760c42ad93fa44149a78367e73cda3f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sentence: "\u308A\u3093\u3054\u308A\u3089"
+  sentence: "\u3064\u3080\u3058\u304B\u305C"
 --- !u!1 &2039248818
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,14 +33,16 @@ public class Jage : MonoBehaviour
           // ラティスから、ベスト解を取得し処理
           foreach (var node in lattice.GetBestNodes())
           {
-            Debug.Log(node.Surface);
-            sepa.Add($"{node.Surface}");
-            Debug.Log(sepa[num].Length);
-            if(sepa[num].Length < 3){
-              sepa.Remove($"{node.Surface}");
-              num = num - 1;
-           }
-            num++;
+            if(!sepa.Contains(node.Surface)){
+              Debug.Log(node.Surface);
+              sepa.Add($"{node.Surface}");
+              Debug.Log(sepa[num].Length);
+              if(sepa[num].Length < 3){
+                sepa.Remove($"{node.Surface}");
+                num = num - 1;
+            }
+              num++;
+            }
           }
 
 
@@ -50,15 +52,17 @@ public class Jage : MonoBehaviour
           {
               foreach (var node in result)
               {
-                Debug.Log(node.Surface);
-                Debug.Log(node.Surface);
-                sepa.Add($"{node.Surface}");
-                Debug.Log(sepa[num].Length);
-                if(sepa[num].Length < 3){
-                  sepa.Remove($"{node.Surface}");
-                  num = num - 1;
-               }
-                num++;
+                  if(!sepa.Contains(node.Surface)){
+                  Debug.Log(node.Surface);
+                  Debug.Log(node.Surface);
+                  sepa.Add($"{node.Surface}");
+                  Debug.Log(sepa[num].Length);
+                  if(sepa[num].Length < 3){
+                    sepa.Remove($"{node.Surface}");
+                    num = num - 1;
+                }
+                  num++;
+                }
               }
 
 
@@ -77,7 +81,7 @@ public class Jage : MonoBehaviour
               }
           }
 
-          for(int i = 0;i<num;i++){
+          /*for(int i = 0;i<num;i++){
 
             if(i +1 < sepa.Count ){
               Debug.Log("入った");
@@ -86,7 +90,7 @@ public class Jage : MonoBehaviour
                 Debug.Log("消した");
               }
             }
-          }
+          }*/
 
           for(int i = 0;i<sepa.Count;i++){
             Debug.Log(sepa[i]);
@@ -118,14 +122,16 @@ public class Jage : MonoBehaviour
           // ラティスから、ベスト解を取得し処理
           foreach (var node in lattice.GetBestNodes())
           {
-            Debug.Log(node.Surface);
-            sepa.Add($"{node.Surface}");
-            Debug.Log(sepa[num].Length);
-            if(sepa[num].Length < 3){
-              sepa.Remove($"{node.Surface}");
-              num = num - 1;
-           }
-            num++;
+            if(!sepa.Contains(node.Surface)){
+              Debug.Log(node.Surface);
+              sepa.Add($"{node.Surface}");
+              Debug.Log(sepa[num].Length);
+              if(sepa[num].Length < 3){
+                sepa.Remove($"{node.Surface}");
+                num = num - 1;
+            }
+              num++;
+            }
           }
 
 
@@ -135,15 +141,17 @@ public class Jage : MonoBehaviour
           {
               foreach (var node in result)
               {
-                Debug.Log(node.Surface);
-                Debug.Log(node.Surface);
-                sepa.Add($"{node.Surface}");
-                Debug.Log(sepa[num].Length);
-                if(sepa[num].Length < 3){
-                  sepa.Remove($"{node.Surface}");
-                  num = num - 1;
-               }
-                num++;
+                if(!sepa.Contains(node.Surface)){
+                  Debug.Log(node.Surface);
+                  Debug.Log(node.Surface);
+                  sepa.Add($"{node.Surface}");
+                  Debug.Log(sepa[num].Length);
+                  if(sepa[num].Length < 3){
+                    sepa.Remove($"{node.Surface}");
+                    num = num - 1;
+                }
+                  num++;
+                }
               }
 
 
