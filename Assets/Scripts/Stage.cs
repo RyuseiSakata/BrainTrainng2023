@@ -202,6 +202,7 @@ public class Stage : MonoBehaviour
                 break;
             }
         }
+        //Debug.Log("LOG:" + Config.character[ret].ToString() + "ÇÃèoåªämó¶:" + (100f * Config.probability[ret] / Config.sumProbability).ToString("") + "%");
         return Config.character[ret].ToString();
     }
 
