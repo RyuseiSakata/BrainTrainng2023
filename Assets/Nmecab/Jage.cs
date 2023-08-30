@@ -11,12 +11,13 @@ public class Jage : MonoBehaviour
     public string sentence = "かりんご";
     private string[] sep = new string[3];
     private List<string> sepa = new List<string>();
+    private List<string> sepa2 = new List<string>();
     void Start()
     {
       int num = 0;
 
        // 「dic/ipadicフォルダ」のパスを指定する
-       var dicDir = @"Assets/Nmecab/dic/ipadic";
+       var dicDir =@"Assets/Plugins/Nmecab/dic/ipadic";
        var user = new[] {"origin.dic"};
 
        using (var tagger = MeCabIpaDicTagger.Create(dicDir,user))
@@ -35,7 +36,9 @@ public class Jage : MonoBehaviour
           {
             if(!sepa.Contains(node.Surface)){
               Debug.Log(node.Surface);
+              Debug.Log(node.PartsOfSpeech);
               sepa.Add($"{node.Surface}");
+              sepa2.Add($"{node.PartsOfSpeech}");
               Debug.Log(sepa[num].Length);
               if(sepa[num].Length < 3){
                 sepa.Remove($"{node.Surface}");
@@ -45,8 +48,6 @@ public class Jage : MonoBehaviour
             }
           }
 
-
-
           // ラティスから、2番目と3番目のベスト解を取得し処理
           foreach (var result in lattice.GetNBestResults().Skip(1).Take(2))
           {
@@ -55,6 +56,8 @@ public class Jage : MonoBehaviour
                   if(!sepa.Contains(node.Surface)){
                   Debug.Log(node.Surface);
                   Debug.Log(node.Surface);
+                  Debug.Log(node.PartsOfSpeech);
+                  sepa2.Add($"{node.PartsOfSpeech}");
                   sepa.Add($"{node.Surface}");
                   Debug.Log(sepa[num].Length);
                   if(sepa[num].Length < 3){
@@ -64,8 +67,6 @@ public class Jage : MonoBehaviour
                   num++;
                 }
               }
-
-
           }
 
           Debug.Log("----------");
@@ -77,23 +78,11 @@ public class Jage : MonoBehaviour
               {
                   if (node.Prob <= 0.001f) continue;
 
-
               }
           }
-
-          /*for(int i = 0;i<num;i++){
-
-            if(i +1 < sepa.Count ){
-              Debug.Log("入った");
-              if(sepa[i]==sepa[i+1]){
-                sepa.Remove(sepa[i]);
-                Debug.Log("消した");
-              }
-            }
-          }*/
-
           for(int i = 0;i<sepa.Count;i++){
             Debug.Log(sepa[i]);
+            Debug.Log(sepa2[i]);
           }
 
           // ラティスから、最終的な累積コストのみを取得
@@ -105,7 +94,7 @@ public class Jage : MonoBehaviour
       int num = 0;
 
        // 「dic/ipadicフォルダ」のパスを指定する
-       var dicDir = @"Assets/Nmecab/dic/ipadic";
+       var dicDir = Application.dataPath +"/Plugins/Nmecab/dic/ipadic";
        var user = new[] {"origin.dic"};
 
        using (var tagger = MeCabIpaDicTagger.Create(dicDir,user))

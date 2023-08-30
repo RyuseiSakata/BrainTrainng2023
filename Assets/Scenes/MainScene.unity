@@ -2450,10 +2450,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2034030742}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 760c42ad93fa44149a78367e73cda3f3, type: 3}
+  m_Script: {fileID: 11500000, guid: 15fe3889014f0f84a99ca1a546d29e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sentence: "\u3064\u3080\u3058\u304B\u305C"
+  sentence: "\u304B\u308A\u3093\u3054"
 --- !u!1 &2039248818
 GameObject:
   m_ObjectHideFlags: 0
