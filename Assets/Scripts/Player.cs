@@ -11,6 +11,7 @@ public enum ButtonKinds
     Right = 2,
     LeftTurn = 3,
     RightTurn = 4,
+    None = 5,
 }
 
 public class Player : MonoBehaviour
@@ -21,7 +22,8 @@ public class Player : MonoBehaviour
     private float preTapPositionX = 0f;  //前にタップしたX座標
     private float preTapPositionY = 0f;  //前にタップしたX座標
 
-    public bool isDownButtonHold = false;  //下におろすボタンが押されているかのフラグ
+    private bool isDownButtonHold = false;  //下におろすボタンが押されているかのフラグ
+    private bool isNothingPanelHold = false;    //ボタンのないところをタッチしているか
 
     private void Start()
     {
@@ -66,10 +68,9 @@ public class Player : MonoBehaviour
                 }
             }
 
-            // タッチされているかチェック
-            if (Input.touchCount > 0)
+            // ボタン以外の所をタッチ かつ タッチされているかチェック
+            if (isNothingPanelHold && Input.touchCount > 0)
             {
-
                 Touch touch = Input.GetTouch(0);    // タッチ情報の取得
                 frameFromTapped++;  //フレーム数の更新
 
@@ -115,6 +116,11 @@ public class Player : MonoBehaviour
                     }
                 }
             }
+            //タップされていない
+            else if(Input.touchCount <= 0)
+            {
+                isNothingPanelHold = false;
+            }
         }
     }
 
@@ -138,6 +144,10 @@ public class Player : MonoBehaviour
             case ButtonKinds.RightTurn:
                 stage.rotateBlock(+90f);
                 break;
+            case ButtonKinds.None:
+                isNothingPanelHold = true;
+                Debug.Log("True");
+                break;
         }
     }
 
@@ -148,8 +158,8 @@ public class Player : MonoBehaviour
         {
             case ButtonKinds.Down:
                 isDownButtonHold = false;
-                Debug.Log("A");
                 break;
         }
     }
+
 }

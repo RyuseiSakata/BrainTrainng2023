@@ -16,6 +16,7 @@ public class Stage : MonoBehaviour
     public float fallBoost = 1; 
 
     [SerializeField] GameObject blockPrefab;
+    [SerializeField] UIManager uIManager;
 
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow + 1, Config.maxCol];  //ステージ全体のブロック配列
     private List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
@@ -25,6 +26,7 @@ public class Stage : MonoBehaviour
     [SerializeField] Transform[] SpawnPos;  //次の出現位置(0)とその次の出現位置(1)
 
     private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
+    private int comboNum = 0;   //コンボ数
     public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
 
     [SerializeField]List<string> collectList = new List<string>();  //消した単語リスト
@@ -245,6 +247,8 @@ public class Stage : MonoBehaviour
             fallBottom();   //空の場合に下まで下す処理
 
             CanUserOperate = true;  //ユーザの操作を可能に
+            comboNum = 0;   //コンボ数をリセット
+            uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
         }
 
         yield break;
@@ -412,6 +416,7 @@ public class Stage : MonoBehaviour
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
                                 }
+                                uIManager.textUpdate(TextKinds.Combo, ++comboNum);  //コンボ数の追加とUI更新
                                 yield return new WaitForSeconds(0.3f);
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
@@ -467,6 +472,7 @@ public class Stage : MonoBehaviour
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
                                 }
+                                uIManager.textUpdate(TextKinds.Combo, ++comboNum);  //コンボ数の追加とUI更新
                                 yield return new WaitForSeconds(0.3f);
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
