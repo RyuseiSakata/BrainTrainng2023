@@ -17,6 +17,7 @@ public class Stage : MonoBehaviour
 
     [SerializeField] GameObject blockPrefab;
     [SerializeField] UIManager uIManager;
+    [SerializeField] PlayerInput playerInput;
 
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow + 1, Config.maxCol];  //ステージ全体のブロック配列
     private List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
@@ -249,6 +250,7 @@ public class Stage : MonoBehaviour
             CanUserOperate = true;  //ユーザの操作を可能に
             comboNum = 0;   //コンボ数をリセット
             uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
+            playerInput.updateTapPosition();
         }
 
         yield break;

@@ -27,7 +27,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Start()
     {
-        Input.multiTouchEnabled = false;
+        //Input.multiTouchEnabled = false;
     }
     private void Update()
     {
@@ -111,8 +111,18 @@ public class PlayerInput : MonoBehaviour
                     }
                     if (Mathf.Abs(deltaY) > 100)
                     {
-                        stage.fallBoost = 8f;  //落下速度をあげる
-                        frameFromTapped = -1;   //回転防止
+                        //1本でタッチ
+                        if(Input.touchCount == 1)
+                        {
+                            stage.fallBoost = 8f;  //落下速度をあげる
+                            frameFromTapped = -1;   //回転防止
+                        }
+                        else  //2本以上でタッチ
+                        {
+                            stage.fallBoost = 100f;  //落下速度をあげる
+                            frameFromTapped = -1;   //回転防止
+                        }
+                        
                     }
                 }
             }
@@ -162,4 +172,10 @@ public class PlayerInput : MonoBehaviour
         }
     }
 
+    public void updateTapPosition()
+    {
+        Touch touch = Input.GetTouch(0);    // タッチ情報の取得
+        preTapPositionX = touch.position.x;  //前にタップしたX座標
+        preTapPositionY = touch.position.x;  //前にタップしたY座標
+    }
 }
