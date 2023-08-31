@@ -13,20 +13,21 @@ public enum GridState
 
 public class Stage : MonoBehaviour
 {
-    public float fallBoost = 1;
+    public float fallBoost = 1; 
 
     [SerializeField] GameObject blockPrefab;
 
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow + 1, Config.maxCol];  //ステージ全体のブロック配列
-    public List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
-    public List<Block> judgeTargetList = new List<Block>(); //判定を行う対象
-    public List<Block>[] nextBlock = { new List<Block>(), new List<Block>() }; //次とその次のブロックを格納
-    [SerializeField] private Transform[] SpawnPos;
+    private List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
+    private List<Block> judgeTargetList = new List<Block>(); //判定を行う対象
 
-    private bool isChained;  //連鎖をしたかを表すフラグ
+    private List<Block>[] nextBlock = { new List<Block>(), new List<Block>() }; //次(0)とその次(1)のブロックを格納
+    [SerializeField] Transform[] SpawnPos;  //次の出現位置(0)とその次の出現位置(1)
+
+    private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
     public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
 
-    [SerializeField]List<string> collectList = new List<string>();  //消した文字列
+    [SerializeField]List<string> collectList = new List<string>();  //消した単語リスト
 
 
     private void Start()
@@ -37,13 +38,14 @@ public class Stage : MonoBehaviour
             Config.sumProbability += value;
         }
 
-        firstSetBlock();
+        firstSetBlock(); //ブロックの初期配置
 
         StartCoroutine("fall");
     }
 
     private void Update()
     {
+        //BlockArrayの中身を表示　（デバッグ用）
         if (Input.GetKeyDown(KeyCode.I))
         {
 
@@ -95,7 +97,7 @@ public class Stage : MonoBehaviour
         }
     }
 
-    //Startで呼び出す,nextBlockにブロックをセットする
+    //Startで呼び出す,nextBlockにブロックをセットする（次とその次のブロックを設定）
     private void firstSetBlock()
     {
         for (int i = 0; i < 2; i++)
@@ -133,6 +135,8 @@ public class Stage : MonoBehaviour
         }
     }
 
+
+    //ブロックを生成し、画面上 <- 次 <- 次の次　のようにずらす処理
     private void spawnBlock()
     {
         //nextBlock[0]をActiveにする
@@ -165,7 +169,6 @@ public class Stage : MonoBehaviour
             block.stage = this;
             block.init(decideCharacter(), 0, 2);
             nextBlock[1].Add(block);
-
         }
         else
         {
@@ -206,11 +209,12 @@ public class Stage : MonoBehaviour
         return Config.character[ret].ToString();
     }
 
+    //ブロックの落下処理を行うコルーチン
     private IEnumerator fall()
     {
         while (true)
         {
-            spawnBlock();
+            spawnBlock();   //ブロックの生成
 
             decideDestination();    //目標行数の決定
 
@@ -228,11 +232,11 @@ public class Stage : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
 
-            fallBottom();   //横並びのパターンに置いてしたが空の場合に下まで下す処理
+            fallBottom();   //横並びのパターンにおいて着地まで下す処理
 
             //Debug.Log("着地");
 
-            isChained = true;
+            isChained = true;   //連鎖のフラグ　trueの限り続いている
             while (isChained)
             {
                 yield return judgeAndDelete();
@@ -361,22 +365,19 @@ public class Stage : MonoBehaviour
         }
     }
 
-    //判定と消す処理を行う　返却値がtrueなら連鎖終了
+    //判定・消す・落下処理を行う　返却値がtrueなら連鎖終了
     private IEnumerator judgeAndDelete()
     {
-        List<string> horizontalString = new List<string>();
-        List<string> verticalString = new List<string>();
-        List<Block> destroyList = new List<Block>();
+        List<Block> destroyList = new List<Block>();    //削除するブロックのリスト
 
-        List<int> targetRow = new List<int>();
-        List<int> targetCol = new List<int>();
-
-        //縦向きの文字列の判定  調べる行の文字列を取得
+        /***  縦向きの文字列の判定  調べる列の文字列を取得  ***/
+        List<int> targetRow = new List<int>();  //調べた行を格納
+        List<int> targetCol = new List<int>();  //調べた列を格納
         foreach (var block in judgeTargetList)
         {
-            if (!targetCol.Contains(block.CurrentCol))
+            if (!targetCol.Contains(block.CurrentCol))  //まだ調べていない列ならば実行
             {
-                int head = 0, end = 0;
+                int head = 0, end = 0;  //縦向き文字列の先頭行番号と終端行番号
                 targetRow.Add(block.CurrentRow);
                 targetCol.Add(block.CurrentCol);
 
@@ -385,14 +386,9 @@ public class Stage : MonoBehaviour
                 //3文字以上
                 if (str.Length >= 3)
                 {
-                    verticalString.Add(str);
-                    //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
                     //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> wordList = (new Jage()).Check(str);
-                    wordList.ForEach(e =>
-                    {
-                        Debug.Log("List:" + e);
-                    });
+                    List<string> wordList = (new Jage()).Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+
                     foreach (var word in wordList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -422,8 +418,6 @@ public class Stage : MonoBehaviour
                                     Block b = BlockArray[i, targetCol.Last()];
                                     b.lightDown();
                                 }
-
-
                             }
                         }
                     }
@@ -431,31 +425,25 @@ public class Stage : MonoBehaviour
             }
         }
 
-
-        targetRow = new List<int>();
-        targetCol = new List<int>();
-
-        //横向きの文字列の判定  調べる行の文字列を取得
+        /*** 横向きの文字列の判定  調べる行の文字列を取得 ***/
+        targetRow = new List<int>();    //調べた行を初期化
+        targetCol = new List<int>();    //調べた列を初期化
         foreach (var block in judgeTargetList)
         {
-            //同じ行を行わないようにする
-            if (!targetRow.Contains(block.CurrentRow))
+            if (!targetRow.Contains(block.CurrentRow))  //まだ調べていない行ならば実行
             {
-                int head = 0, end = 0;
+                int head = 0, end = 0;  //横向き文字列の先頭列番号と終端列番号
                 targetRow.Add(block.CurrentRow);
                 targetCol.Add(block.CurrentCol);
-                string str = getStringFromCol(targetRow.Last(), targetCol.Last(), ref head, ref end);
+
+                string str = getStringFromCol(targetRow.Last(), targetCol.Last(), ref head, ref end);   //対象の行の文字列を取得＆先頭末端の反映
+
                 //3文字以上
                 if (str.Length >= 3)
                 {
-                    horizontalString.Add(str);
-                    //（追記）strに含まれる単語のリストを取得する処理 List<string> wordList = (取得メソッド)
                     //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> wordList = (new Jage()).Check(str);
-                    wordList.ForEach(e =>
-                    {
-                        Debug.Log("List:"+e);
-                    });
+                    List<string> wordList = (new Jage()).Check(str);    //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+
                     foreach (var word in wordList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -492,16 +480,16 @@ public class Stage : MonoBehaviour
             }
         }
 
-        judgeTargetList.Clear();
+        judgeTargetList.Clear();    //確認リストを初期化
 
-        //ブロックを消す処理
+        /*** 発見された単語に相当するブロックを消す処理 ***/
         destroyList.ForEach(block =>
         {
             BlockArray[block.CurrentRow, block.CurrentCol] = null;
             block.DestroyObject();
         });
 
-        //ブロック削除後の落下処理
+        /*** 発見された単語がある場合、ブロック削除後の落下処理 ***/
         if (destroyList.Count > 0)
         {
             Dictionary<int, int> upperGridDic = new Dictionary<int, int>();   //列ごとに最上部のブロックの行番号を格納
@@ -571,7 +559,6 @@ public class Stage : MonoBehaviour
             }
         }
 
-
         //連鎖なし
         if (destroyList.Count == 0)
         {
@@ -586,7 +573,42 @@ public class Stage : MonoBehaviour
         yield break;
     }
 
-    //特定のブロックを含むから横向き（左から右読み）の文字列を取得
+    //特定のブロックを含む縦向き（上から下読み）の文字列を取得
+    private string getStringFromRow(int row, int col, ref int head, ref int end)
+    {
+        //先頭・末端が最端だった時のため
+        head = 0;
+        end = (int)BlockArray.GetLongLength(0) - 1;
+
+        string str = BlockArray[row, col].chara.ToString();
+
+        int r = row;
+        while (0 < r)
+        {
+            r--;
+            if (BlockArray[r, col] != null)
+            {
+                str = BlockArray[r, col].chara.ToString() + str;
+            }
+            else
+            {
+                head = r + 1;   //先頭要素番号
+                break;
+            }
+        }
+
+        r = row;
+        while (r < BlockArray.GetLength(0) - 1)
+        {
+            r++;
+            str = str + BlockArray[r, col].chara.ToString();
+        }
+
+        return str;
+    }
+
+
+    //特定のブロックを含む横向き（左から右読み）の文字列を取得
     private string getStringFromCol(int row, int col, ref int head, ref int end)
     {
         //先頭・末端が最端だった時のため
@@ -594,7 +616,6 @@ public class Stage : MonoBehaviour
         end = (int)BlockArray.GetLongLength(1) - 1;
 
         string str = BlockArray[row, col].chara.ToString();
-        Debug.Log(CanUserOperate);
         int c = col;
         //左に探索
         while (0 < c)
@@ -630,47 +651,12 @@ public class Stage : MonoBehaviour
         return str;
     }
 
-    //特定のブロックを含むから縦向き（上から下読み）の文字列を取得
-    private string getStringFromRow(int row, int col, ref int head, ref int end)
-    {
-        //先頭・末端が最端だった時のため
-        head = 0;
-        end = (int)BlockArray.GetLongLength(0) - 1;
-
-        string str = BlockArray[row, col].chara.ToString();
-
-        int r = row;
-        while (0 < r)
-        {
-            r--;
-            if (BlockArray[r, col] != null)
-            {
-                str = BlockArray[r, col].chara.ToString() + str;
-            }
-            else
-            {
-                head = r + 1;   //先頭要素番号
-                break;
-            }
-        }
-
-        r = row;
-        while (r < BlockArray.GetLength(0) - 1)
-        {
-            r++;
-            str = str + BlockArray[r, col].chara.ToString();
-        }
-
-        return str;
-    }
 
     //ブロックを左右に移動させる
     public void moveColumn(int value)
     {
         foreach (var block in activeBlockList)
         {
-            
-            //Debug.Log(checkState(block.currentRowLine, block.CurrentCol + value));
             if (checkState(block.currentRowLine, block.CurrentCol + value) == GridState.OutStage || checkState(block.currentRowLine, block.CurrentCol + value) == GridState.Disactive)
             {
                 return;
@@ -697,9 +683,6 @@ public class Stage : MonoBehaviour
         });
 
         //各ブロックの行番号と列番号を取得
-        //Vector2 center = new Vector2(activeBlockList[0].CurrentRow, activeBlockList[0].CurrentCol);
-        //Vector2 target = new Vector2(activeBlockList[1].CurrentRow, activeBlockList[1].CurrentCol);
-
         activeBlockList[1].rotate(activeBlockList[0], theta);  //回転を反映
 
         activeBlockList.ForEach(e =>

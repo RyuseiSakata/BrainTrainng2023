@@ -9,14 +9,14 @@ public class Block : MonoBehaviour
 
     public string chara = " ";    //所持している文字
     public bool BlockState = true;
-    [SerializeField] private int currentRow = 1; //現在の行
+    [SerializeField] private int currentRow = 1; //現在の行（ブロックの行の中央ライン）
     [SerializeField] private int currentCol = 2; //現在の列
     public bool isLocked = false;   // 下に降りる動きを固定するフラグ
-    public int currentRowLine = 0;
+    public int currentRowLine = 0;  //現在の行ライン（何行目に所属しうるか、ブロックの最下部）
     public int DestinationRow = 1;    //目標行数
     private float fallSpeed = 0.15f;   //落下速度
 
-    public Stage stage;
+    public Stage stage; //ステージのインスタンス
 
     //getter,setter
     public int CurrentRow
@@ -89,6 +89,7 @@ public class Block : MonoBehaviour
         return (int)Mathf.Floor((Config.maxRow) / 2f + 1 - Config.maxRow * posY + 0.5f);
     }
 
+    //ブロックの初期化を行う
     public void init(string ch = " ", int row = 1, int col = 2)
     {
         chara = ch;
@@ -99,63 +100,17 @@ public class Block : MonoBehaviour
         DestinationRow = row;
     }
 
+    //ブロックステージ上に出現させる際の設定を行う
     public void callActive()
     {
         BlockState = true;
         moveProperTransformFrom(CurrentCol, CurrentRow);
         this.transform.position += new Vector3(0f, 0.5f, 0f);   //出現位置を少し上に
     }
-    /*
-        private IEnumerator Fall()
-        {
-            double destinationHeight = 0.75 * (11 / 2f) - 0.75 * CurrentRow;
-
-            while (isFalling)
-            {
-                //判定を行う高さに達したら
-                if (transform.position.y <= destinationHeight)
-                {
-                    //次の行が空なら
-                    if (stage.checkEmpty(CurrentRow+1, CurrentCol))
-                    {
-                        CurrentRow += 1;
-                        destinationHeight = 0.75 * (11 / 2f) - 0.75 * CurrentRow;
-                    }
-                    //次の行にすでにブロックがあるなら
-                    else
-                    {
-                        isFalling = false; 
-
-                        //目標地までの移動
-                        while (transform.position.y != destinationHeight)
-                        {
-                            transform.position = Vector3.MoveTowards(transform.position, new Vector3((float)(-1.875 + 0.75*CurrentCol), (float)destinationHeight, 0.0f), 0.01f*stage.fallBoost);
-                            yield return new WaitForSeconds(0.01f);
-                        }
-                        stage.BlockArray[CurrentRow, CurrentCol] = this;
-                    }
-                }
-                else
-                {
-                    Move(new Vector3(0.0f, -0.01f * stage.fallBoost, 0.0f));
-                }
-
-                yield return new WaitForSeconds(0.01f);
-            }
-
-
-            //判定とセット
-            stage.activeBlockList.Remove(this);
-
-
-            yield break;    //終了
-        }
-    */
-
+ 
     //ブロックを下に移動させる処理
     public void MoveDown()
     {
-
         Vector3 destinationPos = getVector3From(CurrentCol, DestinationRow);
         if (!isLocked)
         {
@@ -177,7 +132,6 @@ public class Block : MonoBehaviour
                 stage.BlockArray[CurrentRow, CurrentCol] = this;
                 stage.CanUserOperate = false;
             }
-
         }
     }
 

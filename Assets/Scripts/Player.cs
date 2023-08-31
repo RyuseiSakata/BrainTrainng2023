@@ -23,9 +23,6 @@ public class Player : MonoBehaviour
 
     public bool isDownButtonHold = false;  //下におろすボタンが押されているかのフラグ
 
-    [SerializeField] Text debugText;
-    [SerializeField] Text debugText2;
-
     private void Start()
     {
         Input.multiTouchEnabled = false;
