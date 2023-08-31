@@ -105,7 +105,7 @@ public class Stage : MonoBehaviour
     {
         for (int i = 0; i < 2; i++)
         {
-            int randNum = Random.Range(0, 1);
+            int randNum = Random.Range(0, 2);
             if (randNum == 0)
             {
                 var instance = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
@@ -162,7 +162,7 @@ public class Stage : MonoBehaviour
 
         //nextBlock[1]に新しいブロックを生成
         nextBlock[1].Clear();
-        int randNum = Random.Range(0, 1);
+        int randNum = Random.Range(0, 2);
         if (randNum == 0)
         {
             var instance = Instantiate(blockPrefab, SpawnPos[1].transform.position, Quaternion.identity, SpawnPos[1].transform);
