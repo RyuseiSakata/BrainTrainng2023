@@ -251,6 +251,8 @@ public class Stage : MonoBehaviour
             comboNum = 0;   //コンボ数をリセット
             uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
             playerInput.updateTapPosition();
+
+            yield return new WaitForSeconds(0.5f);
         }
 
         yield break;

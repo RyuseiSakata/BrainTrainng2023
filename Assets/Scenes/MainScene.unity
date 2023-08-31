@@ -706,6 +706,7 @@ MonoBehaviour:
   fallBoost: 1
   blockPrefab: {fileID: 62084249457581635, guid: 2738bf8cb71710d4498e87ead6250cd6, type: 3}
   uIManager: {fileID: 1202892936}
+  playerInput: {fileID: 719233741}
   SpawnPos:
   - {fileID: 268260180}
   - {fileID: 753284523}

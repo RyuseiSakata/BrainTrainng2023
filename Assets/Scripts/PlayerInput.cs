@@ -174,8 +174,12 @@ public class PlayerInput : MonoBehaviour
 
     public void updateTapPosition()
     {
-        Touch touch = Input.GetTouch(0);    // タッチ情報の取得
-        preTapPositionX = touch.position.x;  //前にタップしたX座標
-        preTapPositionY = touch.position.x;  //前にタップしたY座標
+        if(Input.touchCount > 0) {
+            Touch touch = Input.GetTouch(0);    // タッチ情報の取得
+            preTapPositionX = touch.position.x;  //前にタップしたX座標
+            preTapPositionY = touch.position.y;  //前にタップしたY座標
+            isDownButtonHold = false;  //下におろすボタンが押されているかのフラグ
+            isNothingPanelHold = false;    //ボタンのないところをタッチしているか
+}   
     }
 }
