@@ -1,9 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public enum AttackKinds
+{
+    Normal,
+}
+
+public class Enemy : MonoBehaviour
 {
     [SerializeField] float hpAmount;
     [SerializeField] float attackPower;
@@ -11,7 +15,7 @@ public class Player : MonoBehaviour
 
     public float HpAmount { get => hpAmount; }
 
-    [SerializeField] Enemy enemy;
+    [SerializeField] Player player;
 
     private void Start()
     {
@@ -23,21 +27,21 @@ public class Player : MonoBehaviour
     {
         hpAmount -= damageAmount;
 
-        if(hpAmount <= 0f)
+        if (hpAmount <= 0f)
         {
-            Debug.Log("敵に倒された");
+            Debug.Log("プレイヤーに倒された");
             stage.gameOver();
             StopAllCoroutines();    //スクリプト内のすべてのコルーチン終了
         }
     }
 
-    //Enemyに攻撃を行うメソッド
-    private IEnumerator attack(Enemy target, AttackKinds attackKinds = AttackKinds.Normal)
+    //Playerに攻撃を行うメソッド
+    private IEnumerator attack(Player target, AttackKinds attackKinds = AttackKinds.Normal)
     {
         switch (attackKinds)
         {
             case AttackKinds.Normal:
-                Debug.Log("敵にNormal Attack");
+                Debug.Log("プレイヤーにNormal Attack");
                 float damageAmount = attackPower;
                 target.damage(damageAmount);
                 break;
@@ -49,12 +53,11 @@ public class Player : MonoBehaviour
     //行動を管理するコルーチン
     private IEnumerator action()
     {
-        while (enemy.HpAmount > 0f && hpAmount > 0f)
+        while (player.HpAmount > 0f && hpAmount > 0f)
         {
-            yield return new WaitForSeconds(3f);
-            yield return attack(enemy, AttackKinds.Normal);
+            yield return new WaitForSeconds(5f);
+            yield return attack(player, AttackKinds.Normal);
         }
         yield break;
     }
-
 }

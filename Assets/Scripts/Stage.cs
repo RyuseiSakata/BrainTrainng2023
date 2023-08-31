@@ -257,7 +257,7 @@ public class Stage : MonoBehaviour
     public void gameOver()
     {
         Debug.Log("game over");
-        StopCoroutine("fall");
+        StopAllCoroutines();    //スクリプト内のすべてのコルーチン終了
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
