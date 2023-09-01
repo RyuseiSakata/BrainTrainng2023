@@ -116,7 +116,7 @@ public class Jage : MonoBehaviour
               Debug.Log(node.Surface);
               sepa.Add($"{node.Surface}");
               Debug.Log(sepa[num].Length);
-              if(sepa[num].Length < 3||node.Reading != "なおよし"){
+              if(sepa[num].Length < 3||node.Reading != "あ"){
                 sepa.Remove($"{node.Surface}");
                 num = num - 1;
             }
@@ -136,7 +136,7 @@ public class Jage : MonoBehaviour
                   Debug.Log(node.Surface);
                   sepa.Add($"{node.Surface}");
                   Debug.Log(sepa[num].Length);
-                  if(sepa[num].Length < 3||node.Reading != "なおよし"){
+                  if(sepa[num].Length < 3||node.Reading != "あ"){
                     sepa.Remove($"{node.Surface}");
                     num = num - 1;
                 }
