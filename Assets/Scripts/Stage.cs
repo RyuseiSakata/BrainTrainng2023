@@ -28,10 +28,26 @@ public class Stage : MonoBehaviour
 
     private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
     private int comboNum = 0;   //コンボ数
+    private int numberOfTurns = 0;  //ターン数
     public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
 
     [SerializeField]List<string> collectList = new List<string>();  //消した単語リスト
 
+    //コンボ数のプロパティ
+    public int ComboNum {
+        get => comboNum; 
+        set { 
+            comboNum = value;
+            uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
+        } 
+    }
+
+    //ターン数のプロパティ
+    public int NumberOfTurns
+    {
+        get => numberOfTurns;
+        set { numberOfTurns = value; }
+    }
 
     private void Start()
     {
@@ -248,10 +264,9 @@ public class Stage : MonoBehaviour
             fallBottom();   //空の場合に下まで下す処理
 
             CanUserOperate = true;  //ユーザの操作を可能に
-            comboNum = 0;   //コンボ数をリセット
-            uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
+            ComboNum = 0;   //コンボ数をリセット
             playerInput.updateTapPosition();
-
+            NumberOfTurns += 1; //ターン数増加
             yield return new WaitForSeconds(0.5f);
         }
 
@@ -420,7 +435,7 @@ public class Stage : MonoBehaviour
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
                                 }
-                                uIManager.textUpdate(TextKinds.Combo, ++comboNum);  //コンボ数の追加とUI更新
+                                ComboNum++;  //コンボ数の追加
                                 yield return new WaitForSeconds(0.3f);
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
@@ -476,7 +491,7 @@ public class Stage : MonoBehaviour
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
                                 }
-                                uIManager.textUpdate(TextKinds.Combo, ++comboNum);  //コンボ数の追加とUI更新
+                                ComboNum++;  //コンボ数の追加とUI更新
                                 yield return new WaitForSeconds(0.3f);
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {

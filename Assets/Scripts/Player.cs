@@ -3,58 +3,73 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+namespace Battle
 {
-    [SerializeField] float hpAmount;
-    [SerializeField] float attackPower;
-    [SerializeField] Stage stage;
-
-    public float HpAmount { get => hpAmount; }
-
-    [SerializeField] Enemy enemy;
-
-    private void Start()
+    public class Player : MonoBehaviour
     {
-        StartCoroutine("action");
-    }
+        [SerializeField] BattleUIManager battleUIManager;
+        [SerializeField] Stage stage;
 
-    //ダメージ計算を行うメソッド
-    public void damage(float damageAmount)
-    {
-        hpAmount -= damageAmount;
+        [SerializeField] float hpAmount;
+        [SerializeField] float attackPower;
 
-        if(hpAmount <= 0f)
+        public float HpAmount
         {
-            Debug.Log("敵に倒された");
-            stage.gameOver();
-            StopAllCoroutines();    //スクリプト内のすべてのコルーチン終了
-        }
-    }
-
-    //Enemyに攻撃を行うメソッド
-    private IEnumerator attack(Enemy target, AttackKinds attackKinds = AttackKinds.Normal)
-    {
-        switch (attackKinds)
-        {
-            case AttackKinds.Normal:
-                Debug.Log("敵にNormal Attack");
-                float damageAmount = attackPower;
-                target.damage(damageAmount);
-                break;
+            get => hpAmount;
+            set
+            {
+                hpAmount = value;
+                battleUIManager.textUpdate(Battle.TextKinds.PlayerHP, hpAmount);
+            }
         }
 
-        yield break;
-    }
+        [SerializeField] Enemy enemy;
 
-    //行動を管理するコルーチン
-    private IEnumerator action()
-    {
-        while (enemy.HpAmount > 0f && hpAmount > 0f)
+        private void Start()
         {
-            yield return new WaitForSeconds(3f);
-            yield return attack(enemy, AttackKinds.Normal);
+            HpAmount = HpAmount;
+            StartCoroutine("action");
         }
-        yield break;
-    }
 
+        //ダメージ計算を行うメソッド
+        public void damage(float damageAmount)
+        {
+            HpAmount -= damageAmount;
+
+            if (HpAmount <= 0f)
+            {
+                Debug.Log("敵に倒された");
+                stage.gameOver();
+                StopAllCoroutines();    //スクリプト内のすべてのコルーチン終了
+            }
+        }
+
+        //Enemyに攻撃を行うメソッド
+        private IEnumerator attack(Enemy target, AttackKinds attackKinds = AttackKinds.Normal)
+        {
+            switch (attackKinds)
+            {
+                case AttackKinds.Normal:
+                    Debug.Log("敵にNormal Attack");
+                    float damageAmount = attackPower;
+                    target.damage(damageAmount);
+                    break;
+            }
+
+            yield break;
+        }
+
+        //行動を管理するコルーチン
+        private IEnumerator action()
+        {
+            while (enemy.HpAmount > 0f && HpAmount > 0f)
+            {
+                yield return new WaitForSeconds(3f);
+                yield return attack(enemy, AttackKinds.Normal);
+            }
+            yield break;
+        }
+
+    }
 }
+
