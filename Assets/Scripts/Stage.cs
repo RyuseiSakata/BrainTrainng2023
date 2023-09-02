@@ -710,11 +710,12 @@ public class Stage : MonoBehaviour
         //各ブロックの行番号と列番号を取得
         activeBlockList[1].rotate(activeBlockList[0], theta);  //回転を反映
 
+        decideDestination();    //再度目標地点を設定
+
         activeBlockList.ForEach(e =>
         {
             e.isLocked = false;
         });
 
-        decideDestination();    //再度目標地点を設定
     }
 }
