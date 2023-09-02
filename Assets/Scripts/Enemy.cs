@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Battle {
-    public enum AttackKinds
+    public enum EnemyAttackKinds
     {
         Normal,
     }
@@ -28,10 +28,9 @@ namespace Battle {
 
         [SerializeField] Player player;
 
-        private void Start()
+        private void Awake()
         {
             HpAmount = HpAmount;
-            StartCoroutine("action");
         }
 
         //ダメージ計算を行うメソッド
@@ -48,27 +47,27 @@ namespace Battle {
         }
 
         //Playerに攻撃を行うメソッド
-        private IEnumerator attack(Player target, AttackKinds attackKinds = AttackKinds.Normal)
+        public IEnumerator attack(Player target, EnemyAttackKinds attackKinds = EnemyAttackKinds.Normal)
         {
             switch (attackKinds)
             {
-                case AttackKinds.Normal:
-                    Debug.Log("プレイヤーにNormal Attack");
+                case EnemyAttackKinds.Normal:
                     float damageAmount = attackPower;
                     target.damage(damageAmount);
+                    Debug.Log("プレイヤーにNormal Attack:"+damageAmount);
                     break;
             }
 
             yield break;
         }
 
-        //行動を管理するコルーチン
+        //時間行動を管理するコルーチン
         private IEnumerator action()
         {
             while (player.HpAmount > 0f && HpAmount > 0f)
             {
                 yield return new WaitForSeconds(5f);
-                yield return attack(player, AttackKinds.Normal);
+                yield return attack(player, EnemyAttackKinds.Normal);
             }
             yield break;
         }

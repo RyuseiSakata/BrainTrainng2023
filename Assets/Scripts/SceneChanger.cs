@@ -34,7 +34,11 @@ public class SceneChanger : MonoBehaviour
                 Debug.Log("SceneChanger:ˆ—‚ª‚ ‚è‚Ü‚¹‚ñ");
                 break;
         }
-        
+    }
+
+    public static string getCurrentSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
     }
 
 }

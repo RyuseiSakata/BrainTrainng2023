@@ -506,7 +506,7 @@ MonoBehaviour:
   fallBoost: 1
   blockPrefab: {fileID: 62084249457581635, guid: 2738bf8cb71710d4498e87ead6250cd6, type: 3}
   uIManager: {fileID: 665633861}
-  gameController: {fileID: 1381770981}
+  gameController: {fileID: 1381770983}
   playerInput: {fileID: 1748596557}
   SpawnPos:
   - {fileID: 322032807}
@@ -1428,7 +1428,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleUIManager: {fileID: 665633863}
   stage: {fileID: 231471974}
-  hpAmount: 10
+  hpAmount: 20
   attackPower: 1
   enemy: {fileID: 83026312}
 --- !u!4 &447164068
@@ -3051,7 +3051,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1381770982}
-  - component: {fileID: 1381770981}
+  - component: {fileID: 1381770983}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -3059,20 +3059,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1381770981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1381770980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6d96cb32fa7334458881c95dab02893, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiManager: {fileID: 665633861}
-  stage: {fileID: 231471974}
 --- !u!4 &1381770982
 Transform:
   m_ObjectHideFlags: 0
@@ -3088,6 +3074,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1381770983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381770980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6d96cb32fa7334458881c95dab02893, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiManager: {fileID: 665633861}
+  stage: {fileID: 231471974}
+  player: {fileID: 447164067}
+  enemy: {fileID: 83026312}
 --- !u!1 &1426275281
 GameObject:
   m_ObjectHideFlags: 0

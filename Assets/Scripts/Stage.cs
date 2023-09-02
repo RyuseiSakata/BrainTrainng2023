@@ -239,6 +239,8 @@ public class Stage : MonoBehaviour
     //ブロックの落下処理を行うコルーチン
     public IEnumerator fall()
     {
+        CanUserOperate = true;  //ユーザの操作を可能に
+        ComboNum = 0;
 
         spawnBlock();   //ブロックの生成
 
@@ -276,8 +278,7 @@ public class Stage : MonoBehaviour
 
         yield return fallBottom();   //空の場合に下まで下す処理
 
-        CanUserOperate = true;  //ユーザの操作を可能に
-        ComboNum = 0;   //コンボ数をリセット
+        CanUserOperate = false;  //ユーザの操作を不可能に
         playerInput.updateTapPosition();
         yield return new WaitForSeconds(0.5f);
 

@@ -5,6 +5,13 @@ using UnityEngine;
 
 namespace Battle
 {
+
+    public enum PlayerAttackKinds
+    {
+        Normal,
+        Combo,  //コンボ数によるダメージ
+    }
+
     public class Player : MonoBehaviour
     {
         [SerializeField] BattleUIManager battleUIManager;
@@ -25,10 +32,9 @@ namespace Battle
 
         [SerializeField] Enemy enemy;
 
-        private void Start()
+        private void Awake()
         {
             HpAmount = HpAmount;
-            StartCoroutine("action");
         }
 
         //ダメージ計算を行うメソッド
@@ -45,27 +51,34 @@ namespace Battle
         }
 
         //Enemyに攻撃を行うメソッド
-        private IEnumerator attack(Enemy target, AttackKinds attackKinds = AttackKinds.Normal)
+        public IEnumerator attack(Enemy target, PlayerAttackKinds attackKinds = PlayerAttackKinds.Normal)
         {
+            float damageAmount;
+
             switch (attackKinds)
             {
-                case AttackKinds.Normal:
-                    Debug.Log("敵にNormal Attack");
-                    float damageAmount = attackPower;
+                case PlayerAttackKinds.Normal:
+                    damageAmount = attackPower;
                     target.damage(damageAmount);
+                    Debug.Log("敵にNormal Attack:" + damageAmount);
+                    break;
+                case PlayerAttackKinds.Combo:
+                    damageAmount = attackPower * stage.ComboNum;
+                    target.damage(damageAmount);
+                    Debug.Log("敵にNormal Attack:" + damageAmount);
                     break;
             }
 
             yield break;
         }
 
-        //行動を管理するコルーチン
+        //時間行動を管理するコルーチン
         private IEnumerator action()
         {
             while (enemy.HpAmount > 0f && HpAmount > 0f)
             {
                 yield return new WaitForSeconds(3f);
-                yield return attack(enemy, AttackKinds.Normal);
+                yield return attack(enemy, PlayerAttackKinds.Normal);
             }
             yield break;
         }
