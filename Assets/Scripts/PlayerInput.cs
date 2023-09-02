@@ -65,13 +65,13 @@ public class PlayerInput : MonoBehaviour
                 if ((Input.GetKey(KeyCode.D) || isRightButtonHold) && moveRightInterval <= 0)
                 {
                     stage.moveColumn(+1);
-                    moveRightInterval = 0.1f;
+                    moveRightInterval = 0.2f;
                 }
 
                 if ((Input.GetKey(KeyCode.A) || isLeftButtonHold) && moveLeftInterval <= 0)
                 {
                     stage.moveColumn(-1);
-                    moveLeftInterval = 0.1f;
+                    moveLeftInterval = 0.2f;
                 }
             }
 
