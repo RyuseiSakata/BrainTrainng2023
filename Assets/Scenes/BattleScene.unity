@@ -2003,9 +2003,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   comboText: {fileID: 1761536460}
-  finishText: {fileID: 0}
-  countDownText: {fileID: 0}
-  darkPanel: {fileID: 0}
+  countDownText: {fileID: 1231305354}
+  finishText: {fileID: 419399314}
+  darkPanel: {fileID: 738776426}
 --- !u!4 &665633862
 Transform:
   m_ObjectHideFlags: 0
