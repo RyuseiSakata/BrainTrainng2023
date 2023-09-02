@@ -16,6 +16,24 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject finishText;
     [SerializeField] GameObject darkPanel;
 
+    /*デバッグ用*/
+    [SerializeField] InputField fallInputField; //自由落下速度調整用の入力欄
+
+
+    private void Update()
+    {
+        if(fallInputField != null)
+        {
+            /*デバッグ用*/
+            var str = fallInputField.text;
+            int num = 150;
+            int.TryParse(str, out num);
+            if (num == 0) num = 150;
+            Block.fallSpeed = num / 1000f;
+        }
+
+    }
+
     //UIテキストの変更を行う
     public void textUpdate(TextKinds textKinds, float value)
     {

@@ -23,7 +23,12 @@ public class PlayerInput : MonoBehaviour
     private float preTapPositionY = 0f;  //前にタップしたX座標
 
     private bool isDownButtonHold = false;  //下におろすボタンが押されているかのフラグ
+    private bool isLeftButtonHold = false; //右移動ボタンが押されているかのフラグ
+    private bool isRightButtonHold = false; //左移動ボタンが押されているかのフラグ
     private bool isNothingPanelHold = false;    //ボタンのないところをタッチしているか
+
+    private float moveLeftInterval = 0f; //右移動する間隔 次に押せるようになるまでの時間
+    private float moveRightInterval = 0f; //左移動する間隔 次に押せるようになるまでの時間
 
     private void Start()
     {
@@ -57,14 +62,16 @@ public class PlayerInput : MonoBehaviour
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.D))
+                if ((Input.GetKey(KeyCode.D) || isRightButtonHold) && moveRightInterval <= 0)
                 {
                     stage.moveColumn(+1);
+                    moveRightInterval = 0.1f;
                 }
 
-                if (Input.GetKeyDown(KeyCode.A))
+                if ((Input.GetKey(KeyCode.A) || isLeftButtonHold) && moveLeftInterval <= 0)
                 {
                     stage.moveColumn(-1);
+                    moveLeftInterval = 0.1f;
                 }
             }
 
@@ -132,6 +139,17 @@ public class PlayerInput : MonoBehaviour
                 isNothingPanelHold = false;
             }
         }
+
+        
+        if (moveLeftInterval > 0)
+        {
+            moveLeftInterval -= Time.deltaTime;
+        }
+
+        if(moveRightInterval > 0)
+        {
+            moveRightInterval -= Time.deltaTime;
+        }
     }
 
     public void OnClickDown(int num)
@@ -143,10 +161,10 @@ public class PlayerInput : MonoBehaviour
                 isDownButtonHold = true;
                 break;
             case ButtonKinds.Left:
-                stage.moveColumn(-1);
+                isLeftButtonHold = true;
                 break;
             case ButtonKinds.Right:
-                stage.moveColumn(+1);
+                isRightButtonHold = true;
                 break;
             case ButtonKinds.LeftTurn:
                 stage.rotateBlock(-90f);
@@ -168,6 +186,12 @@ public class PlayerInput : MonoBehaviour
         {
             case ButtonKinds.Down:
                 isDownButtonHold = false;
+                break;
+            case ButtonKinds.Left:
+                isLeftButtonHold = false;
+                break;
+            case ButtonKinds.Right:
+                isRightButtonHold = false;
                 break;
         }
     }
