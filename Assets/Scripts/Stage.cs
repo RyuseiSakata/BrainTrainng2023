@@ -281,6 +281,7 @@ public class Stage : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+        SceneChanger.changeTo(SceneType.Result);
     }
 
     private void fallBottom()
