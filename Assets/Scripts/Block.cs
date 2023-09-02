@@ -74,19 +74,19 @@ public class Block : MonoBehaviour
     //x座標から列番号を求める
     public int getColFrom(float posX)
     {
-        return (int)Mathf.Floor((Config.maxCol - 1) / 2f + Config.maxCol * posX)+2;
+        return Mathf.FloorToInt((Config.maxCol - 1) / 2f + Config.maxCol * posX)+2;
     }
 
     //y座標から行番号を求める
     public int getRowFrom(float posY)
     {
-        return (int)Mathf.Floor((Config.maxRow - 1) / 2f - Config.maxRow * posY) + 1;
+        return Mathf.FloorToInt((Config.maxRow - 1) / 2f - Config.maxRow * posY) + 1;
     }
 
     //y座標から番号遷移ラインの行番号を求める
     public int getRowLineFrom(float posY)
     {
-        return (int)Mathf.Floor((Config.maxRow) / 2f + 1 - Config.maxRow * posY + 0.5f);
+        return Mathf.FloorToInt((Config.maxRow) / 2f + 1 - Config.maxRow * posY + 0.5f);
     }
 
     //ブロックの初期化を行う
@@ -105,13 +105,15 @@ public class Block : MonoBehaviour
     {
         BlockState = true;
         moveProperTransformFrom(CurrentCol, CurrentRow);
-        this.transform.position += new Vector3(0f, 0.5f, 0f);   //出現位置を少し上に
+        float numUp = 2f / Config.maxRow;
+        this.transform.position += new Vector3(0f, numUp, 0f);   //出現位置を少し上に
     }
  
     //ブロックを下に移動させる処理
     public void MoveDown()
     {
         Vector3 destinationPos = getVector3From(CurrentCol, DestinationRow);
+        destinationPos.y -= 0.0000001f;
         if (!isLocked)
         {
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, destinationPos, fallSpeed * stage.fallBoost * Time.deltaTime);
@@ -119,12 +121,14 @@ public class Block : MonoBehaviour
             currentRowLine = getRowLineFrom(transform.localPosition.y);
         }
 
-        if (Mathf.Abs(this.transform.localPosition.y - getVector3From(0, DestinationRow).y) == 0)
+        if ((currentRow == DestinationRow))
         {
+
             BlockState = false;
 
-            if (CurrentRow == -1)
+            if ((CurrentRow == 0))
             {
+                stage.CanUserOperate = false;
                 stage.GameOverFlag = true;
             }
             else

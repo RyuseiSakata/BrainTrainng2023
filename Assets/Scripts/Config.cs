@@ -5,8 +5,8 @@ using UnityEngine;
 public static class Config
 {
 
-    public const int maxRow = 10; //行数+1
-    public const int maxCol = 7;    //列数
+    public const int maxRow = 10; //行数 StageのScaleをmaxRow*0.9みたいにすること    インデックスは1から
+    public const int maxCol = 7;    //列数    StageのScaleをmaxRow*0.9みたいにすること
 
     public const float StageHeight = 9f;  //ステージ高さ
     public const float StageWidth = StageHeight / ((maxRow - 1) / maxCol);  //ステージ幅
