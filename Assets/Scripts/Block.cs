@@ -125,7 +125,7 @@ public class Block : MonoBehaviour
 
             if (CurrentRow == -1)
             {
-                stage.gameOver();
+                stage.GameOverFlag = true;
             }
             else
             {

@@ -42,7 +42,7 @@ namespace Battle {
             if (HpAmount <= 0f)
             {
                 Debug.Log("プレイヤーに倒された");
-                stage.gameOver();
+                stage.GameOverFlag = true;  //ゲームオーバーのフラグを立てる
                 StopAllCoroutines();    //スクリプト内のすべてのコルーチン終了
             }
         }
