@@ -1145,7 +1145,7 @@ MonoBehaviour:
   SpawnPos:
   - {fileID: 268260180}
   - {fileID: 753284523}
-  collectList: []
+  wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
 --- !u!4 &450358702
 Transform:
   m_ObjectHideFlags: 0
@@ -2743,8 +2743,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   comboText: {fileID: 113365124}
-  finishText: {fileID: 1231514353}
   countDownText: {fileID: 2099346347}
+  finishText: {fileID: 1231514353}
   darkPanel: {fileID: 904724024}
 --- !u!4 &1202892937
 Transform:

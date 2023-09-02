@@ -511,7 +511,7 @@ MonoBehaviour:
   SpawnPos:
   - {fileID: 322032807}
   - {fileID: 102642373}
-  collectList: []
+  wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
 --- !u!4 &231471975
 Transform:
   m_ObjectHideFlags: 0

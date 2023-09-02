@@ -32,7 +32,7 @@ public class Stage : MonoBehaviour
 
     public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
 
-    [SerializeField]List<string> collectList = new List<string>();  //消した単語リスト
+    [SerializeField] WordList wordList;  //消した単語リスト
 
     public bool GameOverFlag { get; set; } = false; //ゲームオーバー判定用のフラグ　trueになるとfallコルーチンが終了
 
@@ -58,7 +58,11 @@ public class Stage : MonoBehaviour
             Config.isCaluculatedSum = true;
         }
 
+        wordList.CollectList.Clear();   //消した単語リストを全削除
+
         firstSetBlock(); //ブロックの初期配置
+
+
         /*
             StartCoroutine("fall");
         */
@@ -408,10 +412,10 @@ public class Stage : MonoBehaviour
                 //3文字以上
                 if (str.Length >= 3)
                 {
-                    //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> wordList = (new Jage()).Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+                    //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    List<string> findList = (new Jage()).Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
 
-                    foreach (var word in wordList)
+                    foreach (var word in findList)
                     {
                         int index = -1; //str内のwordの出現位置
 
@@ -426,7 +430,10 @@ public class Stage : MonoBehaviour
                             }
                             else
                             {
-                                collectList.Add(word);  //消した言葉リストに追加
+                                //コレクションリストに追加
+                                WordData addWord = new WordData(word,"","");
+                                wordList.CollectList.Add(addWord);  //消した言葉リストに追加
+
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     Block b = BlockArray[i, targetCol.Last()];
@@ -464,10 +471,10 @@ public class Stage : MonoBehaviour
                 //3文字以上
                 if (str.Length >= 3)
                 {
-                    //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> wordList = (new Jage()).Check(str);    //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+                    //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    List<string> findList = (new Jage()).Check(str);    //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
 
-                    foreach (var word in wordList)
+                    foreach (var word in findList)
                     {
                         int index = -1; //str内のwordの出現位置
 
@@ -482,7 +489,10 @@ public class Stage : MonoBehaviour
                             }
                             else
                             {
-                                collectList.Add(word);  //消した言葉リストに追加
+                                //コレクションリストに追加
+                                WordData addWord = new WordData(word,"", "");
+                                wordList.CollectList.Add(addWord);  //消した言葉リストに追加
+
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     Block b = BlockArray[targetRow.Last(), i];
@@ -710,7 +720,7 @@ public class Stage : MonoBehaviour
         activeBlockList[1].rotate(activeBlockList[0], theta);  //回転を反映
 
         decideDestination();    //再度目標地点を設定
-
+        
         activeBlockList.ForEach(e =>
         {
             e.isLocked = false;
