@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Config
 {
+
     public const int maxRow = 10; //行数+1
     public const int maxCol = 7;    //列数
 
@@ -12,7 +13,8 @@ public static class Config
     public const float BlockWidth = StageWidth / maxCol;  //ブロックの幅
     public const float deltaX = -0.28f;
 
-    public static int sumProbability = 0;
+    public static bool isCaluculatedSum = false;    //重み合計を計算したかのフラグ
+    public static int sumProbability = 0;           //重み合計
     public const string character = "あいうえおかきくけこがぎぐげごさしすせそざじずぜぞたちつてとだぢづでどなにぬねのはひふへほばびぶべぼぱぴぷぺぽまみむめもやゆよらりるれろわをんー";
     //public const string character = "りんご";
     //public static int[] probability = { 1, 1, 1 };

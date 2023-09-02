@@ -10,7 +10,9 @@ public enum GameState {
 
 public class GameController : MonoBehaviour
 {
+    [SerializeField] UIManager uiManager;
     [SerializeField] Stage stage;
+    
     private int numberOfTurns = 0;  //ターン数
     private GameState gameState = GameState.Playing;    //ゲームの状態
 
@@ -28,14 +30,16 @@ public class GameController : MonoBehaviour
 
     private IEnumerator mainLoop()
     {
-        while (gameState == GameState.Playing) {
-            Debug.Log("Start");
+        yield return uiManager.showCountDown();
+
+        while (gameState == GameState.Playing) { 
             yield return stage.fall();
             NumberOfTurns++;    //ターン数を増加
             Debug.Log("turn:"+numberOfTurns);
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return uiManager.showFinish();
+
 
         SceneChanger.changeTo(SceneType.Result);
         yield break;

@@ -47,11 +47,15 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
-
-        //重みの合計値を格納
-        foreach (var value in Config.probability)
+        //起動後一度も重み合計を計算していないなら
+        if (!Config.isCaluculatedSum)
         {
-            Config.sumProbability += value;
+            //重みの合計値を格納
+            foreach (var value in Config.probability)
+            {
+                Config.sumProbability += value;
+            }
+            Config.isCaluculatedSum = true;
         }
 
         firstSetBlock(); //ブロックの初期配置
@@ -222,6 +226,8 @@ public class Stage : MonoBehaviour
                 break;
             }
         }
+
+
         //Debug.Log("LOG:" + Config.character[ret].ToString() + "の出現確率:" + (100f * Config.probability[ret] / Config.sumProbability).ToString("") + "%");
         return Config.character[ret].ToString();
     }
