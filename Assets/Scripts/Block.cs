@@ -18,6 +18,14 @@ public class Block : MonoBehaviour
 
     public Stage stage; //ステージのインスタンス
 
+    private Animator animator;
+    private bool oneDestroyPlayFlag = false;    //ブロックの消えるアニメーションを一回にするフラグ
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     //getter,setter
     public int CurrentRow
     {
@@ -125,8 +133,6 @@ public class Block : MonoBehaviour
         {
 
             BlockState = false;
-            stage.CanUserOperate = false;
-
             stage.BlockArray[CurrentRow, CurrentCol] = this;
             stage.CanUserOperate = false;
             
@@ -172,23 +178,27 @@ public class Block : MonoBehaviour
             {
                 Debug.Log("不適切な変換" + "(" + p_r + "," + p_c + ")--->(" + currentRow + "," + currentCol + ")");
             }
-        }
-
-        
-        
+        }        
     }
 
-    public void lightUp()
+    public void emphasize()
     {
-        this.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
-    }
-    public void lightDown()
-    {
-        this.GetComponent<SpriteRenderer>().color = new Color32(142, 142, 142, 255);
+        //this.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+        animator.SetTrigger("Emphasis");
     }
 
     public void DestroyObject()
     {
-        Destroy(this.gameObject);
+        //まだ再生されていない
+        if (!oneDestroyPlayFlag)
+        {
+            oneDestroyPlayFlag = true;
+            animator.SetTrigger("Destroy");
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
     }
 }

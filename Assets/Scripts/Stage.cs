@@ -427,8 +427,8 @@ public class Stage : MonoBehaviour
                 {
                     //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
                     List<string> findList = (new Jage()).Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
-                    /*
-                     * Debug.Log("List:縦文字列："+str);
+                    
+                    Debug.Log("List:縦文字列："+str);
                     var s = "List:含め単語：";
                     findList.ForEach(e =>
                     {
@@ -436,7 +436,7 @@ public class Stage : MonoBehaviour
 
                     });
                     Debug.Log(s);
-                    */
+                    
                     foreach (var word in findList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -458,18 +458,19 @@ public class Stage : MonoBehaviour
 
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
+                                    /*
+                                     * 古いアニメーション
                                     Block b = BlockArray[i, targetCol.Last()];
                                     b.lightUp();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
+                                    */
+                                    Block b = BlockArray[i, targetCol.Last()];
+                                    b.emphasize();
+                                    if (!destroyList.Contains(b)) destroyList.Add(b);
                                 }
                                 ComboNum++;  //コンボ数の追加
-                                yield return new WaitForSeconds(0.3f);
-                                for (int i = index + head; i < index + head + word.Length; i++)
-                                {
-                                    Block b = BlockArray[i, targetCol.Last()];
-                                    b.lightDown();
-                                }
+                                yield return new WaitForSeconds(1.5f);
                             }
                         }
                     }
@@ -495,7 +496,7 @@ public class Stage : MonoBehaviour
                 {
                     //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
                     List<string> findList = (new Jage()).Check(str);    //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
-                    /*
+                    
                      Debug.Log("List:横文字列："+str);
                     var s = "List:含め単語：";
                     findList.ForEach(e =>
@@ -503,7 +504,7 @@ public class Stage : MonoBehaviour
                         s += e + ",";
 
                     });
-                    Debug.Log(s);*/
+                    Debug.Log(s);
                     foreach (var word in findList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -525,18 +526,19 @@ public class Stage : MonoBehaviour
 
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
+                                    /*
+                                     * 古いアニメーション
                                     Block b = BlockArray[targetRow.Last(), i];
                                     b.lightUp();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
+                                    */
+                                    Block b = BlockArray[targetRow.Last(), i];
+                                    b.emphasize();
+                                    if (!destroyList.Contains(b)) destroyList.Add(b);
                                 }
                                 ComboNum++;  //コンボ数の追加とUI更新
-                                yield return new WaitForSeconds(0.3f);
-                                for (int i = index + head; i < index + head + word.Length; i++)
-                                {
-                                    Block b = BlockArray[targetRow.Last(), i];
-                                    b.lightDown();
-                                }
+                                yield return new WaitForSeconds(1.5f);
                             }
                         }
                     }
@@ -552,6 +554,7 @@ public class Stage : MonoBehaviour
             BlockArray[block.CurrentRow, block.CurrentCol] = null;
             block.DestroyObject();
         });
+        yield return new WaitForSeconds(1/3f);
 
         /*** 発見された単語がある場合、ブロック削除後の落下処理 ***/
         if (destroyList.Count > 0)
@@ -620,6 +623,7 @@ public class Stage : MonoBehaviour
                         b.MoveDown();
                     }
                 }
+                yield return new WaitForEndOfFrame();
             }
         }
 
