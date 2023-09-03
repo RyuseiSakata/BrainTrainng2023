@@ -427,7 +427,16 @@ public class Stage : MonoBehaviour
                 {
                     //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
                     List<string> findList = (new Jage()).Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+                    /*
+                     * Debug.Log("List:縦文字列："+str);
+                    var s = "List:含め単語：";
+                    findList.ForEach(e =>
+                    {
+                        s += e + ",";
 
+                    });
+                    Debug.Log(s);
+                    */
                     foreach (var word in findList)
                     {
                         int index = -1; //str内のwordの出現位置
@@ -486,7 +495,15 @@ public class Stage : MonoBehaviour
                 {
                     //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
                     List<string> findList = (new Jage()).Check(str);    //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+                    /*
+                     Debug.Log("List:横文字列："+str);
+                    var s = "List:含め単語：";
+                    findList.ForEach(e =>
+                    {
+                        s += e + ",";
 
+                    });
+                    Debug.Log(s);*/
                     foreach (var word in findList)
                     {
                         int index = -1; //str内のwordの出現位置

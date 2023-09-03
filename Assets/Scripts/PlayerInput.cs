@@ -41,7 +41,7 @@ public class PlayerInput : MonoBehaviour
             //キーボード UIボタン
             if (Input.GetKey(KeyCode.S) || isDownButtonHold)
             {
-                stage.fallBoost = 10f;
+                stage.fallBoost = 14f;
             }
             else if (!Input.GetKey(KeyCode.S) || !isDownButtonHold)
             {
@@ -121,7 +121,7 @@ public class PlayerInput : MonoBehaviour
                         //1本でタッチ
                         if(Input.touchCount == 1)
                         {
-                            stage.fallBoost = 8f;  //落下速度をあげる
+                            stage.fallBoost = 12f;  //落下速度をあげる
                             frameFromTapped = -1;   //回転防止
                         }
                         else  //2本以上でタッチ

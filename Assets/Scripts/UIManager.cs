@@ -26,9 +26,9 @@ public class UIManager : MonoBehaviour
         {
             /*デバッグ用*/
             var str = fallInputField.text;
-            int num = 80;
+            int num = 50;
             int.TryParse(str, out num);
-            if (num == 0) num = 80;
+            if (num == 0) num = 50;
             Block.fallSpeed = num / 1000f;
         }
 

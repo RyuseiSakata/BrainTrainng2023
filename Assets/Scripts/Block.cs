@@ -14,7 +14,7 @@ public class Block : MonoBehaviour
     public bool isLocked = false;   // 下に降りる動きを固定するフラグ
     public int currentRowLine = 0;  //現在の行ライン（何行目に所属しうるか、ブロックの最下部）
     public int DestinationRow = 1;    //目標行数
-    public static float fallSpeed = 0.08f;   //自由落下速度
+    public static float fallSpeed = 0.05f;   //自由落下速度
 
     public Stage stage; //ステージのインスタンス
 
