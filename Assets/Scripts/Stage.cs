@@ -260,12 +260,6 @@ public class Stage : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        //ゲームオーバーの判定
-        if (GameOverFlag)
-        {
-            gameController.gameOver();
-            yield break;
-        }
 
         yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
         //Debug.Log("着地");
@@ -277,6 +271,24 @@ public class Stage : MonoBehaviour
         }
 
         yield return fallBottom();   //空の場合に下まで下す処理
+
+
+        // 0行目にブロックがあるならゲームオーバーにする
+        for(int i = 0; i < BlockArray.GetLength(1); i++)
+        {
+            if (BlockArray[0, i] != null)
+            {
+                GameOverFlag = true;
+                break;
+            }
+        }
+
+        //ゲームオーバーの判定
+        if (GameOverFlag)
+        {
+            gameController.gameOver();
+            yield break;
+        }
 
         CanUserOperate = false;  //ユーザの操作を不可能に
         playerInput.updateTapPosition();

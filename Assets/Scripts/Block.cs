@@ -125,17 +125,11 @@ public class Block : MonoBehaviour
         {
 
             BlockState = false;
+            stage.CanUserOperate = false;
 
-            if ((CurrentRow == 0))
-            {
-                stage.CanUserOperate = false;
-                stage.GameOverFlag = true;
-            }
-            else
-            {
-                stage.BlockArray[CurrentRow, CurrentCol] = this;
-                stage.CanUserOperate = false;
-            }
+            stage.BlockArray[CurrentRow, CurrentCol] = this;
+            stage.CanUserOperate = false;
+            
         }
     }
 
