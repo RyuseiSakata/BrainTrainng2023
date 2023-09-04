@@ -62,13 +62,13 @@ public class PlayerInput : MonoBehaviour
             }
             else
             {
-                if ((Input.GetKey(KeyCode.D) || isRightButtonHold) && moveRightInterval <= 0)
+                if (((Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S)) || isRightButtonHold) && moveRightInterval <= 0)
                 {
                     stage.moveColumn(+1);
                     moveRightInterval = 0.2f;
                 }
 
-                if ((Input.GetKey(KeyCode.A) || isLeftButtonHold) && moveLeftInterval <= 0)
+                if (((Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) || isLeftButtonHold) && moveLeftInterval <= 0)
                 {
                     stage.moveColumn(-1);
                     moveLeftInterval = 0.2f;
@@ -162,9 +162,11 @@ public class PlayerInput : MonoBehaviour
                 break;
             case ButtonKinds.Left:
                 isLeftButtonHold = true;
+                isRightButtonHold = false;
                 break;
             case ButtonKinds.Right:
                 isRightButtonHold = true;
+                isLeftButtonHold = false;
                 break;
             case ButtonKinds.LeftTurn:
                 stage.rotateBlock(-90f);

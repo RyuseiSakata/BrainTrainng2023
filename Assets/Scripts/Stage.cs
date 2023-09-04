@@ -32,10 +32,7 @@ public class Stage : MonoBehaviour
 
     public bool CanUserOperate { get; set; } = false;   //ユーザが操作できるか否かのフラグ
 
-    private AudioSource audioSource;
-    [SerializeField] AudioClip findSe;  //単語をみつけた音
-    [SerializeField] AudioClip moveSe;  //ブロックを動かす音、置く音
-    [SerializeField] AudioClip cantmoveSe;  //ブロックを動かせないと
+    [SerializeField] AudioManager audioManaeger;
 
     [SerializeField] WordList wordList;  //消した単語リスト
 
@@ -52,8 +49,6 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
-
-        audioSource = GetComponent<AudioSource>();
         //起動後一度も重み合計を計算していないなら
         if (!Config.isCaluculatedSum)
         {
@@ -266,7 +261,7 @@ public class Stage : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
-        audioSource.PlayOneShot(moveSe);
+        audioManaeger.playSeOneShot(AudioKinds.BlockMove);
 
 
         yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
@@ -336,7 +331,7 @@ public class Stage : MonoBehaviour
                     }
                 });
             }
-            audioSource.PlayOneShot(moveSe);
+            audioManaeger.playSeOneShot(AudioKinds.BlockMove);
         }
 
         activeBlockList.Clear();    //activeBlockListの要素を全削除
@@ -478,9 +473,9 @@ public class Stage : MonoBehaviour
                                     b.emphasize();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     Debug.Log("Cmo;" + ComboNum);
-                                    audioSource.pitch = 1 + ComboNum * 0.2f;
-                                    audioSource.PlayOneShot(findSe);
-                                    audioSource.pitch = 1;
+
+                                    float pitch = 0.6f + comboNum * 0.4f;
+                                    audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
                                 }
                                 ComboNum++;  //コンボ数の追加
                                 yield return new WaitForSeconds(1.5f);
@@ -550,9 +545,8 @@ public class Stage : MonoBehaviour
                                     b.emphasize();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     Debug.Log("Cmo;" + ComboNum);
-                                    audioSource.pitch = 1 + ComboNum * 0.7f;
-                                    audioSource.PlayOneShot(findSe);
-                                    audioSource.pitch = 1;
+                                    float pitch = 0.6f + comboNum * 0.4f;
+                                    audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
                                 }
                                 ComboNum++;  //コンボ数の追加とUI更新
                                 yield return new WaitForSeconds(1.5f);
@@ -644,7 +638,7 @@ public class Stage : MonoBehaviour
                     }
                     //yield return new WaitForSeconds(0.0001f);
                 }
-                audioSource.PlayOneShot(moveSe);
+                audioManaeger.playSeOneShot(AudioKinds.BlockMove);
             }
             
         }
@@ -657,7 +651,7 @@ public class Stage : MonoBehaviour
         else //連鎖あり
         {
             isChained = true;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
 
         yield break;
@@ -751,11 +745,11 @@ public class Stage : MonoBehaviour
         {
             if (checkState(block.currentRowLine, block.CurrentCol + value) == GridState.OutStage || checkState(block.currentRowLine, block.CurrentCol + value) == GridState.Disactive)
             {
-                audioSource.PlayOneShot(cantmoveSe);
+                audioManaeger.playSeOneShot(AudioKinds.CanNotMove);
                 return;
             }
         }
-        audioSource.PlayOneShot(moveSe);
+        audioManaeger.playSeOneShot(AudioKinds.BlockMove);
         foreach (var block in activeBlockList)
         {
             block.CurrentCol += value;
