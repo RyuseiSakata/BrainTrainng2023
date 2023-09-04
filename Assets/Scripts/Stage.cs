@@ -30,7 +30,12 @@ public class Stage : MonoBehaviour
     private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
     private int comboNum = 0;   //コンボ数
 
-    public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
+    public bool CanUserOperate { get; set; } = false;   //ユーザが操作できるか否かのフラグ
+
+    private AudioSource audioSource;
+    [SerializeField] AudioClip findSe;  //単語をみつけた音
+    [SerializeField] AudioClip moveSe;  //ブロックを動かす音、置く音
+    [SerializeField] AudioClip cantmoveSe;  //ブロックを動かせないと
 
     [SerializeField] WordList wordList;  //消した単語リスト
 
@@ -47,6 +52,8 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
+
+        audioSource = GetComponent<AudioSource>();
         //起動後一度も重み合計を計算していないなら
         if (!Config.isCaluculatedSum)
         {
@@ -259,9 +266,11 @@ public class Stage : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+        audioSource.PlayOneShot(moveSe);
 
 
         yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
+
         //Debug.Log("着地");
 
         isChained = true;   //連鎖のフラグ　trueの限り続いている
@@ -274,7 +283,7 @@ public class Stage : MonoBehaviour
 
 
         // 0行目にブロックがあるならゲームオーバーにする
-        for(int i = 0; i < BlockArray.GetLength(1); i++)
+        for (int i = 0; i < BlockArray.GetLength(1); i++)
         {
             if (BlockArray[0, i] != null)
             {
@@ -327,6 +336,7 @@ public class Stage : MonoBehaviour
                     }
                 });
             }
+            audioSource.PlayOneShot(moveSe);
         }
 
         activeBlockList.Clear();    //activeBlockListの要素を全削除
@@ -467,6 +477,10 @@ public class Stage : MonoBehaviour
                                     Block b = BlockArray[i, targetCol.Last()];
                                     b.emphasize();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
+                                    Debug.Log("Cmo;" + ComboNum);
+                                    audioSource.pitch = 1 + ComboNum * 0.2f;
+                                    audioSource.PlayOneShot(findSe);
+                                    audioSource.pitch = 1;
                                 }
                                 ComboNum++;  //コンボ数の追加
                                 yield return new WaitForSeconds(1.5f);
@@ -535,6 +549,10 @@ public class Stage : MonoBehaviour
                                     Block b = BlockArray[targetRow.Last(), i];
                                     b.emphasize();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
+                                    Debug.Log("Cmo;" + ComboNum);
+                                    audioSource.pitch = 1 + ComboNum * 0.7f;
+                                    audioSource.PlayOneShot(findSe);
+                                    audioSource.pitch = 1;
                                 }
                                 ComboNum++;  //コンボ数の追加とUI更新
                                 yield return new WaitForSeconds(1.5f);
@@ -613,17 +631,22 @@ public class Stage : MonoBehaviour
             }
 
             //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
-            while (fallList.Count != fallList.FindAll(x => x.BlockState == false).Count)
+            if (fallList.Count > 0)
             {
-                foreach (var b in fallList)
+                while (fallList.Count != fallList.FindAll(x => x.BlockState == false).Count)
                 {
-                    if (b.BlockState)
+                    foreach (var b in fallList)
                     {
-                        b.MoveDown();
+                        if (b.BlockState)
+                        {
+                            b.MoveDown();
+                        }
                     }
+                    //yield return new WaitForSeconds(0.0001f);
                 }
-                //yield return new WaitForSeconds(0.0001f);
+                audioSource.PlayOneShot(moveSe);
             }
+            
         }
 
         //連鎖なし
@@ -722,13 +745,17 @@ public class Stage : MonoBehaviour
     //ブロックを左右に移動させる
     public void moveColumn(int value)
     {
+        
+
         foreach (var block in activeBlockList)
         {
             if (checkState(block.currentRowLine, block.CurrentCol + value) == GridState.OutStage || checkState(block.currentRowLine, block.CurrentCol + value) == GridState.Disactive)
             {
+                audioSource.PlayOneShot(cantmoveSe);
                 return;
             }
         }
+        audioSource.PlayOneShot(moveSe);
         foreach (var block in activeBlockList)
         {
             block.CurrentCol += value;
