@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
 
     private string finishText = "Finish";
 
+    private static int score = 0;
+
     //ターン数のプロパティ
     public int NumberOfTurns
     {
@@ -113,6 +115,12 @@ public class GameController : MonoBehaviour
     {
         player.Init();
         enemy.Init(Random.Range(3,10));
+    }
+
+    public void calculateScore(int scorePerChain, int sameEraseNum)
+    {
+        score += scorePerChain* sameEraseNum;
+        uiManager.textUpdate(TextKinds.Score, score);
     }
 }
 

@@ -7,10 +7,12 @@ public enum TextKinds
 {
     Combo,
     CountDown,
+    Score,
 }
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
     [SerializeField] Text countDownText;
     [SerializeField] GameObject finishText;
@@ -44,6 +46,10 @@ public class UIManager : MonoBehaviour
                 break;
             case TextKinds.CountDown:
                 countDownText.text = value.ToString("0");
+                break;
+            case TextKinds.Score:
+                if(scoreText!=null)
+                    scoreText.text = "スコア："+value.ToString("0000");
                 break;
         }
     }

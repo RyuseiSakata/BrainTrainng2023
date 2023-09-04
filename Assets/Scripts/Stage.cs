@@ -36,6 +36,9 @@ public class Stage : MonoBehaviour
 
     [SerializeField] WordList wordList;  //消した単語リスト
 
+    private int sameEraseNum = 0;   //同時消し数（1連鎖内）
+    private int scorePerChain = 0;    //１連鎖内のスコアの合計　例）りんご、ごりら　-> 100+100
+
     public bool GameOverFlag { get; set; } = false; //ゲームオーバー判定用のフラグ　trueになるとfallコルーチンが終了
 
     //コンボ数のプロパティ
@@ -272,6 +275,11 @@ public class Stage : MonoBehaviour
         while (isChained)
         {
             yield return judgeAndDelete();
+            
+            gameController.calculateScore(scorePerChain, sameEraseNum); //スコア計算
+            sameEraseNum = 0;   //同時消し数のリセット
+            scorePerChain = 0;  //一連鎖あたりのスコアをリセット
+
         }
 
         yield return fallBottom();   //空の場合に下まで下す処理
@@ -472,11 +480,12 @@ public class Stage : MonoBehaviour
                                     Block b = BlockArray[i, targetCol.Last()];
                                     b.emphasize();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
-                                    Debug.Log("Cmo;" + ComboNum);
-
-                                    float pitch = 0.6f + comboNum * 0.4f;
-                                    audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
                                 }
+                                float pitch = 0.6f + comboNum * 0.4f;
+                                audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
+                                scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
+                                sameEraseNum++; //同時消し数の加算
+                                Debug.Log($"SCORE:len:{word.Length}:{word} -> {100 * Mathf.Pow(2,word.Length - 3)} : {sameEraseNum}");
                                 ComboNum++;  //コンボ数の追加
                                 yield return new WaitForSeconds(1.5f);
                             }
@@ -544,10 +553,13 @@ public class Stage : MonoBehaviour
                                     Block b = BlockArray[targetRow.Last(), i];
                                     b.emphasize();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
-                                    Debug.Log("Cmo;" + ComboNum);
-                                    float pitch = 0.6f + comboNum * 0.4f;
-                                    audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
+
                                 }
+                                float pitch = 0.6f + comboNum * 0.4f;
+                                audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
+                                scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
+                                sameEraseNum++; //同時消し数の加算
+                                Debug.Log($"SCORE:len:{word.Length}:{word} -> {100 * Mathf.Pow(2, word.Length - 3)} : {sameEraseNum}");
                                 ComboNum++;  //コンボ数の追加とUI更新
                                 yield return new WaitForSeconds(1.5f);
                             }
