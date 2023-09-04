@@ -37,6 +37,4 @@ public static class Config
         3463,604,12994,  //ÇÌçs
         4545,  //Å[çs
     };
-
-
 }

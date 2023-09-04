@@ -20,13 +20,16 @@ namespace Battle
         [SerializeField] float hpAmount;
         [SerializeField] float attackPower;
 
+        public static float maxHp = 15;
+
         public float HpAmount
         {
             get => hpAmount;
             set
             {
                 hpAmount = value;
-                battleUIManager.textUpdate(Battle.TextKinds.PlayerHP, hpAmount);
+                if (hpAmount < 0) hpAmount = 0;
+                battleUIManager.uiUpdate(Battle.UIKinds.PlayerHP, hpAmount);
             }
         }
 
@@ -83,6 +86,11 @@ namespace Battle
             yield break;
         }
 
+        public void Init()
+        {
+            HpAmount = maxHp;    //Hp‚Ì‰Šú‰»
+            attackPower = 1;  //UŒ‚—Í‚Ì‰Šú‰»
+        }
     }
 }
 

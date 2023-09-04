@@ -15,6 +15,10 @@ namespace Battle {
 
         [SerializeField] float hpAmount;
         [SerializeField] float attackPower;
+        [SerializeField] int attackChargeSpan = 2;
+        public static float maxHp;
+
+        private int attackChargedTurn; //次の攻撃までの残りターン数
 
         public float HpAmount
         {
@@ -22,15 +26,27 @@ namespace Battle {
             set
             {
                 hpAmount = value;
-                battleUIManager.textUpdate(Battle.TextKinds.EnemyHP, hpAmount);
+                if (hpAmount < 0) hpAmount = 0;
+
+                battleUIManager.uiUpdate(Battle.UIKinds.EnemyHP, hpAmount);
             }
         }
+
+        public int AttackChargedTurn {
+            get => attackChargedTurn; 
+            set
+            {
+                attackChargedTurn = value;
+                battleUIManager.uiUpdate(Battle.UIKinds.AttackChargedTurn, attackChargedTurn);
+            }
+        }
+
 
         [SerializeField] Player player;
 
         private void Awake()
         {
-            HpAmount = HpAmount;
+            Init();
         }
 
         //ダメージ計算を行うメソッド
@@ -49,13 +65,29 @@ namespace Battle {
         //Playerに攻撃を行うメソッド
         public IEnumerator attack(Player target, EnemyAttackKinds attackKinds = EnemyAttackKinds.Normal)
         {
-            switch (attackKinds)
+
+            //1つも単語を消せていないなら
+            if(stage.ComboNum <= 0)
             {
-                case EnemyAttackKinds.Normal:
-                    float damageAmount = attackPower;
-                    target.damage(damageAmount);
-                    Debug.Log("プレイヤーにNormal Attack:"+damageAmount);
-                    break;
+                AttackChargedTurn -= 1;
+            }
+            else
+            {
+                AttackChargedTurn += stage.ComboNum / 3;
+            }
+
+            //行動できるなら
+            if(AttackChargedTurn == 0)
+            {
+                switch (attackKinds)
+                {
+                    case EnemyAttackKinds.Normal:
+                        float damageAmount = attackPower;
+                        target.damage(damageAmount);
+                        Debug.Log("プレイヤーにNormal Attack:" + damageAmount);
+                        break;
+                }
+                AttackChargedTurn = attackChargeSpan; //攻撃までのターン数を更新
             }
 
             yield break;
@@ -70,6 +102,16 @@ namespace Battle {
                 yield return attack(player, EnemyAttackKinds.Normal);
             }
             yield break;
+        }
+
+        //HPを設定できる
+        public void Init(float init_hp = 10)
+        {
+            maxHp = init_hp;
+            HpAmount = maxHp;    //Hpの初期化
+            attackPower = Random.Range(1,3);  //攻撃力の初期化
+            attackChargeSpan = 2; //攻撃ターン間隔
+            AttackChargedTurn = attackChargeSpan;
         }
     }
 }

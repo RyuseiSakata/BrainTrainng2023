@@ -65,10 +65,12 @@ public class UIManager : MonoBehaviour
         yield break;
     }
 
-    public IEnumerator showFinish()
+    public IEnumerator showFinish(string text="Finish")
     {
+        
         darkPanel.SetActive(true);
         finishText.SetActive(true);
+        finishText.GetComponent<Text>().text = text;
         yield return new WaitForSeconds(1f);
         yield break;
     }

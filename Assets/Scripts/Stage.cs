@@ -292,7 +292,6 @@ public class Stage : MonoBehaviour
 
         CanUserOperate = false;  //ユーザの操作を不可能に
         playerInput.updateTapPosition();
-        yield return new WaitForSeconds(0.5f);
 
         yield break;
     }
@@ -623,7 +622,7 @@ public class Stage : MonoBehaviour
                         b.MoveDown();
                     }
                 }
-                yield return new WaitForEndOfFrame();
+                //yield return new WaitForSeconds(0.0001f);
             }
         }
 
