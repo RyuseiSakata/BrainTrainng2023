@@ -29,6 +29,7 @@ public class Stage : MonoBehaviour
 
     private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
     private int comboNum = 0;   //コンボ数
+    private int chainNum = 0;   //連鎖数
 
     public bool CanUserOperate { get; set; } = false;   //ユーザが操作できるか否かのフラグ
 
@@ -42,12 +43,24 @@ public class Stage : MonoBehaviour
     public bool GameOverFlag { get; set; } = false; //ゲームオーバー判定用のフラグ　trueになるとfallコルーチンが終了
 
     //コンボ数のプロパティ
-    public int ComboNum {
-        get => comboNum; 
-        set { 
+    public int ComboNum
+    {
+        get => comboNum;
+        set
+        {
             comboNum = value;
             uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
-        } 
+        }
+    }
+
+    //連鎖数のプロパティ
+    public int ChainNum
+    {
+        get => chainNum;
+        set
+        {
+            chainNum = value;
+        }
     }
 
     private void Awake()
@@ -246,6 +259,7 @@ public class Stage : MonoBehaviour
     {
         CanUserOperate = true;  //ユーザの操作を可能に
         ComboNum = 0;
+        ChainNum = 0;
 
         spawnBlock();   //ブロックの生成
 
@@ -279,7 +293,7 @@ public class Stage : MonoBehaviour
             gameController.calculateScore(scorePerChain, sameEraseNum); //スコア計算
             sameEraseNum = 0;   //同時消し数のリセット
             scorePerChain = 0;  //一連鎖あたりのスコアをリセット
-
+            ChainNum += 1;
         }
 
         yield return fallBottom();   //空の場合に下まで下す処理

@@ -120,6 +120,11 @@ public class GameController : MonoBehaviour
     public void calculateScore(int scorePerChain, int sameEraseNum)
     {
         score += scorePerChain* sameEraseNum;
+        if(stage.ChainNum > 1)
+        {
+            score += (stage.ChainNum - 1) * 200;
+        }
+        
         uiManager.textUpdate(TextKinds.Score, score);
     }
 }
