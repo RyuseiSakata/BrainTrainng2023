@@ -34,6 +34,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        score = 0;
         StartCoroutine("mainLoop");
     }
 
