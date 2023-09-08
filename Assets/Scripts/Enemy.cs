@@ -6,6 +6,7 @@ namespace Battle {
     public enum EnemyAttackKinds
     {
         Normal,
+        Obstacle,   //お邪魔ブロック
     }
 
     public class Enemy : MonoBehaviour
@@ -85,6 +86,9 @@ namespace Battle {
                         float damageAmount = attackPower;
                         target.damage(damageAmount);
                         Debug.Log("プレイヤーにNormal Attack:" + damageAmount);
+                        break;
+                    case EnemyAttackKinds.Obstacle:
+                        yield return stage.createObstacleBlock();
                         break;
                 }
                 AttackChargedTurn = attackChargeSpan; //攻撃までのターン数を更新

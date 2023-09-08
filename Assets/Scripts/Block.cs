@@ -112,7 +112,7 @@ public class Block : MonoBehaviour
     public void callActive()
     {
         BlockState = true;
-        moveProperTransformFrom(CurrentCol, CurrentRow);
+        moveProperTransformFrom(-1, CurrentCol, CurrentRow);
         float numUp = 2f / Config.maxRow;
         this.transform.position += new Vector3(0f, numUp, 0f);   //èoåªà íuÇè≠Çµè„Ç…
     }
@@ -133,6 +133,7 @@ public class Block : MonoBehaviour
         {
 
             BlockState = false;
+            text.text = chara;
             stage.BlockArray[CurrentRow, CurrentCol] = this;
             stage.CanUserOperate = false;
             
