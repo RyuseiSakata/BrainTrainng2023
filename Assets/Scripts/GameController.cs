@@ -82,7 +82,7 @@ public class GameController : MonoBehaviour
                 //文字の消え具合　また　ターンにより攻撃を行う場合
                 yield return player.attack(enemy, PlayerAttackKinds.Word);
                 yield return new WaitForSeconds(0.2f);
-                yield return enemy.attack(player, EnemyAttackKinds.Obstacle);
+                yield return enemy.attack(player, EnemyAttackKinds.Normal);
 
                 //死んだかの処理
                 if(enemy.HpAmount <= 0f)
