@@ -17,6 +17,7 @@ public class Stage : MonoBehaviour
 
     [SerializeField] GameObject blockPrefab;
     [SerializeField] UIManager uIManager;
+    [SerializeField] GameController gameController;
     [SerializeField] PlayerInput playerInput;
 
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow + 1, Config.maxCol];  //ステージ全体のブロック配列
@@ -28,10 +29,12 @@ public class Stage : MonoBehaviour
 
     private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
     private int comboNum = 0;   //コンボ数
-    private int numberOfTurns = 0;  //ターン数
+
     public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
 
     [SerializeField]List<string> collectList = new List<string>();  //消した単語リスト
+
+    public bool GameOverFlag { get; set; } = false; //ゲームオーバー判定用のフラグ　trueになるとfallコルーチンが終了
 
     //コンボ数のプロパティ
     public int ComboNum {
@@ -42,15 +45,9 @@ public class Stage : MonoBehaviour
         } 
     }
 
-    //ターン数のプロパティ
-    public int NumberOfTurns
+    private void Awake()
     {
-        get => numberOfTurns;
-        set { numberOfTurns = value; }
-    }
 
-    private void Start()
-    {
         //重みの合計値を格納
         foreach (var value in Config.probability)
         {
@@ -58,8 +55,9 @@ public class Stage : MonoBehaviour
         }
 
         firstSetBlock(); //ブロックの初期配置
-
-        StartCoroutine("fall");
+        /*
+            StartCoroutine("fall");
+        */
     }
 
     private void Update()
@@ -229,62 +227,56 @@ public class Stage : MonoBehaviour
     }
 
     //ブロックの落下処理を行うコルーチン
-    private IEnumerator fall()
+    public IEnumerator fall()
     {
-        while (true)
+
+        spawnBlock();   //ブロックの生成
+
+        decideDestination();    //目標行数の決定
+
+        //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
+        while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
         {
-            spawnBlock();   //ブロックの生成
-
-            decideDestination();    //目標行数の決定
-
-            //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
-            while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
+            activeBlockList.ForEach(b =>
             {
-                activeBlockList.ForEach(b =>
+                if (b.BlockState)
                 {
-                    if (b.BlockState)
-                    {
-                        b.MoveDown();
-                    }
-                });
+                    b.MoveDown();
+                }
+            });
 
-                yield return new WaitForEndOfFrame();
-            }
-
-            fallBottom();   //横並びのパターンにおいて着地まで下す処理
-
-            //Debug.Log("着地");
-
-            isChained = true;   //連鎖のフラグ　trueの限り続いている
-            while (isChained)
-            {
-                yield return judgeAndDelete();
-            }
-
-            fallBottom();   //空の場合に下まで下す処理
-
-            CanUserOperate = true;  //ユーザの操作を可能に
-            ComboNum = 0;   //コンボ数をリセット
-            playerInput.updateTapPosition();
-            NumberOfTurns += 1; //ターン数増加
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForEndOfFrame();
         }
+
+        //ゲームオーバーの判定
+        if (GameOverFlag)
+        {
+            gameController.gameOver();
+            yield break;
+        }
+
+        yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
+        //Debug.Log("着地");
+
+        isChained = true;   //連鎖のフラグ　trueの限り続いている
+        while (isChained)
+        {
+            yield return judgeAndDelete();
+        }
+
+        yield return fallBottom();   //空の場合に下まで下す処理
+
+        CanUserOperate = true;  //ユーザの操作を可能に
+        ComboNum = 0;   //コンボ数をリセット
+        playerInput.updateTapPosition();
+        yield return new WaitForSeconds(0.5f);
 
         yield break;
     }
 
-    public void gameOver()
+    private IEnumerator fallBottom()
     {
-        Debug.Log("game over");
-        StopAllCoroutines();    //スクリプト内のすべてのコルーチン終了
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
-    }
 
-    private void fallBottom()
-    {
         Block target = null;
 
         foreach (var block in activeBlockList)
@@ -317,6 +309,7 @@ public class Stage : MonoBehaviour
 
         activeBlockList.Clear();    //activeBlockListの要素を全削除
 
+        yield break;
     }
 
     //activeBlockListのブロック群が何行目まで行くかを決める
@@ -710,11 +703,12 @@ public class Stage : MonoBehaviour
         //各ブロックの行番号と列番号を取得
         activeBlockList[1].rotate(activeBlockList[0], theta);  //回転を反映
 
+        decideDestination();    //再度目標地点を設定
+
         activeBlockList.ForEach(e =>
         {
             e.isLocked = false;
         });
 
-        decideDestination();    //再度目標地点を設定
     }
 }
