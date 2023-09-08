@@ -676,7 +676,7 @@ public class Stage : MonoBehaviour
                 if (upperGridDic.ContainsKey(i))
                 {
 
-                    for (int j = upperGridDic[i] - 1; 0 < j; j--)
+                    for (int j = upperGridDic[i] - 1; 0 <= j; j--)
                     {
                         if (checkState(j, i) == GridState.Null)
                         {

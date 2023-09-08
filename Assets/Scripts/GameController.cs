@@ -127,8 +127,16 @@ public class GameController : MonoBehaviour
         {
             score += (stage.ChainNum - 1) * 200;
         }
+
+        if (score > 9900)
+        {
+            uiManager.textUpdate(TextKinds.Score, 9900);
+        }
+        else
+        {
+            uiManager.textUpdate(TextKinds.Score, score);
+        }
         
-        uiManager.textUpdate(TextKinds.Score, score);
     }
 
     public void calculateDamage(int mode = 0, int damagePerChain = 0, int sameEraseNum = 0)
