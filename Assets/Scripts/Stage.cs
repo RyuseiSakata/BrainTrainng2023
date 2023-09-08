@@ -21,7 +21,7 @@ public class Stage : MonoBehaviour
     [SerializeField] PlayerInput playerInput;
 
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow + 1, Config.maxCol];  //ステージ全体のブロック配列
-    private List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
+    public List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
     private List<Block> judgeTargetList = new List<Block>(); //判定を行う対象
 
     private List<Block>[] nextBlock = { new List<Block>(), new List<Block>() }; //次(0)とその次(1)のブロックを格納
@@ -29,32 +29,59 @@ public class Stage : MonoBehaviour
 
     private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
     private int comboNum = 0;   //コンボ数
+    private int chainNum = 0;   //連鎖数
 
-    public bool CanUserOperate { get; set; } = true;   //ユーザが操作できるか否かのフラグ
+    public bool CanUserOperate { get; set; } = false;   //ユーザが操作できるか否かのフラグ
 
-    [SerializeField]List<string> collectList = new List<string>();  //消した単語リスト
+    [SerializeField] AudioManager audioManaeger;
+
+    [SerializeField] WordList wordList;  //消した単語リスト
+
+    private int sameEraseNum = 0;   //同時消し数（1連鎖内）
+    private int scorePerChain = 0;    //１連鎖内のスコアの合計　例）りんご、ごりら　-> 100+100
+    public int damagePerChain = 0;    //攻撃ダメージ量
 
     public bool GameOverFlag { get; set; } = false; //ゲームオーバー判定用のフラグ　trueになるとfallコルーチンが終了
 
     //コンボ数のプロパティ
-    public int ComboNum {
-        get => comboNum; 
-        set { 
+    public int ComboNum
+    {
+        get => comboNum;
+        set
+        {
             comboNum = value;
             uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
-        } 
+        }
+    }
+
+    //連鎖数のプロパティ
+    public int ChainNum
+    {
+        get => chainNum;
+        set
+        {
+            chainNum = value;
+        }
     }
 
     private void Awake()
     {
-
-        //重みの合計値を格納
-        foreach (var value in Config.probability)
+        //起動後一度も重み合計を計算していないなら
+        if (!Config.isCaluculatedSum)
         {
-            Config.sumProbability += value;
+            //重みの合計値を格納
+            foreach (var value in Config.probability)
+            {
+                Config.sumProbability += value;
+            }
+            Config.isCaluculatedSum = true;
         }
 
+        wordList.CollectList.Clear();   //消した単語リストを全削除
+
         firstSetBlock(); //ブロックの初期配置
+
+
         /*
             StartCoroutine("fall");
         */
@@ -222,17 +249,36 @@ public class Stage : MonoBehaviour
                 break;
             }
         }
+
+
         //Debug.Log("LOG:" + Config.character[ret].ToString() + "の出現確率:" + (100f * Config.probability[ret] / Config.sumProbability).ToString("") + "%");
         return Config.character[ret].ToString();
     }
 
-    //ブロックの落下処理を行うコルーチン
-    public IEnumerator fall()
+    //ブロックの落下処理を行うコルーチン spawnFlagをfalseにするとスポーン処理を行わない
+    public IEnumerator fall(bool spawnFlag = true)
     {
+        CanUserOperate = true;  //ユーザの操作を可能に
+        ComboNum = 0;
+        ChainNum = 0;
 
-        spawnBlock();   //ブロックの生成
+        if (spawnFlag)
+        {
+            spawnBlock();   //ブロックの生成
+        }
+        else
+        {
+            CanUserOperate = false;  //ユーザの操作を不可能に
+        }
 
         decideDestination();    //目標行数の決定
+
+        string s = "DEBB:";
+        activeBlockList.ForEach(e =>
+        {
+            s += e.DestinationRow + ",";
+        });
+        Debug.Log(s);
 
         //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
         while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
@@ -247,6 +293,38 @@ public class Stage : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+        audioManaeger.playSeOneShot(AudioKinds.BlockMove);
+
+
+        yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
+
+        //Debug.Log("着地");
+
+        isChained = true;   //連鎖のフラグ　trueの限り続いている
+        while (isChained)
+        {
+            yield return judgeAndDelete();
+            
+            gameController.calculateScore(scorePerChain, sameEraseNum); //スコア計算
+            gameController.calculateDamage(0,damagePerChain, sameEraseNum);   //プレイヤーの攻撃量を計算
+            sameEraseNum = 0;   //同時消し数のリセット
+            scorePerChain = 0;  //一連鎖あたりのスコアをリセット
+            damagePerChain = 0;  //一連鎖あたりのプレイヤーの攻撃量をリセット
+            ChainNum += 1;
+        }
+
+        yield return fallBottom();   //空の場合に下まで下す処理
+
+
+        // 0行目にブロックがあるならゲームオーバーにする
+        for (int i = 0; i < BlockArray.GetLength(1); i++)
+        {
+            if (BlockArray[0, i] != null)
+            {
+                GameOverFlag = true;
+                break;
+            }
+        }
 
         //ゲームオーバーの判定
         if (GameOverFlag)
@@ -255,21 +333,9 @@ public class Stage : MonoBehaviour
             yield break;
         }
 
-        yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
-        //Debug.Log("着地");
-
-        isChained = true;   //連鎖のフラグ　trueの限り続いている
-        while (isChained)
-        {
-            yield return judgeAndDelete();
-        }
-
-        yield return fallBottom();   //空の場合に下まで下す処理
-
-        CanUserOperate = true;  //ユーザの操作を可能に
-        ComboNum = 0;   //コンボ数をリセット
+        gameController.calculateDamage(1, damagePerChain, sameEraseNum);   //プレイヤーの攻撃量を計算
+        CanUserOperate = false;  //ユーザの操作を不可能に
         playerInput.updateTapPosition();
-        yield return new WaitForSeconds(0.5f);
 
         yield break;
     }
@@ -277,37 +343,59 @@ public class Stage : MonoBehaviour
     private IEnumerator fallBottom()
     {
 
-        Block target = null;
-
+        List<Block> targetList = new List<Block>();
         foreach (var block in activeBlockList)
         {
-            if (checkState(block.CurrentRow + 1, block.CurrentCol) == GridState.Null) target = block;
+            if (checkState(block.CurrentRow + 1, block.CurrentCol) == GridState.Null) targetList.Add(block);
         }
 
-        activeBlockList.Clear();    //activeBlockListの要素を全削除
-
-        if (target != null)
+        do
         {
-            BlockArray[target.CurrentRow, target.CurrentCol] = null;    //現在位置の削除
-            target.BlockState = true;   //Active状態に
-            activeBlockList.Add(target);
 
-            decideDestination();
-
-            //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
-            while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
+            List<Block> deleteList = new List<Block>();
+            targetList.ForEach(e =>
             {
-                activeBlockList.ForEach(b =>
+                if (checkState(e.CurrentRow + 1, e.CurrentCol) != GridState.Null) deleteList.Add(e);
+            });
+            deleteList.ForEach(e =>
+            {
+                targetList.Remove(e);
+            });
+
+
+            activeBlockList.Clear();    //activeBlockListの要素を全削除
+
+            if (targetList.Count > 0)
+            {
+                targetList.ForEach(t =>
                 {
-                    if (b.BlockState)
+                    BlockArray[t.CurrentRow, t.CurrentCol] = null;    //現在位置の削除
+                    t.BlockState = true;   //Active状態に
+                    activeBlockList.Add(t);
+
+                    decideDestination();
+
+                    //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
+                    while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
                     {
-                        b.MoveDown();
+                        activeBlockList.ForEach(b =>
+                        {
+                            if (b.BlockState)
+                            {
+                                b.MoveDown();
+                            }
+                        });
                     }
+                    audioManaeger.playSeOneShot(AudioKinds.BlockMove);
                 });
             }
-        }
 
-        activeBlockList.Clear();    //activeBlockListの要素を全削除
+            activeBlockList.Clear();    //activeBlockListの要素を全削除
+
+            
+
+        } while (targetList.Count > 0);
+
 
         yield break;
     }
@@ -352,8 +440,10 @@ public class Stage : MonoBehaviour
         {
             int row = -100; //目的の行数(初期値-100)
 
+            int min_row = activeBlockList.Min(x => x.CurrentRow);
+
             //目標の列番号の決定
-            for (int r = activeBlockList[0].CurrentRow + 1; r <= BlockArray.GetLength(0); r++)
+            for (int r = min_row + 1; r <= BlockArray.GetLength(0); r++)
             {
                 foreach (var block in activeBlockList)
                 {
@@ -402,10 +492,19 @@ public class Stage : MonoBehaviour
                 //3文字以上
                 if (str.Length >= 3)
                 {
-                    //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> wordList = (new Jage()).Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+                    //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    List<string> findList = (new Jage()).Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+                    
+                    Debug.Log("List:縦文字列："+str);
+                    var s = "List:含め単語：";
+                    findList.ForEach(e =>
+                    {
+                        s += e + ",";
 
-                    foreach (var word in wordList)
+                    });
+                    Debug.Log(s);
+                    
+                    foreach (var word in findList)
                     {
                         int index = -1; //str内のwordの出現位置
 
@@ -420,21 +519,32 @@ public class Stage : MonoBehaviour
                             }
                             else
                             {
-                                collectList.Add(word);  //消した言葉リストに追加
+                                //コレクションリストに追加
+                                WordData addWord = new WordData(word,"","");
+                                wordList.CollectList.Add(addWord);  //消した言葉リストに追加
+
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
+                                    /*
+                                     * 古いアニメーション
                                     Block b = BlockArray[i, targetCol.Last()];
                                     b.lightUp();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
-                                }
-                                ComboNum++;  //コンボ数の追加
-                                yield return new WaitForSeconds(0.3f);
-                                for (int i = index + head; i < index + head + word.Length; i++)
-                                {
+                                    */
                                     Block b = BlockArray[i, targetCol.Last()];
-                                    b.lightDown();
+                                    b.emphasize();
+                                    if (!destroyList.Contains(b)) destroyList.Add(b);
                                 }
+                                float pitch = 0.6f + comboNum * 0.4f;
+                                audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
+                                if (word.Length > 2) scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
+                                if (word.Length > 2) damagePerChain += word.Length - 2;    //文字数-2
+                                sameEraseNum++; //同時消し数の加算
+                                Debug.Log($"SCORE:len:{word.Length}:{word} -> {100 * Mathf.Pow(2,word.Length - 3)} : {sameEraseNum}");
+                                Debug.Log($"DAMAGE:len:{word.Length}:{word} -> {damagePerChain} : {sameEraseNum}");
+                                ComboNum++;  //コンボ数の追加
+                                yield return new WaitForSeconds(1.5f);
                             }
                         }
                     }
@@ -458,10 +568,18 @@ public class Stage : MonoBehaviour
                 //3文字以上
                 if (str.Length >= 3)
                 {
-                    //List<string> wordList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> wordList = (new Jage()).Check(str);    //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+                    //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
+                    List<string> findList = (new Jage()).Check(str);    //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
+                    
+                     Debug.Log("List:横文字列："+str);
+                    var s = "List:含め単語：";
+                    findList.ForEach(e =>
+                    {
+                        s += e + ",";
 
-                    foreach (var word in wordList)
+                    });
+                    Debug.Log(s);
+                    foreach (var word in findList)
                     {
                         int index = -1; //str内のwordの出現位置
 
@@ -476,21 +594,33 @@ public class Stage : MonoBehaviour
                             }
                             else
                             {
-                                collectList.Add(word);  //消した言葉リストに追加
+                                //コレクションリストに追加
+                                WordData addWord = new WordData(word,"", "");
+                                wordList.CollectList.Add(addWord);  //消した言葉リストに追加
+
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
+                                    /*
+                                     * 古いアニメーション
                                     Block b = BlockArray[targetRow.Last(), i];
                                     b.lightUp();
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                     yield return new WaitForSeconds(0.3f);
-                                }
-                                ComboNum++;  //コンボ数の追加とUI更新
-                                yield return new WaitForSeconds(0.3f);
-                                for (int i = index + head; i < index + head + word.Length; i++)
-                                {
+                                    */
                                     Block b = BlockArray[targetRow.Last(), i];
-                                    b.lightDown();
+                                    b.emphasize();
+                                    if (!destroyList.Contains(b)) destroyList.Add(b);
+
                                 }
+                                float pitch = 0.6f + comboNum * 0.4f;
+                                audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
+                                if (word.Length > 2) scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
+                                if (word.Length > 2) damagePerChain += word.Length - 2;    //文字数-2
+                                sameEraseNum++; //同時消し数の加算
+                                Debug.Log($"SCORE:len:{word.Length}:{word} -> {100 * Mathf.Pow(2, word.Length - 3)} : {sameEraseNum}");
+                                Debug.Log($"DAMAGE:len:{word.Length}:{word} -> {damagePerChain} : {sameEraseNum}");
+                                ComboNum++;  //コンボ数の追加とUI更新
+                                yield return new WaitForSeconds(1.5f);
                             }
                         }
                     }
@@ -506,6 +636,7 @@ public class Stage : MonoBehaviour
             BlockArray[block.CurrentRow, block.CurrentCol] = null;
             block.DestroyObject();
         });
+        yield return new WaitForSeconds(1/3f);
 
         /*** 発見された単語がある場合、ブロック削除後の落下処理 ***/
         if (destroyList.Count > 0)
@@ -565,16 +696,22 @@ public class Stage : MonoBehaviour
             }
 
             //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
-            while (fallList.Count != fallList.FindAll(x => x.BlockState == false).Count)
+            if (fallList.Count > 0)
             {
-                foreach (var b in fallList)
+                while (fallList.Count != fallList.FindAll(x => x.BlockState == false).Count)
                 {
-                    if (b.BlockState)
+                    foreach (var b in fallList)
                     {
-                        b.MoveDown();
+                        if (b.BlockState)
+                        {
+                            b.MoveDown();
+                        }
                     }
+                    //yield return new WaitForSeconds(0.0001f);
                 }
+                audioManaeger.playSeOneShot(AudioKinds.BlockMove);
             }
+            
         }
 
         //連鎖なし
@@ -585,7 +722,7 @@ public class Stage : MonoBehaviour
         else //連鎖あり
         {
             isChained = true;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
         }
 
         yield break;
@@ -673,13 +810,17 @@ public class Stage : MonoBehaviour
     //ブロックを左右に移動させる
     public void moveColumn(int value)
     {
+        
+
         foreach (var block in activeBlockList)
         {
             if (checkState(block.currentRowLine, block.CurrentCol + value) == GridState.OutStage || checkState(block.currentRowLine, block.CurrentCol + value) == GridState.Disactive)
             {
+                audioManaeger.playSeOneShot(AudioKinds.CanNotMove);
                 return;
             }
         }
+        audioManaeger.playSeOneShot(AudioKinds.BlockMove);
         foreach (var block in activeBlockList)
         {
             block.CurrentCol += value;
@@ -704,11 +845,45 @@ public class Stage : MonoBehaviour
         activeBlockList[1].rotate(activeBlockList[0], theta);  //回転を反映
 
         decideDestination();    //再度目標地点を設定
-
+        
         activeBlockList.ForEach(e =>
         {
             e.isLocked = false;
         });
 
+    }
+    
+    //お邪魔ブロックを生成
+    public IEnumerator createObstacleBlock()
+    {
+        List<GameObject> instanceList = new List<GameObject>();
+        for(int i=0; i < Config.maxCol; i++)
+        {
+            //int col = Random.Range(0, Config.maxCol);
+
+            var instance = Instantiate(blockPrefab, this.gameObject.transform);
+            instance.SetActive(false);
+            instance.transform.localPosition = Vector3.zero;
+            instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+            Block block = instance.GetComponent<Block>();
+            block.stage = this;
+            block.init(decideCharacter(), 0, i);
+            block.callActive();
+            activeBlockList.Add(block);
+            judgeTargetList.Add(block);
+            
+            instanceList.Add(instance);
+        }
+
+        instanceList.ForEach(e =>
+        {
+            e.SetActive(true);
+        });
+        
+
+        fallBoost = 28.0f;
+        yield return fall(false);
+        fallBoost = 1.0f;
+        yield break;
     }
 }

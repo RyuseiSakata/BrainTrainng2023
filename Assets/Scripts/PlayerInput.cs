@@ -23,7 +23,12 @@ public class PlayerInput : MonoBehaviour
     private float preTapPositionY = 0f;  //前にタップしたX座標
 
     private bool isDownButtonHold = false;  //下におろすボタンが押されているかのフラグ
+    private bool isLeftButtonHold = false; //右移動ボタンが押されているかのフラグ
+    private bool isRightButtonHold = false; //左移動ボタンが押されているかのフラグ
     private bool isNothingPanelHold = false;    //ボタンのないところをタッチしているか
+
+    private float moveLeftInterval = 0f; //右移動する間隔 次に押せるようになるまでの時間
+    private float moveRightInterval = 0f; //左移動する間隔 次に押せるようになるまでの時間
 
     private void Start()
     {
@@ -36,7 +41,7 @@ public class PlayerInput : MonoBehaviour
             //キーボード UIボタン
             if (Input.GetKey(KeyCode.S) || isDownButtonHold)
             {
-                stage.fallBoost = 10f;
+                stage.fallBoost = 14f;
             }
             else if (!Input.GetKey(KeyCode.S) || !isDownButtonHold)
             {
@@ -57,14 +62,16 @@ public class PlayerInput : MonoBehaviour
             }
             else
             {
-                if (Input.GetKeyDown(KeyCode.D))
+                if (((Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S)) || isRightButtonHold) && moveRightInterval <= 0)
                 {
                     stage.moveColumn(+1);
+                    moveRightInterval = 0.2f;
                 }
 
-                if (Input.GetKeyDown(KeyCode.A))
+                if (((Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) || isLeftButtonHold) && moveLeftInterval <= 0)
                 {
                     stage.moveColumn(-1);
+                    moveLeftInterval = 0.2f;
                 }
             }
 
@@ -114,7 +121,7 @@ public class PlayerInput : MonoBehaviour
                         //1本でタッチ
                         if(Input.touchCount == 1)
                         {
-                            stage.fallBoost = 8f;  //落下速度をあげる
+                            stage.fallBoost = 12f;  //落下速度をあげる
                             frameFromTapped = -1;   //回転防止
                         }
                         else  //2本以上でタッチ
@@ -132,6 +139,17 @@ public class PlayerInput : MonoBehaviour
                 isNothingPanelHold = false;
             }
         }
+
+        
+        if (moveLeftInterval > 0)
+        {
+            moveLeftInterval -= Time.deltaTime;
+        }
+
+        if(moveRightInterval > 0)
+        {
+            moveRightInterval -= Time.deltaTime;
+        }
     }
 
     public void OnClickDown(int num)
@@ -143,10 +161,12 @@ public class PlayerInput : MonoBehaviour
                 isDownButtonHold = true;
                 break;
             case ButtonKinds.Left:
-                stage.moveColumn(-1);
+                isLeftButtonHold = true;
+                isRightButtonHold = false;
                 break;
             case ButtonKinds.Right:
-                stage.moveColumn(+1);
+                isRightButtonHold = true;
+                isLeftButtonHold = false;
                 break;
             case ButtonKinds.LeftTurn:
                 stage.rotateBlock(-90f);
@@ -168,6 +188,12 @@ public class PlayerInput : MonoBehaviour
         {
             case ButtonKinds.Down:
                 isDownButtonHold = false;
+                break;
+            case ButtonKinds.Left:
+                isLeftButtonHold = false;
+                break;
+            case ButtonKinds.Right:
+                isRightButtonHold = false;
                 break;
         }
     }

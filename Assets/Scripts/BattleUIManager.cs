@@ -5,29 +5,37 @@ using UnityEngine.UI;
 
 namespace Battle
 {
-    public enum TextKinds
+    public enum UIKinds
     {
         PlayerHP,
         EnemyHP,
+        AttackChargedTurn,
     }
     public class BattleUIManager : MonoBehaviour
     {
         [SerializeField] Text playerHpText;
         [SerializeField] Text enemyHpText;
+        [SerializeField] Text chargeTurnText;
+        [SerializeField] Slider playerHpSlider;
+        [SerializeField] Slider enemyHpSlider;
 
         //UIテキストの変更を行う
-        public void textUpdate(TextKinds textKinds, float value)
+        public void uiUpdate(UIKinds uiKinds, float value)
         {
-            switch (textKinds)
+            switch (uiKinds)
             {
-                case TextKinds.PlayerHP:
-                    playerHpText.text = "HP(Player)：" + value.ToString(".0");
+                case UIKinds.PlayerHP:
+                    playerHpSlider.value = value / Player.maxHp;
                     break;
-                case TextKinds.EnemyHP:
-                    enemyHpText.text = "HP(Enemy)：" + value.ToString(".0");
+                case UIKinds.EnemyHP:
+                    enemyHpSlider.value = value / Enemy.maxHp;
+                    break;
+                case UIKinds.AttackChargedTurn:
+                    chargeTurnText.text = value.ToString("00");
                     break;
             }
         }
+
     }
 
 }

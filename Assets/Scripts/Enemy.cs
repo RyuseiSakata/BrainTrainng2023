@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Battle {
-    public enum AttackKinds
+    public enum EnemyAttackKinds
     {
         Normal,
+        Obstacle,   //お邪魔ブロック
     }
 
     public class Enemy : MonoBehaviour
@@ -15,6 +16,10 @@ namespace Battle {
 
         [SerializeField] float hpAmount;
         [SerializeField] float attackPower;
+        [SerializeField] int attackChargeSpan = 2;
+        public static float maxHp;
+
+        private int attackChargedTurn; //次の攻撃までの残りターン数
 
         public float HpAmount
         {
@@ -22,16 +27,27 @@ namespace Battle {
             set
             {
                 hpAmount = value;
-                battleUIManager.textUpdate(Battle.TextKinds.EnemyHP, hpAmount);
+                if (hpAmount < 0) hpAmount = 0;
+
+                battleUIManager.uiUpdate(Battle.UIKinds.EnemyHP, hpAmount);
             }
         }
 
+        public int AttackChargedTurn {
+            get => attackChargedTurn; 
+            set
+            {
+                attackChargedTurn = value;
+                battleUIManager.uiUpdate(Battle.UIKinds.AttackChargedTurn, attackChargedTurn);
+            }
+        }
+
+
         [SerializeField] Player player;
 
-        private void Start()
+        private void Awake()
         {
-            HpAmount = HpAmount;
-            StartCoroutine("action");
+            Init();
         }
 
         //ダメージ計算を行うメソッド
@@ -48,29 +64,58 @@ namespace Battle {
         }
 
         //Playerに攻撃を行うメソッド
-        private IEnumerator attack(Player target, AttackKinds attackKinds = AttackKinds.Normal)
+        public IEnumerator attack(Player target, EnemyAttackKinds attackKinds = EnemyAttackKinds.Normal)
         {
-            switch (attackKinds)
+
+            //1つも単語を消せていないなら
+            if(stage.ComboNum <= 0)
             {
-                case AttackKinds.Normal:
-                    Debug.Log("プレイヤーにNormal Attack");
-                    float damageAmount = attackPower;
-                    target.damage(damageAmount);
-                    break;
+                AttackChargedTurn -= 1;
+            }
+            else
+            {
+                AttackChargedTurn += stage.ComboNum / 3;
+            }
+
+            //行動できるなら
+            if(AttackChargedTurn == 0)
+            {
+                switch (attackKinds)
+                {
+                    case EnemyAttackKinds.Normal:
+                        float damageAmount = attackPower;
+                        target.damage(damageAmount);
+                        Debug.Log("プレイヤーにNormal Attack:" + damageAmount);
+                        break;
+                    case EnemyAttackKinds.Obstacle:
+                        yield return stage.createObstacleBlock();
+                        break;
+                }
+                AttackChargedTurn = attackChargeSpan; //攻撃までのターン数を更新
             }
 
             yield break;
         }
 
-        //行動を管理するコルーチン
+        //時間行動を管理するコルーチン
         private IEnumerator action()
         {
             while (player.HpAmount > 0f && HpAmount > 0f)
             {
                 yield return new WaitForSeconds(5f);
-                yield return attack(player, AttackKinds.Normal);
+                yield return attack(player, EnemyAttackKinds.Normal);
             }
             yield break;
+        }
+
+        //HPを設定できる
+        public void Init(float init_hp = 10)
+        {
+            maxHp = init_hp;
+            HpAmount = maxHp;    //Hpの初期化
+            attackPower = 1;  //攻撃力の初期化
+            attackChargeSpan = 2; //攻撃ターン間隔
+            AttackChargedTurn = attackChargeSpan;
         }
     }
 }

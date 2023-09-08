@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace Battle
 {
+
+    public enum PlayerAttackKinds
+    {
+        Normal,
+        Combo,  //コンボ数によるダメージ
+        Word,   //単語削除によるダメ―ジ
+    }
+
     public class Player : MonoBehaviour
     {
         [SerializeField] BattleUIManager battleUIManager;
@@ -13,22 +21,24 @@ namespace Battle
         [SerializeField] float hpAmount;
         [SerializeField] float attackPower;
 
+        public static float maxHp = 15;
+
         public float HpAmount
         {
             get => hpAmount;
             set
             {
                 hpAmount = value;
-                battleUIManager.textUpdate(Battle.TextKinds.PlayerHP, hpAmount);
+                if (hpAmount < 0) hpAmount = 0;
+                battleUIManager.uiUpdate(Battle.UIKinds.PlayerHP, hpAmount);
             }
         }
 
         [SerializeField] Enemy enemy;
 
-        private void Start()
+        private void Awake()
         {
             HpAmount = HpAmount;
-            StartCoroutine("action");
         }
 
         //ダメージ計算を行うメソッド
@@ -45,31 +55,49 @@ namespace Battle
         }
 
         //Enemyに攻撃を行うメソッド
-        private IEnumerator attack(Enemy target, AttackKinds attackKinds = AttackKinds.Normal)
+        public IEnumerator attack(Enemy target, PlayerAttackKinds attackKinds = PlayerAttackKinds.Normal)
         {
+            float damageAmount;
+            Debug.Log("dA:" + GameController.playerAttack);
             switch (attackKinds)
             {
-                case AttackKinds.Normal:
-                    Debug.Log("敵にNormal Attack");
-                    float damageAmount = attackPower;
+                case PlayerAttackKinds.Normal:
+                    damageAmount = attackPower;
                     target.damage(damageAmount);
+                    Debug.Log("敵にNormal Attack:" + damageAmount);
+                    break;
+                case PlayerAttackKinds.Combo:
+                    damageAmount = attackPower * stage.ComboNum;
+                    target.damage(damageAmount);
+                    Debug.Log("敵にNormal Attack:" + damageAmount);
+                    break;
+                case PlayerAttackKinds.Word:
+                    damageAmount = attackPower * GameController.playerAttack;
+                    target.damage(damageAmount);
+                    Debug.Log("単語による攻撃："+damageAmount);
+                    GameController.playerAttack = 0;
                     break;
             }
 
             yield break;
         }
 
-        //行動を管理するコルーチン
+        //時間行動を管理するコルーチン
         private IEnumerator action()
         {
             while (enemy.HpAmount > 0f && HpAmount > 0f)
             {
                 yield return new WaitForSeconds(3f);
-                yield return attack(enemy, AttackKinds.Normal);
+                yield return attack(enemy, PlayerAttackKinds.Normal);
             }
             yield break;
         }
 
+        public void Init()
+        {
+            HpAmount = maxHp;    //Hpの初期化
+            attackPower = 1;  //攻撃力の初期化
+        }
     }
 }
 
