@@ -853,13 +853,26 @@ public class Stage : MonoBehaviour
 
     }
     
-    //お邪魔ブロックを生成
-    public IEnumerator createObstacleBlock()
+    //お邪魔ブロックを生成 引数に渡した文字列を落とす
+    //nといれると何も出さない
+    public IEnumerator createObstacleBlock(string charaSet="おじやまだよー")
     {
+        //maxCol文字になるまで右をnで埋める
+        while (charaSet.Length < Config.maxCol)
+        {
+            charaSet += 'n';
+        }
+
         List<GameObject> instanceList = new List<GameObject>();
         for(int i=0; i < Config.maxCol; i++)
         {
             //int col = Random.Range(0, Config.maxCol);
+
+            //"n"のときは何も出さない
+            if (charaSet[i].Equals('n'))
+            {
+                continue;
+            }
 
             var instance = Instantiate(blockPrefab, this.gameObject.transform);
             instance.SetActive(false);
@@ -867,7 +880,8 @@ public class Stage : MonoBehaviour
             instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
             Block block = instance.GetComponent<Block>();
             block.stage = this;
-            block.init(decideCharacter(), 0, i);
+            block.init(charaSet[i].ToString(), 0, i);
+            //block.init(decideCharacter(), 0, i);
             block.callActive();
             activeBlockList.Add(block);
             judgeTargetList.Add(block);
@@ -881,9 +895,10 @@ public class Stage : MonoBehaviour
         });
         
 
-        fallBoost = 28.0f;
+        fallBoost = 35.0f;
         yield return fall(false);
         fallBoost = 1.0f;
+
         yield break;
     }
 }

@@ -71,6 +71,7 @@ public class GameController : MonoBehaviour
             //player.StartCoroutine("action");
             //enemy.StartCoroutine("action");
             */
+            yield return enemy.attack(player, EnemyAttackKinds.First);
 
             while (gameState == GameState.Playing)
             {
@@ -83,9 +84,10 @@ public class GameController : MonoBehaviour
                 yield return player.attack(enemy, PlayerAttackKinds.Word);
                 yield return new WaitForSeconds(0.2f);
                 yield return enemy.attack(player, EnemyAttackKinds.Normal);
+                yield return player.attack(enemy, PlayerAttackKinds.Word);
 
                 //€‚ñ‚¾‚©‚Ìˆ—
-                if(enemy.HpAmount <= 0f)
+                if (enemy.HpAmount <= 0f)
                 {
                     finishText = "You Win";
                     gameOver();

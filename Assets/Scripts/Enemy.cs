@@ -7,6 +7,7 @@ namespace Battle {
     {
         Normal,
         Obstacle,   //お邪魔ブロック
+        First,  //最初の攻撃
     }
 
     public class Enemy : MonoBehaviour
@@ -75,6 +76,12 @@ namespace Battle {
             else
             {
                 AttackChargedTurn += stage.ComboNum / 3;
+            }
+
+            if (attackKinds == EnemyAttackKinds.First)
+            {
+                yield return stage.createObstacleBlock("すnたnーnと");
+
             }
 
             //行動できるなら
