@@ -134,7 +134,16 @@ public class Block : MonoBehaviour
 
             BlockState = false;
             text.text = chara;
-            stage.BlockArray[CurrentRow, CurrentCol] = this;
+            if(stage.BlockArray[CurrentRow, CurrentCol] == null)
+            {
+                stage.BlockArray[CurrentRow, CurrentCol] = this;
+            }
+            else
+            {
+                Debug.Log("CONF");
+                DestinationRow -= 1;
+            }
+            
             stage.CanUserOperate = false;
             
         }
