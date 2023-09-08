@@ -1178,11 +1178,13 @@ MonoBehaviour:
   uIManager: {fileID: 1202892936}
   gameController: {fileID: 1490713311}
   playerInput: {fileID: 719233741}
+  activeBlockList: []
   SpawnPos:
   - {fileID: 268260180}
   - {fileID: 753284523}
   audioManaeger: {fileID: 675852150}
   wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
+  damagePerChain: 0
 --- !u!4 &450358702
 Transform:
   m_ObjectHideFlags: 0
@@ -2381,7 +2383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15fe3889014f0f84a99ca1a546d29e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sentence: "\u308F\u3093\u306B\u3085\u3046\u3044"
+  sentence: "\u3057\u3055\u3064"
 --- !u!81 &883812867
 AudioListener:
   m_ObjectHideFlags: 0
