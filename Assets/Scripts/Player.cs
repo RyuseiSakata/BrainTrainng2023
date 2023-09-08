@@ -10,6 +10,7 @@ namespace Battle
     {
         Normal,
         Combo,  //コンボ数によるダメージ
+        Word,   //単語削除によるダメ―ジ
     }
 
     public class Player : MonoBehaviour
@@ -57,7 +58,7 @@ namespace Battle
         public IEnumerator attack(Enemy target, PlayerAttackKinds attackKinds = PlayerAttackKinds.Normal)
         {
             float damageAmount;
-
+            Debug.Log("dA:" + GameController.playerAttack);
             switch (attackKinds)
             {
                 case PlayerAttackKinds.Normal:
@@ -69,6 +70,12 @@ namespace Battle
                     damageAmount = attackPower * stage.ComboNum;
                     target.damage(damageAmount);
                     Debug.Log("敵にNormal Attack:" + damageAmount);
+                    break;
+                case PlayerAttackKinds.Word:
+                    damageAmount = attackPower * GameController.playerAttack;
+                    target.damage(damageAmount);
+                    Debug.Log("単語による攻撃："+damageAmount);
+                    GameController.playerAttack = 0;
                     break;
             }
 

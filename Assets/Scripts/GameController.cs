@@ -23,7 +23,8 @@ public class GameController : MonoBehaviour
 
     private string finishText = "Finish";
 
-    private static int score = 0;
+    private int score = 0;
+    public static int playerAttack;   //消した文字によるプレイヤーの攻撃量
 
     //ターン数のプロパティ
     public int NumberOfTurns
@@ -35,6 +36,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         score = 0;
+        playerAttack = 0;
         StartCoroutine("mainLoop");
     }
 
@@ -78,7 +80,7 @@ public class GameController : MonoBehaviour
                 Debug.Log("Turn:" + NumberOfTurns + ",Combo:" + stage.ComboNum);
 
                 //文字の消え具合　また　ターンにより攻撃を行う場合
-                yield return player.attack(enemy, PlayerAttackKinds.Combo);
+                yield return player.attack(enemy, PlayerAttackKinds.Word);
                 yield return new WaitForSeconds(0.2f);
                 yield return enemy.attack(player, EnemyAttackKinds.Normal);
 
@@ -115,7 +117,7 @@ public class GameController : MonoBehaviour
     private void actorInit()
     {
         player.Init();
-        enemy.Init(Random.Range(3,10));
+        enemy.Init(10);
     }
 
     public void calculateScore(int scorePerChain, int sameEraseNum)
@@ -127,6 +129,32 @@ public class GameController : MonoBehaviour
         }
         
         uiManager.textUpdate(TextKinds.Score, score);
+    }
+
+    public void calculateDamage(int mode = 0, int damagePerChain = 0, int sameEraseNum = 0)
+    {
+        //同時消しによるダメージ加算のみ
+        if(mode == 0)
+        {
+            //同時消しが発生したなら
+            if (sameEraseNum > 1)
+            {
+                playerAttack += damagePerChain * 2;
+            }
+            else
+            {
+                playerAttack += damagePerChain;
+            }
+        }
+        //連鎖によるダメージ加算とUI更新
+        else
+        {
+            //連鎖が発生したなら
+            if(stage.ChainNum > 2)
+            {
+                playerAttack *= 2;
+            }
+        }
     }
 }
 

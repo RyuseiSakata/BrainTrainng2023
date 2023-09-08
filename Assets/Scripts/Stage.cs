@@ -39,6 +39,7 @@ public class Stage : MonoBehaviour
 
     private int sameEraseNum = 0;   //同時消し数（1連鎖内）
     private int scorePerChain = 0;    //１連鎖内のスコアの合計　例）りんご、ごりら　-> 100+100
+    public int damagePerChain = 0;    //攻撃ダメージ量
 
     public bool GameOverFlag { get; set; } = false; //ゲームオーバー判定用のフラグ　trueになるとfallコルーチンが終了
 
@@ -291,8 +292,10 @@ public class Stage : MonoBehaviour
             yield return judgeAndDelete();
             
             gameController.calculateScore(scorePerChain, sameEraseNum); //スコア計算
+            gameController.calculateDamage(0,damagePerChain, sameEraseNum);   //プレイヤーの攻撃量を計算
             sameEraseNum = 0;   //同時消し数のリセット
             scorePerChain = 0;  //一連鎖あたりのスコアをリセット
+            damagePerChain = 0;  //一連鎖あたりのプレイヤーの攻撃量をリセット
             ChainNum += 1;
         }
 
@@ -316,6 +319,7 @@ public class Stage : MonoBehaviour
             yield break;
         }
 
+        gameController.calculateDamage(1, damagePerChain, sameEraseNum);   //プレイヤーの攻撃量を計算
         CanUserOperate = false;  //ユーザの操作を不可能に
         playerInput.updateTapPosition();
 
@@ -497,9 +501,11 @@ public class Stage : MonoBehaviour
                                 }
                                 float pitch = 0.6f + comboNum * 0.4f;
                                 audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
-                                scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
+                                if (word.Length > 2) scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
+                                if (word.Length > 2) damagePerChain += word.Length - 2;    //文字数-2
                                 sameEraseNum++; //同時消し数の加算
                                 Debug.Log($"SCORE:len:{word.Length}:{word} -> {100 * Mathf.Pow(2,word.Length - 3)} : {sameEraseNum}");
+                                Debug.Log($"DAMAGE:len:{word.Length}:{word} -> {damagePerChain} : {sameEraseNum}");
                                 ComboNum++;  //コンボ数の追加
                                 yield return new WaitForSeconds(1.5f);
                             }
@@ -571,9 +577,11 @@ public class Stage : MonoBehaviour
                                 }
                                 float pitch = 0.6f + comboNum * 0.4f;
                                 audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
-                                scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
+                                if (word.Length > 2) scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
+                                if (word.Length > 2) damagePerChain += word.Length - 2;    //文字数-2
                                 sameEraseNum++; //同時消し数の加算
                                 Debug.Log($"SCORE:len:{word.Length}:{word} -> {100 * Mathf.Pow(2, word.Length - 3)} : {sameEraseNum}");
+                                Debug.Log($"DAMAGE:len:{word.Length}:{word} -> {damagePerChain} : {sameEraseNum}");
                                 ComboNum++;  //コンボ数の追加とUI更新
                                 yield return new WaitForSeconds(1.5f);
                             }

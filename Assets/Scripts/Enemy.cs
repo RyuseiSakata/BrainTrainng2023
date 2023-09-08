@@ -109,7 +109,7 @@ namespace Battle {
         {
             maxHp = init_hp;
             HpAmount = maxHp;    //Hp‚Ì‰Šú‰»
-            attackPower = Random.Range(1,3);  //UŒ‚—Í‚Ì‰Šú‰»
+            attackPower = 1;  //UŒ‚—Í‚Ì‰Šú‰»
             attackChargeSpan = 2; //UŒ‚ƒ^[ƒ“ŠÔŠu
             AttackChargedTurn = attackChargeSpan;
         }
