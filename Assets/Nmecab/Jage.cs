@@ -169,4 +169,9 @@ public class Jage : MonoBehaviour
     public List<string> Get(){
       return sepa2;
     }
+
+    public bool Guess(string s, string sb){
+
+      return false;
+    }
 }
