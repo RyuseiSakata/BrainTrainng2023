@@ -56,7 +56,6 @@ public class Jage : MonoBehaviour
               {
                   if(!sepa.Contains(node.Surface)){
                   Debug.Log(node.Surface);
-                  Debug.Log(node.Surface);
                   Debug.Log(node.PartsOfSpeech);
                   sepa2.Add($"{node.PartsOfSpeech}");
                   sepa.Add($"{node.Surface}");
@@ -85,9 +84,6 @@ public class Jage : MonoBehaviour
             Debug.Log(sepa[i]);
             Debug.Log(sepa2[i]);
           }
-
-          // ラティスから、最終的な累積コストのみを取得
-
       }
    }
 
@@ -115,9 +111,10 @@ public class Jage : MonoBehaviour
             if(!sepa.Contains(node.Surface)){
               Debug.Log(node.Surface);
               sepa.Add($"{node.Surface}");
-              Debug.Log(sepa[num].Length);
+              sepa2.Add($"{node.PartsOfSpeech}");
               if(sepa[num].Length < 3||node.Reading != "あ"){
                 sepa.Remove($"{node.Surface}");
+                sepa2.Add($"{node.PartsOfSpeech}");
                 num = num - 1;
             }
               num++;
@@ -133,11 +130,12 @@ public class Jage : MonoBehaviour
               {
                 if(!sepa.Contains(node.Surface)){
                   Debug.Log(node.Surface);
-                  Debug.Log(node.Surface);
                   sepa.Add($"{node.Surface}");
+                  sepa2.Add($"{node.PartsOfSpeech}");
                   Debug.Log(sepa[num].Length);
                   if(sepa[num].Length < 3||node.Reading != "あ"){
                     sepa.Remove($"{node.Surface}");
+                    sepa2.Add($"{node.PartsOfSpeech}");
                     num = num - 1;
                 }
                   num++;
@@ -146,26 +144,13 @@ public class Jage : MonoBehaviour
 
 
           }
-
-          Debug.Log("----------");
-
-          // ラティスから、開始位置別の形態素を取得し処理
-          for (int i = 0; i < lattice.BeginNodeList.Length - 1; i++)
-          {
-              for (var node = lattice.BeginNodeList[i]; node != null; node = node.BNext)
-              {
-                  if (node.Prob <= 0.001f) continue;
-
-
-              }
-          }
-
           for(int i = 0;i<num;i++){
 
             if(i +1 < sepa.Count ){
               Debug.Log("入った");
               if(sepa[i]==sepa[i+1]){
                 sepa.Remove(sepa[i]);
+                sepa2.Add($"{node.PartsOfSpeech}");
                 Debug.Log("消した");
               }
             }
@@ -180,9 +165,8 @@ public class Jage : MonoBehaviour
       }
 
     }
-    // Update is called once per frame
-    void Update()
-    {
 
+    public List<string> Get(){
+      return sepa2;
     }
 }
