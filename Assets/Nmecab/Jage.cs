@@ -150,7 +150,7 @@ public class Jage : MonoBehaviour
               Debug.Log("入った");
               if(sepa[i]==sepa[i+1]){
                 sepa.Remove(sepa[i]);
-                sepa2.Add($"{node.PartsOfSpeech}");
+                sepa2.Add(sepa2[i]);
                 Debug.Log("消した");
               }
             }
