@@ -112,7 +112,7 @@ public class Jage : MonoBehaviour
               Debug.Log(node.Surface);
               sepa.Add($"{node.Surface}");
               sepa2.Add($"{node.PartsOfSpeech}");
-              if(sepa[num].Length < 3||node.Reading != "あ"){
+              if(sepa[num].Length < 3||node.Reading != "あ" ||node.PartsOfSpeech=="助詞"||node.PartsOfSpeech=="名詞"||node.PartsOfSpeech=="動詞"){
                 sepa.Remove($"{node.Surface}");
                 sepa2.Add($"{node.PartsOfSpeech}");
                 num = num - 1;
@@ -133,7 +133,7 @@ public class Jage : MonoBehaviour
                   sepa.Add($"{node.Surface}");
                   sepa2.Add($"{node.PartsOfSpeech}");
                   Debug.Log(sepa[num].Length);
-                  if(sepa[num].Length < 3||node.Reading != "あ"){
+                  if(sepa[num].Length < 3||node.Reading != "あ"||node.PartsOfSpeech=="助詞"||node.PartsOfSpeech=="名詞"||node.PartsOfSpeech=="動詞"){
                     sepa.Remove($"{node.Surface}");
                     sepa2.Add($"{node.PartsOfSpeech}");
                     num = num - 1;
