@@ -23,6 +23,7 @@ public class Stage : MonoBehaviour
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow + 1, Config.maxCol];  //ステージ全体のブロック配列
     public List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
     private List<Block> judgeTargetList = new List<Block>(); //判定を行う対象
+    List<Block> destroyList = new List<Block>();    //削除するブロックのリスト
 
     private List<Block>[] nextBlock = { new List<Block>(), new List<Block>() }; //次(0)とその次(1)のブロックを格納
     [SerializeField] Transform[] SpawnPos;  //次の出現位置(0)とその次の出現位置(1)
@@ -436,7 +437,7 @@ public class Stage : MonoBehaviour
             }
             upper.DestinationRow = lower.DestinationRow - 1;
         }
-        else
+        else if(activeBlockList.Count > 0)
         {
             int row = -100; //目的の行数(初期値-100)
 
@@ -473,9 +474,7 @@ public class Stage : MonoBehaviour
 
     //判定・消す・落下処理を行う　返却値がtrueなら連鎖終了
     private IEnumerator judgeAndDelete()
-    {
-        List<Block> destroyList = new List<Block>();    //削除するブロックのリスト
-
+    { 
         /***  縦向きの文字列の判定  調べる列の文字列を取得  ***/
         List<int> targetRow = new List<int>();  //調べた行を格納
         List<int> targetCol = new List<int>();  //調べた列を格納
@@ -676,7 +675,7 @@ public class Stage : MonoBehaviour
                 if (upperGridDic.ContainsKey(i))
                 {
 
-                    for (int j = upperGridDic[i] - 1; 0 < j; j--)
+                    for (int j = upperGridDic[i] - 1; 0 <= j; j--)
                     {
                         if (checkState(j, i) == GridState.Null)
                         {
@@ -725,6 +724,7 @@ public class Stage : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
+        destroyList.Clear();
         yield break;
     }
 
@@ -853,13 +853,26 @@ public class Stage : MonoBehaviour
 
     }
     
-    //お邪魔ブロックを生成
-    public IEnumerator createObstacleBlock()
+    //お邪魔ブロックを生成 引数に渡した文字列を落とす
+    //nといれると何も出さない
+    public IEnumerator createObstacleBlock(string charaSet="おじやまだよー")
     {
+        //maxCol文字になるまで右をnで埋める
+        while (charaSet.Length < Config.maxCol)
+        {
+            charaSet += 'n';
+        }
+
         List<GameObject> instanceList = new List<GameObject>();
         for(int i=0; i < Config.maxCol; i++)
         {
             //int col = Random.Range(0, Config.maxCol);
+
+            //"n"のときは何も出さない
+            if (charaSet[i].Equals('n'))
+            {
+                continue;
+            }
 
             var instance = Instantiate(blockPrefab, this.gameObject.transform);
             instance.SetActive(false);
@@ -867,7 +880,8 @@ public class Stage : MonoBehaviour
             instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
             Block block = instance.GetComponent<Block>();
             block.stage = this;
-            block.init(decideCharacter(), 0, i);
+            block.init(charaSet[i].ToString(), 0, i);
+            //block.init(decideCharacter(), 0, i);
             block.callActive();
             activeBlockList.Add(block);
             judgeTargetList.Add(block);
@@ -881,9 +895,28 @@ public class Stage : MonoBehaviour
         });
         
 
+        fallBoost = 35.0f;
+        yield return fall(false);
+        fallBoost = 1.0f;
+
+        yield break;
+    }
+
+    public IEnumerator rowLineDelete(int row)
+    {
+        for(int col=0; col < Config.maxCol; col++)
+        {
+            if (BlockArray[row, col] != null)
+            {
+                destroyList.Add(BlockArray[row, col]);
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
         fallBoost = 28.0f;
         yield return fall(false);
         fallBoost = 1.0f;
+
         yield break;
     }
 }

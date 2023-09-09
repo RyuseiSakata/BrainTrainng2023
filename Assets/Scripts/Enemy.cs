@@ -7,6 +7,8 @@ namespace Battle {
     {
         Normal,
         Obstacle,   //お邪魔ブロック
+        First,  //最初の攻撃
+        DeleteRow,
     }
 
     public class Enemy : MonoBehaviour
@@ -77,6 +79,12 @@ namespace Battle {
                 AttackChargedTurn += stage.ComboNum / 3;
             }
 
+            if (attackKinds == EnemyAttackKinds.First)
+            {
+                yield return stage.createObstacleBlock("すnたnーnと");
+
+            }
+
             //行動できるなら
             if(AttackChargedTurn == 0)
             {
@@ -89,6 +97,9 @@ namespace Battle {
                         break;
                     case EnemyAttackKinds.Obstacle:
                         yield return stage.createObstacleBlock();
+                        break;
+                    case EnemyAttackKinds.DeleteRow:
+                        yield return stage.rowLineDelete(6);
                         break;
                 }
                 AttackChargedTurn = attackChargeSpan; //攻撃までのターン数を更新

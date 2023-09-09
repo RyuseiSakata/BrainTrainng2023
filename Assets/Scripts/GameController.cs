@@ -71,6 +71,7 @@ public class GameController : MonoBehaviour
             //player.StartCoroutine("action");
             //enemy.StartCoroutine("action");
             */
+            yield return enemy.attack(player, EnemyAttackKinds.First);
 
             while (gameState == GameState.Playing)
             {
@@ -83,9 +84,10 @@ public class GameController : MonoBehaviour
                 yield return player.attack(enemy, PlayerAttackKinds.Word);
                 yield return new WaitForSeconds(0.2f);
                 yield return enemy.attack(player, EnemyAttackKinds.Normal);
+                yield return player.attack(enemy, PlayerAttackKinds.Word);
 
                 //éÄÇÒÇæÇ©ÇÃèàóù
-                if(enemy.HpAmount <= 0f)
+                if (enemy.HpAmount <= 0f)
                 {
                     finishText = "You Win";
                     gameOver();
@@ -127,8 +129,16 @@ public class GameController : MonoBehaviour
         {
             score += (stage.ChainNum - 1) * 200;
         }
+
+        if (score > 9900)
+        {
+            uiManager.textUpdate(TextKinds.Score, 9900);
+        }
+        else
+        {
+            uiManager.textUpdate(TextKinds.Score, score);
+        }
         
-        uiManager.textUpdate(TextKinds.Score, score);
     }
 
     public void calculateDamage(int mode = 0, int damagePerChain = 0, int sameEraseNum = 0)
