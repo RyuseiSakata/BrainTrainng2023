@@ -492,18 +492,20 @@ public class Stage : MonoBehaviour
                 if (str.Length >= 3)
                 {
                     //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> findList = (new Jage()).Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
-                    
-                    Debug.Log("List:縦文字列："+str);
+                    Jage jage = new Jage();
+                    IEnumerable<string> findList = jage.Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しfindListに代入
+                    List<string> formalList = jage.Get();     //取得した文字列（str）に含まれる単語の正式表現を辞書から取得しformalListに代入
+
+                    Debug.Log("List:縦文字列：" + str);
                     var s = "List:含め単語：";
-                    findList.ForEach(e =>
+                    findList.ToList().ForEach(e =>
                     {
                         s += e + ",";
 
                     });
                     Debug.Log(s);
-                    
-                    foreach (var word in findList)
+
+                    foreach (var (word, wIndex) in findList.Select((value, wIndex) => (value, wIndex)))
                     {
                         int index = -1; //str内のwordの出現位置
 
@@ -519,7 +521,7 @@ public class Stage : MonoBehaviour
                             else
                             {
                                 //コレクションリストに追加
-                                WordData addWord = new WordData(word,"","");
+                                WordData addWord = new WordData(word, formalList[wIndex],"");
                                 wordList.CollectList.Add(addWord);  //消した言葉リストに追加
 
                                 for (int i = index + head; i < index + head + word.Length; i++)
@@ -568,17 +570,19 @@ public class Stage : MonoBehaviour
                 if (str.Length >= 3)
                 {
                     //List<string> findList = new List<string>() { "りんご", "ごりん", "ごんご", "りんり", "ごりごり" };
-                    List<string> findList = (new Jage()).Check(str);    //取得した文字列（str）に含まれる単語を辞書から取得しwordListに代入
-                    
-                     Debug.Log("List:横文字列："+str);
+                    Jage jage = new Jage();
+                    IEnumerable<string> findList = jage.Check(str);     //取得した文字列（str）に含まれる単語を辞書から取得しfindListに代入
+                    List<string> formalList = jage.Get();     //取得した文字列（str）に含まれる単語の正式表現を辞書から取得しformalListに代入
+
+                    Debug.Log("List:横文字列：" + str);
                     var s = "List:含め単語：";
-                    findList.ForEach(e =>
+                    findList.ToList().ForEach(e =>
                     {
                         s += e + ",";
 
                     });
                     Debug.Log(s);
-                    foreach (var word in findList)
+                    foreach (var (word, wIndex) in findList.Select((value, wIndex) => (value, wIndex)))
                     {
                         int index = -1; //str内のwordの出現位置
 
@@ -594,7 +598,7 @@ public class Stage : MonoBehaviour
                             else
                             {
                                 //コレクションリストに追加
-                                WordData addWord = new WordData(word,"", "");
+                                WordData addWord = new WordData(word, formalList[wIndex], "");
                                 wordList.CollectList.Add(addWord);  //消した言葉リストに追加
 
                                 for (int i = index + head; i < index + head + word.Length; i++)
