@@ -313,6 +313,7 @@ public class Stage : MonoBehaviour
             damagePerChain = 0;  //一連鎖あたりのプレイヤーの攻撃量をリセット
             ChainNum += 1;
         }
+        ChainNum -= 1;//連鎖数の調整
 
         yield return fallBottom();   //空の場合に下まで下す処理
 

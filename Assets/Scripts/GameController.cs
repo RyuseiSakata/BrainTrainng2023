@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour
     private string popUpText = "Finish";
 
     private int score = 0;
-    public static int playerAttack;   //消した文字によるプレイヤーの攻撃量
+    public static float playerAttack;   //消した文字によるプレイヤーの攻撃量
 
     //ターン数のプロパティ
     public int NumberOfTurns
@@ -116,9 +116,10 @@ public class GameController : MonoBehaviour
         if(mode == 0)
         {
             //同時消しが発生したなら
-            if (sameEraseNum > 1)
+            //1連鎖当たりの同時消しの強化　＝　sumA×（1+(0.5×同時消し数）)
+            if (sameEraseNum > 0)
             {
-                playerAttack += damagePerChain * 2;
+                playerAttack += damagePerChain * (1+(0.5f* sameEraseNum));
             }
             else
             {
@@ -129,9 +130,11 @@ public class GameController : MonoBehaviour
         else
         {
             //連鎖が発生したなら
-            if(stage.ChainNum > 2)
+            //連鎖による強化 =（連鎖数ー１）* 1.5+sumB
+            if (stage.ChainNum > 1)
             {
-                playerAttack *= 2;
+
+                playerAttack += (stage.ChainNum-1)*1.5f;
             }
         }
     }
