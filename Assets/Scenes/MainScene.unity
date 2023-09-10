@@ -1940,6 +1940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 510891540b8342f4a9c903905518f1a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: {fileID: 0}
   stage: {fileID: 450358701}
 --- !u!4 &719233742
 Transform:
@@ -2050,8 +2051,8 @@ RectTransform:
   m_Children:
   - {fileID: 113365126}
   - {fileID: 618915702}
-  - {fileID: 848928202}
   - {fileID: 918315683}
+  - {fileID: 848928202}
   - {fileID: 604471000}
   - {fileID: 1557622833}
   m_Father: {fileID: 0}
@@ -2345,7 +2346,7 @@ RectTransform:
   - {fileID: 76459448}
   - {fileID: 1963382824}
   m_Father: {fileID: 719600921}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2561,7 +2562,7 @@ RectTransform:
   - {fileID: 681563917}
   - {fileID: 1230670400}
   m_Father: {fileID: 719600921}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
