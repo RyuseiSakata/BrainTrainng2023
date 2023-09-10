@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text countDownText;
     [SerializeField] GameObject finishText;
     [SerializeField] GameObject darkPanel;
+    [SerializeField] GameObject book;
+    [SerializeField] Text hiraganaText;
+    [SerializeField] Text formalText;
 
     /*デバッグ用*/
     [SerializeField] InputField fallInputField; //自由落下速度調整用の入力欄
@@ -80,4 +83,32 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         yield break;
     }
+
+    //本を開く
+    private IEnumerator openWordBook()
+    {
+        book.SetActive(true);
+        yield break;
+    }
+
+    //本を閉じる
+    public IEnumerator closeWordBook()
+    {
+        book.SetActive(false);
+        yield break;
+    }
+
+
+    //本に文字を表示する
+    public IEnumerator updateBook(string hiragana="", string formal="")
+    {
+        if (!book.activeSelf) yield return openWordBook();  //本を開く
+
+        hiraganaText.text = hiragana;
+        formalText.text = formal;
+
+        yield break;
+    }
+
+
 }

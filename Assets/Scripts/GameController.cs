@@ -130,9 +130,9 @@ public class GameController : MonoBehaviour
             score += (stage.ChainNum - 1) * 200;
         }
 
-        if (score > 9900)
+        if (score > 999999)
         {
-            uiManager.textUpdate(TextKinds.Score, 9900);
+            uiManager.textUpdate(TextKinds.Score, 999999);
         }
         else
         {
