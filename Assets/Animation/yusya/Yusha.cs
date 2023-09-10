@@ -63,10 +63,14 @@ public class Yusha : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if(Input.GetKeyDown(KeyCode.Z) == true){
-            StartCoroutine("AStart");
-            gameObject.SetActive(false);
+            //StartCoroutine("AStart");
+            //gameObject.SetActive(false);
         }
        
+    }
+    public void SA(){
+        StartCoroutine("AStart");
+        gameObject.SetActive(false);
     }
 
     IEnumerator AStart(){
