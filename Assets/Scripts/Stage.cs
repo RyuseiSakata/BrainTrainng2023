@@ -709,7 +709,7 @@ public class Stage : MonoBehaviour
 
             //落下するブロックの落下準備処理
             List<Block> fallList = new List<Block>();   //落下するブロック群
-            List<Block> toNullList = new List<Block>();
+
             //列ごとに最上部のブロックと消えたブロックの数をカウント
             destroyList.ForEach(block =>
             {
@@ -731,6 +731,7 @@ public class Stage : MonoBehaviour
                 }
             });
 
+            /*落下するブロックの元の位置を削除*/
             fallList.ForEach(block =>
             {
                 BlockArray[block.CurrentRow, block.CurrentCol] = null;

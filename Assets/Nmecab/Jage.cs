@@ -108,7 +108,7 @@ public class Jage : MonoBehaviour
           // ラティスから、ベスト解を取得し処理
           foreach (var node in lattice.GetBestNodes())
           {
-            if(!sepa.Contains(node.Surface)){
+            if(!sepa.Contains(node.Surface)&&(node.Reading == "あ")){
               Debug.Log(node.Surface);
               sepa.Add($"{node.Surface}");
               sepa2.Add($"{node.PartsOfSpeech}");
@@ -128,7 +128,7 @@ public class Jage : MonoBehaviour
           {
               foreach (var node in result)
               {
-                if(!sepa.Contains(node.Surface)){
+                if(!sepa.Contains(node.Surface)&&(node.Reading == "あ")){
                   Debug.Log(node.Surface);
                   sepa.Add($"{node.Surface}");
                   sepa2.Add($"{node.PartsOfSpeech}");
