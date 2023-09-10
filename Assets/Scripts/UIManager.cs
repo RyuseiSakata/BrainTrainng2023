@@ -45,7 +45,8 @@ public class UIManager : MonoBehaviour
         switch (textKinds)
         {
             case TextKinds.Combo:
-                comboText.text = "ƒRƒ“ƒ{”F" + value.ToString("000");
+                if (value > 99) value = 99;
+                comboText.text = value.ToString("00");
                 break;
             case TextKinds.CountDown:
                 countDownText.text = value.ToString("0");
