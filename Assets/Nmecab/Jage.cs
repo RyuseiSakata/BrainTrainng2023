@@ -170,7 +170,32 @@ public class Jage : MonoBehaviour
       return sepa2;
     }
 
-    public bool Guess(string s, string sb){
+
+     public bool Guess(string s, string sb){
+      
+      string check = s + sb;
+      var dicDir = Application.dataPath +"/Plugins/Nmecab/dic/ipadic";
+       var user = new[] {"origin.dic"};
+
+       using (var tagger = MeCabIpaDicTagger.Create(dicDir,user))
+       {
+
+         var prm = new MeCabParam()
+          {
+              LatticeLevel = MeCabLatticeLevel.Two,
+              Theta = 1f / 800f / 2f
+          };
+
+          var lattice = tagger.ParseToLattice(check, prm); // ラティスを取得
+
+          // ラティスから、ベスト解を取得し処理
+          foreach (var node in lattice.GetBestNodes())
+          {
+            if(!sepa.Contains(node.Surface)&&(node.Reading == "あ")){
+              return true;
+            }
+            }
+          }
 
       return false;
     }
