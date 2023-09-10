@@ -7,19 +7,20 @@ public class YushaAnim : MonoBehaviour
     int num;
     [SerializeField] private GameObject gameObject1;
     [SerializeField] private GameObject gameObject2;
-    public Script_SpriteStudio6_Root scriptRoot;
-    private Yusha yusha;
+    Yusha script;
     // Start is called before the first frame update
     void Start()
     {
 
-        
-        
+        script = gameObject1.GetComponent<Yusha>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Z) == true){
+            script.SA();
+            gameObject2.gameObject.SetActive(false);
+        }
     }
 }
