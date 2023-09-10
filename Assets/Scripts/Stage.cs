@@ -330,7 +330,7 @@ public class Stage : MonoBehaviour
         //ゲームオーバーの判定
         if (GameOverFlag)
         {
-            gameController.gameOver();
+            gameController.endGame();
             yield break;
         }
 
@@ -524,6 +524,9 @@ public class Stage : MonoBehaviour
                                 WordData addWord = new WordData(word, formalList[wIndex],"");
                                 wordList.CollectList.Add(addWord);  //消した言葉リストに追加
 
+                                //本の表示
+                                yield return uIManager.updateBook(word, formalList[wIndex]);
+
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     /*
@@ -534,7 +537,7 @@ public class Stage : MonoBehaviour
                                     yield return new WaitForSeconds(0.3f);
                                     */
                                     Block b = BlockArray[i, targetCol.Last()];
-                                    b.emphasize();
+                                    b.emphasize();  //アニメーション再生
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                 }
                                 float pitch = 0.6f + comboNum * 0.4f;
@@ -601,6 +604,9 @@ public class Stage : MonoBehaviour
                                 WordData addWord = new WordData(word, formalList[wIndex], "");
                                 wordList.CollectList.Add(addWord);  //消した言葉リストに追加
 
+                                //本の表示
+                                yield return uIManager.updateBook(word, formalList[wIndex]);
+
                                 for (int i = index + head; i < index + head + word.Length; i++)
                                 {
                                     /*
@@ -611,7 +617,7 @@ public class Stage : MonoBehaviour
                                     yield return new WaitForSeconds(0.3f);
                                     */
                                     Block b = BlockArray[targetRow.Last(), i];
-                                    b.emphasize();
+                                    b.emphasize();  //アニメーション再生
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
 
                                 }
@@ -630,6 +636,8 @@ public class Stage : MonoBehaviour
                 }
             }
         }
+
+        yield return uIManager.closeWordBook();  //本を閉じる
 
         judgeTargetList.Clear();    //確認リストを初期化
 

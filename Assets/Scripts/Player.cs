@@ -21,7 +21,7 @@ namespace Battle
         [SerializeField] float hpAmount;
         [SerializeField] float attackPower;
 
-        public static float maxHp = 15;
+        public static float maxHp = 25;
 
         public float HpAmount
         {
@@ -49,7 +49,6 @@ namespace Battle
             if (HpAmount <= 0f)
             {
                 Debug.Log("敵に倒された");
-                stage.GameOverFlag = true;  //ゲームオーバーのフラグを立てる
                 StopAllCoroutines();    //スクリプト内のすべてのコルーチン終了
             }
         }

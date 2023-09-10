@@ -15,8 +15,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
     [SerializeField] Text countDownText;
-    [SerializeField] GameObject finishText;
+    [SerializeField] GameObject popUpText;
     [SerializeField] GameObject darkPanel;
+    [SerializeField] GameObject book;
+    [SerializeField] Text hiraganaText;
+    [SerializeField] Text formalText;
 
     /*デバッグ用*/
     [SerializeField] InputField fallInputField; //自由落下速度調整用の入力欄
@@ -42,7 +45,8 @@ public class UIManager : MonoBehaviour
         switch (textKinds)
         {
             case TextKinds.Combo:
-                comboText.text = "コンボ数：" + value.ToString("000");
+                if (value > 99) value = 99;
+                comboText.text = value.ToString("00");
                 break;
             case TextKinds.CountDown:
                 countDownText.text = value.ToString("0");
@@ -57,6 +61,7 @@ public class UIManager : MonoBehaviour
     //ゲームスタート時のカウントダウンの表示を行うコルーチン
     public IEnumerator showCountDown()
     {
+        darkPanel.SetActive(true);
         countDownText.text = "3";
         yield return new WaitForSeconds(1f);
         countDownText.text = "2";
@@ -71,13 +76,43 @@ public class UIManager : MonoBehaviour
         yield break;
     }
 
-    public IEnumerator showFinish(string text="Finish")
+    public IEnumerator showPopUp(string text="Finish",float time = 1f)
     {
         
         darkPanel.SetActive(true);
-        finishText.SetActive(true);
-        finishText.GetComponent<Text>().text = text;
-        yield return new WaitForSeconds(1f);
+        popUpText.SetActive(true);
+        popUpText.GetComponent<Text>().text = text;
+        yield return new WaitForSeconds(time);
+        darkPanel.SetActive(false);
+        popUpText.SetActive(false);
         yield break;
     }
+
+    //本を開く
+    private IEnumerator openWordBook()
+    {
+        book.SetActive(true);
+        yield break;
+    }
+
+    //本を閉じる
+    public IEnumerator closeWordBook()
+    {
+        book.SetActive(false);
+        yield break;
+    }
+
+
+    //本に文字を表示する
+    public IEnumerator updateBook(string hiragana="", string formal="")
+    {
+        if (!book.activeSelf) yield return openWordBook();  //本を開く
+
+        hiraganaText.text = hiragana;
+        formalText.text = formal;
+
+        yield break;
+    }
+
+
 }
