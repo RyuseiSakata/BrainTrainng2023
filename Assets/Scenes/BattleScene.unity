@@ -717,11 +717,13 @@ MonoBehaviour:
   uIManager: {fileID: 665633861}
   gameController: {fileID: 1381770983}
   playerInput: {fileID: 1748596557}
+  activeBlockList: []
   SpawnPos:
   - {fileID: 322032807}
   - {fileID: 102642373}
   audioManaeger: {fileID: 769325336}
   wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
+  damagePerChain: 0
 --- !u!4 &231471975
 Transform:
   m_ObjectHideFlags: 0
@@ -2345,6 +2347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bebb315196aa7d34da5af3461cff4ec0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreText: {fileID: 0}
   comboText: {fileID: 1761536460}
   countDownText: {fileID: 1231305354}
   finishText: {fileID: 419399314}
