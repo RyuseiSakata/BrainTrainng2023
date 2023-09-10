@@ -9,7 +9,7 @@ namespace Battle
     {
         PlayerHP,
         EnemyHP,
-        AttackChargedTurn,
+        NextActionCount,
     }
     public class BattleUIManager : MonoBehaviour
     {
@@ -30,7 +30,7 @@ namespace Battle
                 case UIKinds.EnemyHP:
                     enemyHpSlider.value = value / Enemy.maxHp;
                     break;
-                case UIKinds.AttackChargedTurn:
+                case UIKinds.NextActionCount:
                     chargeTurnText.text = value.ToString("00");
                     break;
             }

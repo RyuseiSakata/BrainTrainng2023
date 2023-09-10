@@ -152,7 +152,7 @@ public class Stage : MonoBehaviour
             {
                 var instance = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
                 instance.transform.localPosition = Vector3.zero;
-                instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+                instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
                 Block block = instance.GetComponent<Block>();
                 block.stage = this;
                 block.init(decideCharacter(), 0, 2);
@@ -163,7 +163,7 @@ public class Stage : MonoBehaviour
             {
                 var instance = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
                 instance.transform.localPosition = new Vector3(-(1f / Config.maxCol / 2f), 0f, 0f);
-                instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+                instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
                 Block block = instance.GetComponent<Block>();
                 block.stage = this;
                 block.init(decideCharacter(), 0, 2);
@@ -171,7 +171,7 @@ public class Stage : MonoBehaviour
 
                 var instance2 = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
                 instance2.transform.localPosition = new Vector3(1f / Config.maxCol / 2f, 0f, 0f);
-                instance2.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+                instance2.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
                 Block block2 = instance2.GetComponent<Block>();
                 block2.stage = this;
                 block2.init(decideCharacter(), 0, 3);
@@ -944,7 +944,7 @@ public class Stage : MonoBehaviour
             var instance = Instantiate(blockPrefab, this.gameObject.transform);
             instance.SetActive(false);
             instance.transform.localPosition = Vector3.zero;
-            instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+            instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
             Block block = instance.GetComponent<Block>();
             block.stage = this;
             block.init(charaSet[i].ToString(), 0, i);
