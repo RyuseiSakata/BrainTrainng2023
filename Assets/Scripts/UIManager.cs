@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
     [SerializeField] Text countDownText;
-    [SerializeField] GameObject finishText;
+    [SerializeField] GameObject popUpText;
     [SerializeField] GameObject darkPanel;
     [SerializeField] GameObject book;
     [SerializeField] Text hiraganaText;
@@ -61,6 +61,7 @@ public class UIManager : MonoBehaviour
     //ゲームスタート時のカウントダウンの表示を行うコルーチン
     public IEnumerator showCountDown()
     {
+        darkPanel.SetActive(true);
         countDownText.text = "3";
         yield return new WaitForSeconds(1f);
         countDownText.text = "2";
@@ -75,13 +76,15 @@ public class UIManager : MonoBehaviour
         yield break;
     }
 
-    public IEnumerator showFinish(string text="Finish")
+    public IEnumerator showPopUp(string text="Finish",float time = 1f)
     {
         
         darkPanel.SetActive(true);
-        finishText.SetActive(true);
-        finishText.GetComponent<Text>().text = text;
-        yield return new WaitForSeconds(1f);
+        popUpText.SetActive(true);
+        popUpText.GetComponent<Text>().text = text;
+        yield return new WaitForSeconds(time);
+        darkPanel.SetActive(false);
+        popUpText.SetActive(false);
         yield break;
     }
 

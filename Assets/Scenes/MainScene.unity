@@ -3138,7 +3138,7 @@ MonoBehaviour:
   scoreText: {fileID: 618915704}
   comboText: {fileID: 897348106}
   countDownText: {fileID: 2099346347}
-  finishText: {fileID: 1231514353}
+  popUpText: {fileID: 1231514353}
   darkPanel: {fileID: 904724024}
   book: {fileID: 368947728}
   hiraganaText: {fileID: 1171425621}
@@ -4335,7 +4335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6d96cb32fa7334458881c95dab02893, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiManager: {fileID: 1202892936}
+  uIManager: {fileID: 1202892936}
   stage: {fileID: 450358701}
   player: {fileID: 0}
   enemy: {fileID: 0}

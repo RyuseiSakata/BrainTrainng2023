@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Battle;
 
-public enum GameState {
-    Playing,
-    GameOver,
+
+public enum EnemyType
+{
+    Fase1,
+    Fase2,
+    Dragon,
 }
 
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField] UIManager uiManager;
+    [SerializeField] UIManager uIManager;
     [SerializeField] Stage stage;
 
     //バトルシーン用
@@ -19,9 +22,8 @@ public class GameController : MonoBehaviour
     [SerializeField] Battle.Enemy enemy;
 
     private int numberOfTurns = 0;  //ターン数
-    private GameState gameState = GameState.Playing;    //ゲームの状態
 
-    private string finishText = "Finish";
+    private string popUpText = "Finish";
 
     private int score = 0;
     public static int playerAttack;   //消した文字によるプレイヤーの攻撃量
@@ -33,10 +35,14 @@ public class GameController : MonoBehaviour
         set { numberOfTurns = value; }
     }
 
+    private int faseCount = 0;  //現在のフェーズ数
+    private EnemyType[] enemyArray = { EnemyType.Fase1, EnemyType.Fase2, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
+
+    private bool gameEndFlag = false;    //ゲーム終了のフラグ
     private void Start()
     {
         score = 0;
-        playerAttack = 0;
+        
         StartCoroutine("mainLoop");
     }
 
@@ -44,9 +50,9 @@ public class GameController : MonoBehaviour
     {
         if(SceneChanger.getCurrentSceneName() == "MainScene")
         {
-            yield return uiManager.showCountDown();
+            yield return uIManager.showCountDown();
 
-            while (gameState == GameState.Playing)
+            while (!gameEndFlag)
             {
                 yield return stage.fall();
                 NumberOfTurns++;    //ターン数を増加
@@ -54,7 +60,7 @@ public class GameController : MonoBehaviour
                 yield return new WaitForSeconds(0.3f);
             }
 
-            yield return uiManager.showFinish();
+            yield return uIManager.showPopUp();
 
             SceneChanger.changeTo(SceneType.Result);
 
@@ -62,44 +68,14 @@ public class GameController : MonoBehaviour
         // バトルモードなら
         else if(SceneChanger.getCurrentSceneName() == "BattleScene")
         {
-            actorInit();
-
-            yield return uiManager.showCountDown();
-
-            /*
-             * 一定間隔で攻撃するなら以下のコード
-            //player.StartCoroutine("action");
-            //enemy.StartCoroutine("action");
-            */
-            yield return enemy.attack(player, EnemyAttackKinds.First);
-
-            while (gameState == GameState.Playing)
+            //endGameが呼ばれゲーム終了となるまで
+            while (!gameEndFlag)
             {
-                yield return stage.fall();  //ブロックの落下処理
-
-                NumberOfTurns++;    //ターン数を増加
-                Debug.Log("Turn:" + NumberOfTurns + ",Combo:" + stage.ComboNum);
-
-                //文字の消え具合　また　ターンにより攻撃を行う場合
-                yield return player.attack(enemy, PlayerAttackKinds.Word);
-                yield return new WaitForSeconds(0.2f);
-                yield return enemy.attack(player, EnemyAttackKinds.Normal);
-                yield return player.attack(enemy, PlayerAttackKinds.Word);
-
-                //死んだかの処理
-                if (enemy.HpAmount <= 0f)
-                {
-                    finishText = "You Win";
-                    gameOver();
-                }
-                if (player.HpAmount <= 0f)
-                {
-                    finishText = "You Lose";
-                    gameOver();
-                }
+                yield return startBattle(); //バトル開始
+                
             }
-
-            yield return uiManager.showFinish(finishText);
+            
+            yield return uIManager.showPopUp(popUpText);
 
             SceneChanger.changeTo(SceneType.Result);
             
@@ -108,18 +84,11 @@ public class GameController : MonoBehaviour
         yield break;
     }
 
-    public void gameOver()
+    public void endGame()
     {
-        Debug.Log("game over");
-        gameState = GameState.GameOver;
-    }
-
-
-    //プレイヤーと敵の初期化
-    private void actorInit()
-    {
-        player.Init();
-        enemy.Init(10);
+        Debug.Log("endGame");
+        gameEndFlag = true;
+        stage.GameOverFlag = true;  //ゲームオーバーのフラグを立てる
     }
 
     public void calculateScore(int scorePerChain, int sameEraseNum)
@@ -132,11 +101,11 @@ public class GameController : MonoBehaviour
 
         if (score > 999999)
         {
-            uiManager.textUpdate(TextKinds.Score, 999999);
+            uIManager.textUpdate(TextKinds.Score, 999999);
         }
         else
         {
-            uiManager.textUpdate(TextKinds.Score, score);
+            uIManager.textUpdate(TextKinds.Score, score);
         }
         
     }
@@ -165,6 +134,88 @@ public class GameController : MonoBehaviour
                 playerAttack *= 2;
             }
         }
+    }
+
+    //バトルを開始する処理
+    private IEnumerator initBattle(EnemyType fase = EnemyType.Dragon)
+    {
+        numberOfTurns = 0;  //ターン数を0にする
+        playerAttack = 0;
+        player.Init();
+
+        switch (fase)
+        {
+            case EnemyType.Fase1:
+                enemy.Init(5);
+                break;
+            case EnemyType.Fase2:
+                enemy.Init(10);
+                break;
+            case EnemyType.Dragon:
+                enemy.Init(15);
+                break;
+        }
+
+        yield break;
+    }
+
+    private IEnumerator startBattle()
+    {
+        EnemyType enemyType = enemyArray[faseCount];
+        yield return initBattle(enemyType);  //バトル開始
+
+        yield return uIManager.showCountDown();
+
+        /*
+         * 一定間隔で攻撃するなら以下のコード
+        //player.StartCoroutine("action");
+        //enemy.StartCoroutine("action");
+        */
+
+        //yield return enemy.attack(player, EnemyAttackKinds.First);
+
+        while (true)
+        {
+            yield return stage.fall();  //ブロックの落下処理
+
+            NumberOfTurns++;    //ターン数を増加
+
+            //文字の消え具合　また　ターンにより攻撃を行う場合
+            yield return player.attack(enemy, PlayerAttackKinds.Word);
+            yield return new WaitForSeconds(0.2f);
+            yield return enemy.attack(player, EnemyAttackKinds.Normal);
+            yield return player.attack(enemy, PlayerAttackKinds.Word);
+
+            //死んだかの処理
+            if (enemy.HpAmount <= 0f)
+            {
+                faseCount++;    //次のフェーズへ
+                Debug.Log("fase:" + faseCount);
+                yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
+
+                //すべての敵に勝ったなら
+                if (enemyArray.Length <= faseCount)
+                {
+                    popUpText = "Clear";
+                    endGame();
+                }
+
+                break;
+            }
+            if (player.HpAmount <= 0f)
+            {
+                endGame();
+                popUpText = "You Lose";
+
+            }
+
+            if (gameEndFlag)
+            {
+                break;
+            }
+        }
+
+        yield break;
     }
 }
 

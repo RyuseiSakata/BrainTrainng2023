@@ -330,7 +330,7 @@ public class Stage : MonoBehaviour
         //ゲームオーバーの判定
         if (GameOverFlag)
         {
-            gameController.gameOver();
+            gameController.endGame();
             yield break;
         }
 
