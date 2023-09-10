@@ -633,17 +633,26 @@ public class Stage : MonoBehaviour
 
         judgeTargetList.Clear();    //確認リストを初期化
 
-        /*** 発見された単語に相当するブロックを消す処理 ***/
-        destroyList.ForEach(block =>
-        {
-            BlockArray[block.CurrentRow, block.CurrentCol] = null;
-            block.DestroyObject();
-        });
-        yield return new WaitForSeconds(1/3f);
 
         /*** 発見された単語がある場合、ブロック削除後の落下処理 ***/
         if (destroyList.Count > 0)
         {
+
+            /*
+            /----------------------/ifのそとに
+            発見された単語に相当するブロックを消す処理
+            destroyList.ForEach(block =>
+            {
+                BlockArray[block.CurrentRow, block.CurrentCol] = null;
+
+                fallList.Remove(block);
+                judgeTargetList.Remove(block);
+
+                block.DestroyObject();
+            });
+            ------------------------------/
+
+
             Dictionary<int, int> upperGridDic = new Dictionary<int, int>();   //列ごとに最上部のブロックの行番号を格納
             Dictionary<int, int> deleteNumDic = new Dictionary<int, int>();   //列ごとに消えたブロックの数をカウント
             for (int i = 0; i < Config.maxCol; i++)
@@ -696,7 +705,51 @@ public class Stage : MonoBehaviour
                         }
                     }
                 }
-            }
+            }*/
+
+            //落下するブロックの落下準備処理
+            List<Block> fallList = new List<Block>();   //落下するブロック群
+            List<Block> toNullList = new List<Block>();
+            //列ごとに最上部のブロックと消えたブロックの数をカウント
+            destroyList.ForEach(block =>
+            {
+                for(int i = block.CurrentRow - 1; 0 <= i; i--)
+                {
+                    if (checkState(i, block.CurrentCol) != GridState.Null)
+                    {
+                        Block fallBlock = BlockArray[i, block.CurrentCol];
+                        fallBlock.DestinationRow += 1;
+                        fallBlock.BlockState = true;
+
+                        if (!fallList.Contains(fallBlock))fallList.Add(fallBlock);
+                        if (!judgeTargetList.Contains(fallBlock))judgeTargetList.Add(fallBlock);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            });
+
+            fallList.ForEach(block =>
+            {
+                BlockArray[block.CurrentRow, block.CurrentCol] = null;
+            });
+
+            /*** 発見された単語に相当するブロックを消す処理 ***/
+            destroyList.ForEach(block =>
+            {
+                BlockArray[block.CurrentRow, block.CurrentCol] = null;
+
+                fallList.Remove(block);
+                judgeTargetList.Remove(block);
+
+                block.DestroyObject();
+            });
+
+
+
+            yield return new WaitForSeconds(1 / 3f);
 
             //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
             if (fallList.Count > 0)
