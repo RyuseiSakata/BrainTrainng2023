@@ -116,10 +116,10 @@ public class GameController : MonoBehaviour
         if(mode == 0)
         {
             //同時消しが発生したなら
-            //1連鎖当たりの同時消しの強化　＝　sumA×（1+(0.5×同時消し数）)
+            //1連鎖当たりの同時消しの強化　＝　sumA×（1+(0.5×(同時消し数-1)）)
             if (sameEraseNum > 0)
             {
-                playerAttack += damagePerChain * (1+(0.5f* sameEraseNum));
+                playerAttack += damagePerChain * (1+(0.5f* (sameEraseNum-1)));
             }
             else
             {
