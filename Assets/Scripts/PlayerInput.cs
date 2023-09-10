@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum ButtonKinds
 {
@@ -16,6 +17,7 @@ public enum ButtonKinds
 /* ユーザの入力を扱うクラス */
 public class PlayerInput : MonoBehaviour
 {
+    [SerializeField] Text text;
     [SerializeField] Stage stage;
 
     private long frameFromTapped = 0;  //タップしてから離すまでのフレーム数
@@ -76,7 +78,7 @@ public class PlayerInput : MonoBehaviour
             }
 
             // ボタン以外の所をタッチ かつ タッチされているかチェック
-            if (isNothingPanelHold && Input.touchCount > 0)
+            if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);    // タッチ情報の取得
                 frameFromTapped++;  //フレーム数の更新
