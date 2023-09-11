@@ -15,6 +15,8 @@ namespace Battle
 
     public class Player : MonoBehaviour
     {
+
+        private YushaAnim yushaAnim;
         [SerializeField] BattleUIManager battleUIManager;
         [SerializeField] Stage stage;
 
@@ -39,6 +41,7 @@ namespace Battle
         private void Awake()
         {
             HpAmount = HpAmount;
+            yushaAnim = transform.GetChild(0).GetComponent<YushaAnim>();
         }
 
         //ダメージ計算を行うメソッド
@@ -63,16 +66,23 @@ namespace Battle
                 case PlayerAttackKinds.Normal:
                     damageAmount = attackPower;
                     target.damage(damageAmount);
+                    yushaAnim.playAttackAnim();
                     Debug.Log("敵にNormal Attack:" + damageAmount);
                     break;
                 case PlayerAttackKinds.Combo:
                     damageAmount = attackPower * stage.ComboNum;
                     target.damage(damageAmount);
+                    yushaAnim.playAttackAnim();
                     Debug.Log("敵にNormal Attack:" + damageAmount);
                     break;
                 case PlayerAttackKinds.Word:
                     damageAmount = attackPower * GameController.playerAttack;
                     target.damage(damageAmount);
+                    if (damageAmount > 0)
+                    {
+                        yushaAnim.playAttackAnim();
+                    }
+                    
                     Debug.Log("単語による攻撃："+damageAmount);
                     GameController.playerAttack = 0;
                     break;
