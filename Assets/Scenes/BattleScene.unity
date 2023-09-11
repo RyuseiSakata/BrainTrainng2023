@@ -290,8 +290,6 @@ MonoBehaviour:
   battleUIManager: {fileID: 665633863}
   stage: {fileID: 231471974}
   hpAmount: 10
-  attackPower: 1
-  attackChargeSpan: 2
   player: {fileID: 447164067}
 --- !u!4 &83026313
 Transform:
@@ -3789,6 +3787,7 @@ MonoBehaviour:
   stage: {fileID: 231471974}
   player: {fileID: 447164067}
   enemy: {fileID: 83026312}
+  faseCount: 0
 --- !u!1 &1426275281
 GameObject:
   m_ObjectHideFlags: 0

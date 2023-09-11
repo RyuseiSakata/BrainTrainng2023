@@ -35,7 +35,7 @@ public class GameController : MonoBehaviour
         set { numberOfTurns = value; }
     }
 
-    private int faseCount = 0;  //現在のフェーズ数
+    [SerializeField] int faseCount = 0;  //現在のフェーズ数
     private EnemyType[] enemyArray = { EnemyType.Fase1, EnemyType.Fase2, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
 
     private bool gameEndFlag = false;    //ゲーム終了のフラグ
@@ -116,10 +116,10 @@ public class GameController : MonoBehaviour
         if(mode == 0)
         {
             //同時消しが発生したなら
-            //1連鎖当たりの同時消しの強化　＝　sumA×（1+(0.5×同時消し数）)
+            //1連鎖当たりの同時消しの強化　＝　sumA×（1+(0.5×(同時消し数-1)）)
             if (sameEraseNum > 0)
             {
-                playerAttack += damagePerChain * (1+(0.5f* sameEraseNum));
+                playerAttack += damagePerChain * (1+(0.5f* (sameEraseNum-1)));
             }
             else
             {
@@ -140,24 +140,13 @@ public class GameController : MonoBehaviour
     }
 
     //バトルを開始する処理
-    private IEnumerator initBattle(EnemyType fase = EnemyType.Dragon)
+    private IEnumerator initBattle(EnemyType type = EnemyType.Dragon)
     {
         numberOfTurns = 0;  //ターン数を0にする
         playerAttack = 0;
         player.Init();
 
-        switch (fase)
-        {
-            case EnemyType.Fase1:
-                enemy.Init(5);
-                break;
-            case EnemyType.Fase2:
-                enemy.Init(10);
-                break;
-            case EnemyType.Dragon:
-                enemy.Init(15);
-                break;
-        }
+        enemy.Init(type);
 
         yield break;
     }
@@ -183,10 +172,33 @@ public class GameController : MonoBehaviour
 
             NumberOfTurns++;    //ターン数を増加
 
+            if (gameEndFlag)
+            {
+                break;
+            }
+
             //文字の消え具合　また　ターンにより攻撃を行う場合
             yield return player.attack(enemy, PlayerAttackKinds.Word);
+
+            //死んだかの処理
+            if (enemy.HpAmount <= 0f)
+            {
+                faseCount++;    //次のフェーズへ
+                Debug.Log("fase:" + faseCount);
+                yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
+
+                //すべての敵に勝ったなら
+                if (enemyArray.Length <= faseCount)
+                {
+                    popUpText = "Clear";
+                    endGame();
+                }
+
+                break;
+            }
+
             yield return new WaitForSeconds(0.2f);
-            yield return enemy.attack(player, EnemyAttackKinds.Normal);
+            yield return enemy.action(player);
             yield return player.attack(enemy, PlayerAttackKinds.Word);
 
             //死んだかの処理
@@ -209,13 +221,10 @@ public class GameController : MonoBehaviour
             {
                 endGame();
                 popUpText = "You Lose";
-
-            }
-
-            if (gameEndFlag)
-            {
                 break;
+
             }
+
         }
 
         yield break;

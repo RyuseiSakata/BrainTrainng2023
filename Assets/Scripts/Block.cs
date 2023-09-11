@@ -129,7 +129,7 @@ public class Block : MonoBehaviour
             currentRowLine = getRowLineFrom(transform.localPosition.y);
         }
 
-        if ((currentRow == DestinationRow))
+        if (currentRow == DestinationRow)
         {
 
             BlockState = false;

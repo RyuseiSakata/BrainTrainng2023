@@ -152,7 +152,7 @@ public class Stage : MonoBehaviour
             {
                 var instance = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
                 instance.transform.localPosition = Vector3.zero;
-                instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+                instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
                 Block block = instance.GetComponent<Block>();
                 block.stage = this;
                 block.init(decideCharacter(), 0, 2);
@@ -163,7 +163,7 @@ public class Stage : MonoBehaviour
             {
                 var instance = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
                 instance.transform.localPosition = new Vector3(-(1f / Config.maxCol / 2f), 0f, 0f);
-                instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+                instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
                 Block block = instance.GetComponent<Block>();
                 block.stage = this;
                 block.init(decideCharacter(), 0, 2);
@@ -171,7 +171,7 @@ public class Stage : MonoBehaviour
 
                 var instance2 = Instantiate(blockPrefab, SpawnPos[i].transform.position, Quaternion.identity, SpawnPos[i].transform);
                 instance2.transform.localPosition = new Vector3(1f / Config.maxCol / 2f, 0f, 0f);
-                instance2.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+                instance2.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
                 Block block2 = instance2.GetComponent<Block>();
                 block2.stage = this;
                 block2.init(decideCharacter(), 0, 3);
@@ -294,6 +294,7 @@ public class Stage : MonoBehaviour
 
             yield return new WaitForEndOfFrame();
         }
+
         audioManaeger.playSeOneShot(AudioKinds.BlockMove);
 
 
@@ -339,6 +340,18 @@ public class Stage : MonoBehaviour
         CanUserOperate = false;  //ユーザの操作を不可能に
         playerInput.updateTapPosition();
 
+        //destinationRowとcurrentRowが異なるときに修正
+        for (int i = 0; i < BlockArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < BlockArray.GetLength(1); j++)
+            {
+                if (BlockArray[i, j] != null)
+                {
+                    BlockArray[i, j].DestinationRow = BlockArray[i, j].CurrentRow;
+                    Debug.Log("destinationの修正");
+                }
+            }
+        }
         yield break;
     }
 
@@ -642,7 +655,6 @@ public class Stage : MonoBehaviour
 
         judgeTargetList.Clear();    //確認リストを初期化
 
-
         /*** 発見された単語がある場合、ブロック削除後の落下処理 ***/
         if (destroyList.Count > 0)
         {
@@ -722,11 +734,13 @@ public class Stage : MonoBehaviour
             //列ごとに最上部のブロックと消えたブロックの数をカウント
             destroyList.ForEach(block =>
             {
+                
                 for(int i = block.CurrentRow - 1; 0 <= i; i--)
                 {
-                    if (checkState(i, block.CurrentCol) != GridState.Null)
+                    if (BlockArray[i, block.CurrentCol] != null)
                     {
                         Block fallBlock = BlockArray[i, block.CurrentCol];
+                        Debug.Log($"TEST:{i},{block.CurrentCol}:{fallBlock.chara},{fallBlock.DestinationRow}");
                         fallBlock.DestinationRow += 1;
                         fallBlock.BlockState = true;
 
@@ -942,9 +956,10 @@ public class Stage : MonoBehaviour
             }
 
             var instance = Instantiate(blockPrefab, this.gameObject.transform);
-            instance.SetActive(false);
+            //instance.SetActive(false);
             instance.transform.localPosition = Vector3.zero;
-            instance.transform.localScale = new Vector3(0.98f / Config.maxCol, 1f / Config.maxRow, 1);
+            instance.transform.localScale = new Vector3(1f / Config.maxCol, 1f / Config.maxRow, 1);
+
             Block block = instance.GetComponent<Block>();
             block.stage = this;
             block.init(charaSet[i].ToString(), 0, i);
@@ -958,11 +973,11 @@ public class Stage : MonoBehaviour
 
         instanceList.ForEach(e =>
         {
-            e.SetActive(true);
+            //e.SetActive(true);
         });
         
 
-        fallBoost = 35.0f;
+        fallBoost = 28.0f;
         yield return fall(false);
         fallBoost = 1.0f;
 
