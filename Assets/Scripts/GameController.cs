@@ -172,8 +172,31 @@ public class GameController : MonoBehaviour
 
             NumberOfTurns++;    //ターン数を増加
 
+            if (gameEndFlag)
+            {
+                break;
+            }
+
             //文字の消え具合　また　ターンにより攻撃を行う場合
             yield return player.attack(enemy, PlayerAttackKinds.Word);
+
+            //死んだかの処理
+            if (enemy.HpAmount <= 0f)
+            {
+                faseCount++;    //次のフェーズへ
+                Debug.Log("fase:" + faseCount);
+                yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
+
+                //すべての敵に勝ったなら
+                if (enemyArray.Length <= faseCount)
+                {
+                    popUpText = "Clear";
+                    endGame();
+                }
+
+                break;
+            }
+
             yield return new WaitForSeconds(0.2f);
             yield return enemy.action(player);
             yield return player.attack(enemy, PlayerAttackKinds.Word);
@@ -198,13 +221,10 @@ public class GameController : MonoBehaviour
             {
                 endGame();
                 popUpText = "You Lose";
-
-            }
-
-            if (gameEndFlag)
-            {
                 break;
+
             }
+
         }
 
         yield break;
