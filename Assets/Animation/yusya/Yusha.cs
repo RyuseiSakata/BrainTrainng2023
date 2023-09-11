@@ -23,7 +23,7 @@ public class Yusha : MonoBehaviour {
     private GameObject m_goCharPos = null;
     private Vector3 m_vecCharacterPos;      // キャラクター位置 
     private Vector3 m_vecCharacterScale;    // キャラクタースケール 
-    public GameObject gameObject;
+    private GameObject gameObject;
 
     // 処理ステップ用 
     private enum Step : int
@@ -50,13 +50,13 @@ public class Yusha : MonoBehaviour {
         // キャラクターパラメータ関連を設定 
 
         // 座標設定 
-        m_vecCharacterPos.x = 0.0f;
-        m_vecCharacterPos.y = -240.0f;
+        m_vecCharacterPos.x = -0.9f;
+        m_vecCharacterPos.y = 9.64f;
         m_vecCharacterPos.z = 0.0f;
 
         // スケール設定 
-        m_vecCharacterScale.x = 0.5f;
-        m_vecCharacterScale.y = 0.5f;
+        m_vecCharacterScale.x = 0.0015f;
+        m_vecCharacterScale.y = 0.0015f;
         m_vecCharacterScale.z = 1.0f;
     }
 
@@ -70,7 +70,7 @@ public class Yusha : MonoBehaviour {
     }
     public void SA(){
         StartCoroutine("AStart");
-        gameObject.SetActive(false);
+        //meObject.SetActive(false);
     }
 
     IEnumerator AStart(){
