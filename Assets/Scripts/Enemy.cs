@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Battle {
     /*public enum EnemyAttackKinds
@@ -13,6 +14,7 @@ namespace Battle {
 
     public class Enemy : MonoBehaviour
     {
+        [SerializeField]Text debugText;
         private EnemyType myType;
         [SerializeField] BattleUIManager battleUIManager;
         [SerializeField] Stage stage;
@@ -47,6 +49,10 @@ namespace Battle {
 
         [SerializeField] Player player;
 
+        private void Update()
+        {
+            debugText.text = "ACTION:" + actionCount.ToString("00");
+        }
 
         //ダメージ計算を行うメソッド
         public void damage(float damageAmount)
@@ -156,8 +162,8 @@ namespace Battle {
                     NextActionCount = 2;
                     break;
                 case EnemyType.Dragon:
-                    maxHp = 28;
-                    NextActionCount = 2;
+                    maxHp = 30;
+                    NextActionCount =1;
                     break;
             };
             
@@ -228,7 +234,7 @@ namespace Battle {
                 //お邪魔ブロック（ランダム1個）
                 case 11:
                     yield return randomObstacleAttack(3);
-                    NextActionCount = 3;
+                    NextActionCount = 2;
                     actionCount = 0;
                     break;
                 default:
@@ -253,22 +259,22 @@ namespace Battle {
                     Debug.Log("ENEMY:10行目を削除");
                     NextActionCount = 3;
                     break;
-                //通常攻撃（1）+お邪魔ブロック（ランダム4個以下）
+                //通常攻撃（1.3）+お邪魔ブロック（ランダム4個以下）
                 case 5:
-                    yield return normalAttack(target, 1f);
+                    yield return normalAttack(target, 1.3f);
                     yield return randomObstacleAttack(4);
                     NextActionCount = 5;
                     break;
                 //通常攻(2.5）またはplayerの回復5
-                case 9:
+                case 10:
                     if (randNum == 0) yield return normalAttack(target, 2.5f);
                     else heal(5);
                     NextActionCount = 2;
                     break;
                 //お邪魔ブロック（ランダム7個以下）
-                case 11:
+                case 12:
                     yield return randomObstacleAttack(7);
-                    NextActionCount = 3;
+                    NextActionCount = 2;
                     actionCount = 0;
                     break;
                 default:
@@ -285,24 +291,39 @@ namespace Battle {
             switch (actionCount)
             {
                 //通常攻撃(1)
-                case 2:
-                    yield return normalAttack(target, 1.5f);
-                    NextActionCount = 3;
-                    break;
-                //通常攻撃(1)
-                case 5:
-                    yield return normalAttack(target, 1.5f);
-                    NextActionCount = 4;
-                    break;
-                //通常攻撃(2)
-                case 9:
-                    yield return normalAttack(target, 3f);
+                case 1:
+                    yield return stage.colLineDelete(2);
+                    yield return stage.colLineDelete(3);
+                    yield return stage.colLineDelete(4);
                     NextActionCount = 2;
                     break;
-                //お邪魔ブロック（ランダム1個）
-                case 11:
-                    yield return randomObstacleAttack(3);
+                //通常攻撃(1)
+                case 3:
+                    yield return normalAttack(target, 0.5f);
+                    NextActionCount = 2;
+                    break;
+                //通常攻撃(2)
+                case 5:
+                    yield return normalAttack(target, 1f);
+                    yield return randomObstacleAttack(1);
                     NextActionCount = 3;
+                    break;
+                //お邪魔ブロック（ランダム1個）
+                case 8:
+                    yield return normalAttack(target, 0.8f);
+                    yield return randomObstacleAttack(2);
+                    NextActionCount = 3;
+                    break;
+                case 11:
+                    yield return normalAttack(target, 1.2f);
+                    yield return randomObstacleAttack(1);
+                    NextActionCount = 3;
+                    break;
+                case 14:
+                    yield return stage.rowLineDelete(Random.Range(5, 11));
+                    NextActionCount = 3;
+                    break;
+                case 16:
                     actionCount = 0;
                     break;
                 default:

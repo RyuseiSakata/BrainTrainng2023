@@ -986,7 +986,7 @@ public class Stage : MonoBehaviour
 
     public IEnumerator rowLineDelete(int row)
     {
-        for(int col=0; col < Config.maxCol; col++)
+        for (int col = 0; col < Config.maxCol; col++)
         {
             if (BlockArray[row, col] != null)
             {
@@ -999,6 +999,21 @@ public class Stage : MonoBehaviour
         yield return fall(false);
         fallBoost = 1.0f;
 
+        yield break;
+    }
+
+    public IEnumerator colLineDelete(int col = 0)
+    {
+        for (int row = 0; row <= Config.maxRow; row++)
+        {
+            if (BlockArray[row, col] != null)
+            {
+                BlockArray[row, col].DestroyObject();
+                BlockArray[row, col] = null;
+            }
+        }
+
+        yield return new WaitForSeconds(0.5f);
         yield break;
     }
 }
