@@ -249,8 +249,8 @@ namespace Battle {
                 //通常攻撃（1）＋10行目削除
                 case 2:
                     yield return normalAttack(target, 1f);
-                    //yield return stage.rowLineDelete(10);
-                    //Debug.Log("ENEMY:10行目を削除");
+                    yield return stage.rowLineDelete(10);
+                    Debug.Log("ENEMY:10行目を削除");
                     NextActionCount = 3;
                     break;
                 //通常攻撃（1）+お邪魔ブロック（ランダム4個以下）
