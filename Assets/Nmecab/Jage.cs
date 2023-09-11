@@ -43,6 +43,7 @@ public class Jage : MonoBehaviour
               Debug.Log(sepa[num].Length);
               if(sepa[num].Length < 3){
                 sepa.Remove($"{node.Surface}");
+                sepa2.Remove($"{node.PartsOfSpeech}");
                 num = num - 1;
             }
               num++;
@@ -62,6 +63,7 @@ public class Jage : MonoBehaviour
                   Debug.Log(sepa[num].Length);
                   if(sepa[num].Length < 3){
                     sepa.Remove($"{node.Surface}");
+                    sepa2.Remove($"{node.PartsOfSpeech}");
                     num = num - 1;
                 }
                   num++;
@@ -114,7 +116,7 @@ public class Jage : MonoBehaviour
               sepa2.Add($"{node.PartsOfSpeech}");
               if(sepa[num].Length < 3||node.Reading != "あ" ||node.PartsOfSpeech=="助詞"||node.PartsOfSpeech=="名詞"||node.PartsOfSpeech=="動詞"){
                 sepa.Remove($"{node.Surface}");
-                sepa2.Add($"{node.PartsOfSpeech}");
+                sepa2.Remove($"{node.PartsOfSpeech}");
                 num = num - 1;
             }
               num++;
@@ -135,7 +137,7 @@ public class Jage : MonoBehaviour
                   Debug.Log(sepa[num].Length);
                   if(sepa[num].Length < 3||node.Reading != "あ"||node.PartsOfSpeech=="助詞"||node.PartsOfSpeech=="名詞"||node.PartsOfSpeech=="動詞"){
                     sepa.Remove($"{node.Surface}");
-                    sepa2.Add($"{node.PartsOfSpeech}");
+                    sepa2.Remove($"{node.PartsOfSpeech}");
                     num = num - 1;
                 }
                   num++;
@@ -150,7 +152,7 @@ public class Jage : MonoBehaviour
               Debug.Log("入った");
               if(sepa[i]==sepa[i+1]){
                 sepa.Remove(sepa[i]);
-                sepa2.Add(sepa2[i]);
+                sepa2.Remove(sepa2[i]);
                 Debug.Log("消した");
               }
             }
