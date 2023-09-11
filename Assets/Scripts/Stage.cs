@@ -274,12 +274,7 @@ public class Stage : MonoBehaviour
 
         decideDestination();    //目標行数の決定
 
-        string s = "DEBB:";
-        activeBlockList.ForEach(e =>
-        {
-            s += e.DestinationRow + ",";
-        });
-        Debug.Log(s);
+
 
         //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
         while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
@@ -299,6 +294,7 @@ public class Stage : MonoBehaviour
 
 
         yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
+
 
         //Debug.Log("着地");
 
@@ -340,16 +336,22 @@ public class Stage : MonoBehaviour
         CanUserOperate = false;  //ユーザの操作を不可能に
         playerInput.updateTapPosition();
 
-        //destinationRowとcurrentRowが異なるときに修正
+        
+        //destinationRowとcurrentRowが異なるときに修正,落下停止バグを防ぐ(Debug用ループ)
         for (int i = 0; i < BlockArray.GetLength(0); i++)
         {
             for (int j = 0; j < BlockArray.GetLength(1); j++)
-            {
+            {/*
                 if (BlockArray[i, j] != null)
                 {
                     BlockArray[i, j].DestinationRow = BlockArray[i, j].CurrentRow;
-                    Debug.Log("destinationの修正");
+                    Debug.Log($"destinationの修正({i},{j},{BlockArray[i, j].chara}->{BlockArray[i, j].DestinationRow},{BlockArray[i, j].CurrentRow}");
+                }*/
+                if (BlockArray[i, j] != null && BlockArray[i, j].DestinationRow != BlockArray[i, j].CurrentRow)
+                {
+                    Debug.Log("!!違う");
                 }
+
             }
         }
         yield break;
@@ -405,9 +407,19 @@ public class Stage : MonoBehaviour
                 });
             }
 
-            activeBlockList.Clear();    //activeBlockListの要素を全削除
 
-            
+            //destinationRowとcurrentRowが異なるときに修正,落下停止バグを防ぐ
+            activeBlockList.ForEach(block =>
+            {
+                var fallBlock = BlockArray[block.CurrentRow, block.CurrentCol];
+                if (fallBlock != null)
+                {
+                    fallBlock.DestinationRow = fallBlock.CurrentRow;
+                    //Debug.Log($"変更：{fallBlock.CurrentRow},{fallBlock.CurrentCol},{fallBlock.chara}");
+                }
+            });
+
+            activeBlockList.Clear();    //activeBlockListの要素を全削除
 
         } while (targetList.Count > 0);
 
