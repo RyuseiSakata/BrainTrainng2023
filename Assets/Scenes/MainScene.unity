@@ -3498,6 +3498,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonLayout_0: {fileID: 2051701740}
   buttonLayout_1: {fileID: 376346831}
+  buttons:
+  - {fileID: 76459447}
+  - {fileID: 1963382823}
+  - {fileID: 1594874908}
+  - {fileID: 2084700503}
   scoreText: {fileID: 618915704}
   comboText: {fileID: 897348106}
   countDownText: {fileID: 2099346347}

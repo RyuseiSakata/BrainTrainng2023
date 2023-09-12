@@ -2547,6 +2547,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonLayout_0: {fileID: 1597100958}
   buttonLayout_1: {fileID: 1406215507}
+  buttons:
+  - {fileID: 809743823}
+  - {fileID: 324375284}
+  - {fileID: 2145022936}
+  - {fileID: 1643943266}
   scoreText: {fileID: 0}
   comboText: {fileID: 1674713658}
   countDownText: {fileID: 1231305354}

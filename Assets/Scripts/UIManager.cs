@@ -16,6 +16,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject buttonLayout_0;
     [SerializeField] GameObject buttonLayout_1;
 
+    //ボタンサイズ
+    [SerializeField] GameObject[] buttons;
+
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
     [SerializeField] Text countDownText;
@@ -142,6 +145,11 @@ public class UIManager : MonoBehaviour
             buttonLayout_1.SetActive(false);
         }
 
-        
+        //ボタンサイズ
+        float size = 0.06f * (Config.buttonSize-1) + 0.76f;
+        for (int i=0; i<buttons.Length; i++)
+        {
+            buttons[i].GetComponent<RectTransform>().localScale = new Vector3(size, size, 1);
+        }
     }
 }
