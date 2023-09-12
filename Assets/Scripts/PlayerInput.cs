@@ -77,8 +77,8 @@ public class PlayerInput : MonoBehaviour
                 }
             }
 
-            // ボタン以外の所をタッチ かつ タッチされているかチェック
-            if (Input.touchCount > 0)
+            // ボタンのみモードではない かつ ボタン以外の所をタッチ かつ タッチされているかチェック
+            if (Config.operateMode != 0 && isNothingPanelHold && Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);    // タッチ情報の取得
                 frameFromTapped++;  //フレーム数の更新
@@ -142,7 +142,7 @@ public class PlayerInput : MonoBehaviour
             }
         }
 
-        
+        //左右移動の間隔
         if (moveLeftInterval > 0)
         {
             moveLeftInterval -= Time.deltaTime;

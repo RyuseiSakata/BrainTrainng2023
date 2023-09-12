@@ -15,6 +15,16 @@ public class OptionManager : MonoBehaviour
     [SerializeField] Text buttonSizeText;   //ボタンサイズのテキスト
 
     [SerializeField] Dropdown operateMethodDropdown;    //操作方法のドロップダウン
+    [SerializeField] Toggle[] buttonLayoutToggles;  //ボタン配置のトグル
+
+    private void Start()
+    {
+        musicSlider.value = Config.musicVolume;
+        seSlider.value = Config.seVolume;
+        buttonSizeSlider.value = Config.buttonSize;
+        operateMethodDropdown.value = Config.operateMode;
+        buttonLayoutToggles[Config.buttonLayout].isOn = true;
+    }
 
     private void Update()
     {

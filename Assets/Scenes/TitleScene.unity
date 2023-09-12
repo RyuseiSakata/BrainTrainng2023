@@ -257,6 +257,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 29948966}
   m_CullTransparentMesh: 1
+--- !u!114 &131554954 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1383162185, guid: 2c0ccde0250285d498f8508ba374469e, type: 3}
+  m_PrefabInstance: {fileID: 2444050477013682837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &357565084
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,6 +739,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 579878435}
   m_CullTransparentMesh: 1
+--- !u!114 &635314145 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 178420571, guid: 2c0ccde0250285d498f8508ba374469e, type: 3}
+  m_PrefabInstance: {fileID: 2444050477013682837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &693409083
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,6 +849,9 @@ MonoBehaviour:
   seVolumeText: {fileID: 1889290600054818727}
   buttonSizeText: {fileID: 156428114670019689}
   operateMethodDropdown: {fileID: 7623085276861766680}
+  buttonLayoutToggles:
+  - {fileID: 635314145}
+  - {fileID: 131554954}
 --- !u!1 &720128748
 GameObject:
   m_ObjectHideFlags: 0
@@ -2434,6 +2459,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1717191932}
     m_Modifications:
+    - target: {fileID: 178420569, guid: 2c0ccde0250285d498f8508ba374469e, type: 3}
+      propertyPath: m_Name
+      value: Toggle0
+      objectReference: {fileID: 0}
     - target: {fileID: 178420571, guid: 2c0ccde0250285d498f8508ba374469e, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -2501,6 +2530,10 @@ PrefabInstance:
     - target: {fileID: 1271056347, guid: 2c0ccde0250285d498f8508ba374469e, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1383162183, guid: 2c0ccde0250285d498f8508ba374469e, type: 3}
+      propertyPath: m_Name
+      value: Toggle1
       objectReference: {fileID: 0}
     - target: {fileID: 1383162185, guid: 2c0ccde0250285d498f8508ba374469e, type: 3}
       propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size

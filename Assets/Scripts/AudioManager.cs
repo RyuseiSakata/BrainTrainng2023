@@ -22,10 +22,10 @@ public class AudioManager : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void playSeOneShot(AudioKinds audioKinds = AudioKinds.FindWord, float pitch = defaultPitch, float volumeScale = 0.5f)
+    public void playSeOneShot(AudioKinds audioKinds = AudioKinds.FindWord, float pitch = defaultPitch)
     {
         audioSource.pitch = pitch;
-        audioSource.PlayOneShot(seList[(int)audioKinds], volumeScale);
+        audioSource.PlayOneShot(seList[(int)audioKinds], Config.seVolume);
     }
 
 }

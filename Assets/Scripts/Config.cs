@@ -40,7 +40,7 @@ public static class Config
 
     public static float musicVolume = 0.5f;    //Music音量
     public static float seVolume = 0.5f;       //SE音量
-    public static int operateMode = 0;  //操作方法 0:ボタンのみ 1:タッチのみ 2:両方
+    public static int operateMode = 2;  //操作方法 0:ボタンのみ 1:タッチのみ 2:両方
     public static int buttonSize = 5;       //ボタンサイズ
     public static int buttonLayout = 0; //ボタンの配置 0:（移動->左 回転->右）1:（移動->右 回転->左）
 

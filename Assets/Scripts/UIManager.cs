@@ -12,6 +12,10 @@ public enum TextKinds
 
 public class UIManager : MonoBehaviour
 {
+    //ボタンの配置
+    [SerializeField] GameObject buttonLayout_0;
+    [SerializeField] GameObject buttonLayout_1;
+
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
     [SerializeField] Text countDownText;
@@ -114,5 +118,30 @@ public class UIManager : MonoBehaviour
         yield break;
     }
 
+    //設定をUIに反映
+    public void configInit()
+    {
+        //操作方法（タッチのみでないの場合）
+        if (Config.operateMode != 1)
+        {
+            //ボタン配置
+            if (Config.buttonLayout == 0)
+            {
+                buttonLayout_0.SetActive(true);
+                buttonLayout_1.SetActive(false);
+            }
+            else
+            {
+                buttonLayout_0.SetActive(false);
+                buttonLayout_1.SetActive(true);
+            }
+        }
+        else
+        {
+            buttonLayout_0.SetActive(false);
+            buttonLayout_1.SetActive(false);
+        }
 
+        
+    }
 }

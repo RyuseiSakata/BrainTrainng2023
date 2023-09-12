@@ -48,7 +48,9 @@ public class GameController : MonoBehaviour
 
     private IEnumerator mainLoop()
     {
-        if(SceneChanger.getCurrentSceneName() == "MainScene")
+        uIManager.configInit(); //ê›íËÇÃîΩâf
+
+        if (SceneChanger.getCurrentSceneName() == "MainScene")
         {
             yield return uIManager.showCountDown();
 
@@ -229,5 +231,6 @@ public class GameController : MonoBehaviour
 
         yield break;
     }
+
 }
 
