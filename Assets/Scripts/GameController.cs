@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour
     private EnemyType[] enemyArray = { EnemyType.Fase1, EnemyType.Fase2, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
 
     private bool gameEndFlag = false;    //ゲーム終了のフラグ
+
     private void Start()
     {
         score = 0;
