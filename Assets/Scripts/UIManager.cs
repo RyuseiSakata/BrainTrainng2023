@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
                 break;
             case TextKinds.Score:
                 if(scoreText!=null)
-                    scoreText.text = "スコア："+value.ToString("000000");
+                    scoreText.text = value.ToString("000000");
                 break;
         }
     }
