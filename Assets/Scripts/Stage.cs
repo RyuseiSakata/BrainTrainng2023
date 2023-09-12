@@ -290,7 +290,7 @@ public class Stage : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        audioManager.playSeOneShot(AudioKinds.BlockMove);
+        audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
 
 
         yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
@@ -403,7 +403,7 @@ public class Stage : MonoBehaviour
                             }
                         });
                     }
-                    audioManager.playSeOneShot(AudioKinds.BlockMove);
+                    audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
                 });
             }
 
@@ -567,7 +567,7 @@ public class Stage : MonoBehaviour
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                 }
                                 float pitch = 0.6f + comboNum * 0.4f;
-                                audioManager.playSeOneShot(AudioKinds.FindWord, pitch);
+                                audioManager.playSeOneShot(AudioKinds.SE_FindWord, pitch);
                                 if (word.Length > 2) scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
                                 if (word.Length > 2) damagePerChain += word.Length - 2;    //文字数-2
                                 sameEraseNum++; //同時消し数の加算
@@ -648,7 +648,7 @@ public class Stage : MonoBehaviour
 
                                 }
                                 float pitch = 0.6f + comboNum * 0.4f;
-                                audioManager.playSeOneShot(AudioKinds.FindWord, pitch);
+                                audioManager.playSeOneShot(AudioKinds.SE_FindWord, pitch);
                                 if (word.Length > 2) scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
                                 if (word.Length > 2) damagePerChain += word.Length - 2;    //文字数-2
                                 sameEraseNum++; //同時消し数の加算
@@ -801,7 +801,7 @@ public class Stage : MonoBehaviour
                     }
                     //yield return new WaitForSeconds(0.0001f);
                 }
-                audioManager.playSeOneShot(AudioKinds.BlockMove);
+                audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
             }
             
         }
@@ -909,11 +909,11 @@ public class Stage : MonoBehaviour
         {
             if (checkState(block.currentRowLine, block.CurrentCol + value) == GridState.OutStage || checkState(block.currentRowLine, block.CurrentCol + value) == GridState.Disactive)
             {
-                audioManager.playSeOneShot(AudioKinds.CanNotMove);
+                audioManager.playSeOneShot(AudioKinds.SE_CanNotMove);
                 return;
             }
         }
-        audioManager.playSeOneShot(AudioKinds.BlockMove);
+        audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
         foreach (var block in activeBlockList)
         {
             block.CurrentCol += value;
