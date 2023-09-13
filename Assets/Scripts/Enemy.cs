@@ -14,6 +14,9 @@ namespace Battle {
 
     public class Enemy : MonoBehaviour
     {
+        [SerializeField] GameObject dragonObject;
+        private DragonAnim dragonAnim;
+
         [SerializeField]Text debugText;
         private EnemyType myType;
         [SerializeField] BattleUIManager battleUIManager;
@@ -48,6 +51,11 @@ namespace Battle {
 
 
         [SerializeField] Player player;
+
+        private void Start()
+        {
+            dragonAnim = dragonObject.GetComponent<DragonAnim>();
+        }
 
         private void Update()
         {
@@ -294,6 +302,7 @@ namespace Battle {
             {
                 //通常攻撃(1)
                 case 1:
+                    dragonAnim.playAttackAnim();
                     yield return stage.colLineDelete(2);
                     yield return stage.colLineDelete(3);
                     yield return stage.colLineDelete(4);
@@ -301,27 +310,32 @@ namespace Battle {
                     break;
                 //通常攻撃(1)
                 case 3:
+                    dragonAnim.playAttackAnim();
                     yield return normalAttack(target, 0.5f);
                     NextActionCount = 2;
                     break;
                 //通常攻撃(2)
                 case 5:
+                    dragonAnim.playAttackAnim();
                     yield return normalAttack(target, 1f);
                     yield return randomObstacleAttack(1);
                     NextActionCount = 3;
                     break;
                 //お邪魔ブロック（ランダム1個）
                 case 8:
+                    dragonAnim.playAttackAnim();
                     yield return normalAttack(target, 0.8f);
                     yield return randomObstacleAttack(2);
                     NextActionCount = 3;
                     break;
                 case 11:
+                    dragonAnim.playAttackAnim();
                     yield return normalAttack(target, 1.2f);
                     yield return randomObstacleAttack(1);
                     NextActionCount = 3;
                     break;
                 case 14:
+                    dragonAnim.playAttackAnim();
                     yield return stage.rowLineDelete(Random.Range(5, 11));
                     NextActionCount = 3;
                     break;
