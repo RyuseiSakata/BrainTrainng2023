@@ -11,9 +11,14 @@ public class YushaAnim : MonoBehaviour
     { 
         script = gameObject1.GetComponent<Yusha>();
     }
-
+    void update(){
+       
+            script.SA();
+        
+    }
     public void playAttackAnim()
     {
         script.SA();
     }
+    
 }
