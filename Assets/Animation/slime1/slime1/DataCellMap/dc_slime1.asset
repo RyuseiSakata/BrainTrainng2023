@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194737b46e04ff84a936435d5601662f, type: 3}
+  m_Name: dc_slime1
+  m_EditorClassIdentifier: 
+  Version: 65537
+  DataProject: {fileID: 11400000, guid: fcb743e0b2106bd48a830f8e42c638eb, type: 2}
+  TableCellMap:
+  - Name: slime1
+    SizeOriginal: {x: 1620, y: 1620}
+    TableCell:
+    - Name: slime1
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1619
+        height: 1619
+      Pivot: {x: 809.5, y: 809.5}
+      Mesh:
+        TableCoordinate: []
+        TableIndexVertex: 
+  - Name: slime2
+    SizeOriginal: {x: 1620, y: 1620}
+    TableCell:
+    - Name: slime2
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1619
+        height: 1619
+      Pivot: {x: 809.5, y: 809.5}
+      Mesh:
+        TableCoordinate: []
+        TableIndexVertex: 
