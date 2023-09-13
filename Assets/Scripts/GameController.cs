@@ -28,6 +28,9 @@ public class GameController : MonoBehaviour
     private int score = 0;
     public static float playerAttack;   //消した文字によるプレイヤーの攻撃量
 
+    public static float gameTime = 0; //ゲームのプレイ時間
+    public static bool isSetTimer = false;  //時間を測定するかのフラグ
+
     //ターン数のプロパティ
     public int NumberOfTurns
     {
@@ -43,8 +46,20 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         score = 0;
-        
+        gameTime = 0;
+        isSetTimer = false;
+
+
         StartCoroutine("mainLoop");
+    }
+
+    private void Update()
+    {
+        //Timerの測定を行う
+        if (isSetTimer)
+        {
+            gameTime += Time.deltaTime;
+        }
     }
 
     private IEnumerator mainLoop()
@@ -160,7 +175,7 @@ public class GameController : MonoBehaviour
         yield return initBattle(enemyType);  //バトル開始
 
         yield return uIManager.showCountDown();
-
+        isSetTimer = true;   //時間の計測を開始
         /*
          * 一定間隔で攻撃するなら以下のコード
         //player.StartCoroutine("action");
@@ -229,7 +244,7 @@ public class GameController : MonoBehaviour
             }
 
         }
-
+        isSetTimer = false; //時間の計測を中断
         yield break;
     }
 

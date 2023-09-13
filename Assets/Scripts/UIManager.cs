@@ -27,6 +27,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject book;
     [SerializeField] Text hiraganaText;
     [SerializeField] Text formalText;
+    [SerializeField] Text gameTimeText; //バトルモードのみ
 
     /*デバッグ用*/
     [SerializeField] InputField fallInputField; //自由落下速度調整用の入力欄
@@ -69,6 +70,15 @@ public class UIManager : MonoBehaviour
     public IEnumerator showCountDown()
     {
         darkPanel.SetActive(true);
+
+        if(gameTimeText != null)
+        {
+            int second = Mathf.FloorToInt(GameController.gameTime);
+            int min = second > 99 * 60 ? 99 : (second / 60);
+            second = second % 60;
+
+            gameTimeText.text = min.ToString("00")+ ":" + second.ToString("00");
+        }
         countDownText.text = "3";
         yield return new WaitForSeconds(1f);
         countDownText.text = "2";
@@ -78,7 +88,9 @@ public class UIManager : MonoBehaviour
         countDownText.text = "Start";
         yield return new WaitForSeconds(0.8f);
         countDownText.text = "";
+        if (gameTimeText != null) gameTimeText.text = "";
         darkPanel.SetActive(false);
+
 
         yield break;
     }

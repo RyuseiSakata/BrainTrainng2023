@@ -11,6 +11,7 @@ namespace Battle
         EnemyHP,
         EnemyName,
         NextActionCount,
+        GameTime,
     }
     public class BattleUIManager : MonoBehaviour
     {
@@ -18,6 +19,7 @@ namespace Battle
         [SerializeField] Text chargeTurnText;
         [SerializeField] Slider playerHpSlider;
         [SerializeField] Slider enemyHpSlider;
+        [SerializeField] Text gameTimeText;
 
         //UIテキストの変更を行う
         public void uiUpdate(UIKinds uiKinds, float value)
@@ -46,9 +48,6 @@ namespace Battle
                     break;
             }
         }
-
-
-
     }
 
 }
