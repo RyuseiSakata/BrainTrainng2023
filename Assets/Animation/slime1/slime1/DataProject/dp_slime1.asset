@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1e551922b81ce40b6579726b70c93f, type: 3}
+  m_Name: dp_slime1
+  m_EditorClassIdentifier: 
+  Version: 65536
+  Name: slime1
+  DataCellMap: {fileID: 11400000, guid: c668904002028a2439514b8ba7fe6b6e, type: 2}
+  DataAnimation:
+  - {fileID: 11400000, guid: e9429dd4c7d9e9f4a80cbc64a047da2e, type: 2}
+  DataEffect: []
+  DataSequence: []
+  PrefabAnimation:
+  - {fileID: 8319324358331120463, guid: 71831f587bb5498459eebb50c2ea7087, type: 3}
+  PrefabEffect: []
+  TableTexture:
+  - {fileID: 2800000, guid: e6716133b6a2b3b44b545c0f5fc3ba39, type: 3}
+  - {fileID: 2800000, guid: fa1b89fb5df51d749864c715cae6bb43, type: 3}
