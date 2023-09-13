@@ -2,147 +2,155 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Yusha : MonoBehaviour {
+public class Dragon : MonoBehaviour
+{
 
-    // å†ç”Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®Resourcesãƒ•ã‚©ãƒ«ãƒ€å†…ã®ã‚µãƒ–ãƒ‘ã‚¹
+    // Ä¶ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌResourcesƒtƒHƒ‹ƒ_“à‚ÌƒTƒuƒpƒX
     [SerializeField]
     public Object[] AnimationList;
     int num;
 
-    // å†ç”Ÿã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æŒ‡å®šç”¨ 
+    // Ä¶ƒAƒjƒ[ƒVƒ‡ƒ“w’è—p 
     private enum AnimationPattern : int
     {
-        Wait = 33,      // å¾…æ©Ÿ
-        Attack = 1,     // æ”»æ’ƒ 
-        Run = 24,       // èµ°ã‚Š 
+        Wait = 33,      // ‘Ò‹@
+        Attack = 1,     // UŒ‚ 
+        Run = 24,       // ‘–‚è 
         Count
     }
 
-    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ç®¡ç†ç”¨ 
+    // ƒLƒƒƒ‰ƒNƒ^[ŠÇ——p 
     private GameObject m_goCharacter = null;
     private GameObject m_goCharPos = null;
-    private Vector3 m_vecCharacterPos;      // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ä½ç½® 
-    private Vector3 m_vecCharacterScale;    // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã‚¹ã‚±ãƒ¼ãƒ« 
+    private Vector3 m_vecCharacterPos;      // ƒLƒƒƒ‰ƒNƒ^[ˆÊ’u 
+    private Vector3 m_vecCharacterScale;    // ƒLƒƒƒ‰ƒNƒ^[ƒXƒP[ƒ‹ 
     private GameObject gameObject;
 
-    // å‡¦ç†ã‚¹ãƒ†ãƒƒãƒ—ç”¨ 
+    // ˆ—ƒXƒeƒbƒv—p 
     private enum Step : int
     {
-        Init = 0,   // åˆæœŸåŒ– 
-        Title,      // ã‚¿ã‚¤ãƒˆãƒ« 
-        Wait,       // å¾…æ©Ÿ 
-        Move,       // ç§»å‹• 
-        Attack,     // æ”»æ’ƒ
+        Init = 0,   // ‰Šú‰» 
+        Title,      // ƒ^ƒCƒgƒ‹ 
+        Wait,       // ‘Ò‹@ 
+        Move,       // ˆÚ“® 
+        Attack,     // UŒ‚
         End
     }
 
-    // å‡¦ç†ã‚¹ãƒ†ãƒƒãƒ—ç®¡ç†ç”¨ 
+    // ˆ—ƒXƒeƒbƒvŠÇ——p 
     private Step m_Step = Step.Init;
 
-    // æ±ç”¨
-    // ã„ã‚ã„ã‚ä½¿ã„ã¾ã‚ã™ç”¨å¤‰æ•°
+    // ”Ä—p
+    // ‚¢‚ë‚¢‚ëg‚¢‚Ü‚í‚·—p•Ï”
     private int m_Count = 0;
     private bool m_SW = true;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
 
-        // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿é–¢é€£ã‚’è¨­å®š 
+        // ƒLƒƒƒ‰ƒNƒ^[ƒpƒ‰ƒ[ƒ^ŠÖ˜A‚ğİ’è 
 
-        // åº§æ¨™è¨­å®š 
-        m_vecCharacterPos.x = -0.9f;
-        m_vecCharacterPos.y = 9.64f;
+        // À•Wİ’è 
+        m_vecCharacterPos.x = 14.5f;
+        m_vecCharacterPos.y = 10.24f;
         m_vecCharacterPos.z = 0.0f;
 
-        // ã‚¹ã‚±ãƒ¼ãƒ«è¨­å®š 
-        m_vecCharacterScale.x = 0.0015f;
-        m_vecCharacterScale.y = 0.0015f;
+        // ƒXƒP[ƒ‹İ’è 
+        m_vecCharacterScale.x = 0.0022f;
+        m_vecCharacterScale.y = 0.0022f;
         m_vecCharacterScale.z = 1.0f;
     }
 
     // Update is called once per frame
-    void Update () {
-        if(Input.GetKeyDown(KeyCode.Z) == true){
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z) == true)
+        {
             //StartCoroutine("AStart");
             //gameObject.SetActive(false);
         }
-       
+
     }
-    public void SA(){
+    public void SA()
+    {
         StartCoroutine("AStart");
         //meObject.SetActive(false);
     }
 
-    IEnumerator AStart(){
-        Destroy( GameObject.Find("Comipo_yusha"));
+    IEnumerator AStart()
+    {
+        Destroy(GameObject.Find("Comipo_dragon"));
         AnimationStart();
         AnimationChange(AnimationPattern.Attack);
         num++;
         m_goCharacter = null;
-        
+
         yield return new WaitForSeconds(1f);
-        Destroy( GameObject.Find("Comipo_yusha"));
+        Destroy(GameObject.Find("Comipo_dragon"));
         AnimationStart();
         AnimationChange(AnimationPattern.Attack);
-        
+
         num++;
         m_goCharacter = null;
-        
-       
+
+
 
     }
-    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹ 
+    // ƒAƒjƒ[ƒVƒ‡ƒ“ŠJn 
     private void AnimationStart()
     {
         Object resourceObject;
-        Script_SpriteStudio6_Root scriptRoot = null;    // SpriteStudio Anime ã‚’æ“ä½œã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+        Script_SpriteStudio6_Root scriptRoot = null;    // SpriteStudio Anime ‚ğ‘€ì‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
         int listLength = AnimationList.Length;
 
-        // ã™ã§ã«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”Ÿæˆæ¸ˆ or ãƒªã‚½ãƒ¼ã‚¹è¨­å®šç„¡ã„å ´åˆã¯return
-        if (m_goCharacter != null || listLength<1)
+        // ‚·‚Å‚ÉƒAƒjƒ[ƒVƒ‡ƒ“¶¬Ï or ƒŠƒ\[ƒXİ’è–³‚¢ê‡‚Íreturn
+        if (m_goCharacter != null || listLength < 1)
             return;
 
-        // å†ç”Ÿã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹åã‚’ãƒªã‚¹ãƒˆã‹ã‚‰å–å¾—ã—ã¦å†ç”Ÿã™ã‚‹
-        if(num%2==0){
+        // Ä¶‚·‚éƒŠƒ\[ƒX–¼‚ğƒŠƒXƒg‚©‚çæ“¾‚µ‚ÄÄ¶‚·‚é
+        if (num % 2 == 0)
+        {
             resourceObject = AnimationList[0];
             Debug.Log("1");
         }
-        else{
-           resourceObject = AnimationList[1];
+        else
+        {
+            resourceObject = AnimationList[1];
             Debug.Log("2");
         }
         if (resourceObject != null)
         {
-            // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å®Ÿä½“åŒ–
+            // ƒAƒjƒ[ƒVƒ‡ƒ“‚ğÀ‘Ì‰»
             m_goCharacter = Instantiate(resourceObject, Vector3.zero, Quaternion.identity) as GameObject;
             if (m_goCharacter != null)
             {
                 scriptRoot = Script_SpriteStudio6_Root.Parts.RootGet(m_goCharacter);
                 if (scriptRoot != null)
                 {
-                    // åº§æ¨™è¨­å®šã™ã‚‹ãŸã‚ã®GameObjectä½œæˆ
+                    // À•Wİ’è‚·‚é‚½‚ß‚ÌGameObjectì¬
                     m_goCharPos = new GameObject();
                     if (m_goCharPos == null)
                     {
-                        // ä½œæˆã§ããªã„ã‚±ãƒ¼ã‚¹å¯¾å¿œ 
+                        // ì¬‚Å‚«‚È‚¢ƒP[ƒX‘Î‰ 
                         Destroy(m_goCharacter);
                         m_goCharacter = null;
                     }
                     else
                     {
-                        // Objectåå¤‰æ›´ 
-                        m_goCharPos.name = "Comipo_yusha";
+                        // Object–¼•ÏX 
+                        m_goCharPos.name = "Comipo_dragon";
 
-                        // åº§æ¨™è¨­å®š 
+                        // À•Wİ’è 
                         m_goCharacter.transform.parent = m_goCharPos.transform;
 
-                        // è‡ªåˆ†ã®å­ã«ç§»å‹•ã—ã¦åº§æ¨™ã‚’è¨­å®š
+                        // ©•ª‚Ìq‚ÉˆÚ“®‚µ‚ÄÀ•W‚ğİ’è
                         m_goCharPos.transform.parent = this.transform;
                         m_goCharPos.transform.localPosition = m_vecCharacterPos;
                         m_goCharPos.transform.localRotation = Quaternion.identity;
                         m_goCharPos.transform.localScale = m_vecCharacterScale;
 
-                        //ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿ
+                        //ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶
                         AnimationChange(AnimationPattern.Wait);
                     }
                 }
@@ -150,10 +158,10 @@ public class Yusha : MonoBehaviour {
         }
     }
 
-    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ å†ç”Ÿ/å¤‰æ›´ 
+    // ƒAƒjƒ[ƒVƒ‡ƒ“ Ä¶/•ÏX 
     private void AnimationChange(AnimationPattern pattern)
     {
-        Script_SpriteStudio6_Root scriptRoot = null;    // SpriteStudio Anime ã‚’æ“ä½œã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+        Script_SpriteStudio6_Root scriptRoot = null;    // SpriteStudio Anime ‚ğ‘€ì‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
         int iTimesPlaey = 0;
 
         if (m_goCharacter == null)
@@ -165,13 +173,13 @@ public class Yusha : MonoBehaviour {
             switch (pattern)
             {
                 case AnimationPattern.Wait:
-                    iTimesPlaey = 0;    // ãƒ«ãƒ¼ãƒ—å†ç”Ÿ 
+                    iTimesPlaey = 0;    // ƒ‹[ƒvÄ¶ 
                     break;
                 case AnimationPattern.Attack:
-                    iTimesPlaey = 1;    // 1å›ã ã‘å†ç”Ÿ 
+                    iTimesPlaey = 1;    // 1‰ñ‚¾‚¯Ä¶ 
                     break;
                 case AnimationPattern.Run:
-                    iTimesPlaey = 0;    // ãƒ«ãƒ¼ãƒ—å†ç”Ÿ 
+                    iTimesPlaey = 0;    // ƒ‹[ƒvÄ¶ 
                     break;
                 default:
                     break;
@@ -180,19 +188,19 @@ public class Yusha : MonoBehaviour {
         }
     }
 
-    // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå†ç”Ÿä¸­ã‹åœæ­¢ä¸­(ã‚¨ãƒ©ãƒ¼å«)ã‹å–å¾—ã—ã¾ã™
+    // ƒAƒjƒ[ƒVƒ‡ƒ“‚ªÄ¶’†‚©’â~’†(ƒGƒ‰[ŠÜ)‚©æ“¾‚µ‚Ü‚·
     private bool IsAnimationPlay()
     {
         bool ret = false;
 
-        Script_SpriteStudio6_Root scriptRoot = null;    // SpriteStudio Anime ã‚’æ“ä½œã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
+        Script_SpriteStudio6_Root scriptRoot = null;    // SpriteStudio Anime ‚ğ‘€ì‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
 
         if (m_goCharacter != null)
         {
             scriptRoot = Script_SpriteStudio6_Root.Parts.RootGet(m_goCharacter);
             if (scriptRoot != null)
             {
-                // å†ç”Ÿå›æ•°ã‚’å–å¾—ã—ã¦ã€ãƒ—ãƒ¬ã‚¤çµ‚äº†ã‹ã‚’åˆ¤æ–­ã—ã¾ã™
+                // Ä¶‰ñ”‚ğæ“¾‚µ‚ÄAƒvƒŒƒCI—¹‚©‚ğ”»’f‚µ‚Ü‚·
                 int Remain = scriptRoot.PlayTimesGetRemain(0);
                 if (Remain >= 0)
                     ret = true;
