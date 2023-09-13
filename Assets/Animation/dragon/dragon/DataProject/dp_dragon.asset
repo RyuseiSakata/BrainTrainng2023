@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1e551922b81ce40b6579726b70c93f, type: 3}
+  m_Name: dp_dragon
+  m_EditorClassIdentifier: 
+  Version: 65536
+  Name: dragon
+  DataCellMap: {fileID: 11400000, guid: d55759063aee1454e9a13ac7a5665d8f, type: 2}
+  DataAnimation:
+  - {fileID: 11400000, guid: f088432334c4f8441a7703970ce57d1a, type: 2}
+  DataEffect: []
+  DataSequence: []
+  PrefabAnimation:
+  - {fileID: 5115109891957571478, guid: 7c103b5090d5a1d4ba06a81444e4a1fe, type: 3}
+  PrefabEffect: []
+  TableTexture:
+  - {fileID: 2800000, guid: a5fcfc7ee65a54c41aebfbd248ded9a3, type: 3}
+  - {fileID: 2800000, guid: bdfb2f999a4a37e40962c57f1af4eac7, type: 3}
