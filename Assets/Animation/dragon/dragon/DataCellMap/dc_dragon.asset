@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194737b46e04ff84a936435d5601662f, type: 3}
+  m_Name: dc_dragon
+  m_EditorClassIdentifier: 
+  Version: 65537
+  DataProject: {fileID: 11400000, guid: 3a33001a9a9dcfe47b59fd476db85d4b, type: 2}
+  TableCellMap:
+  - Name: dragon
+    SizeOriginal: {x: 3508, y: 2480}
+    TableCell:
+    - Name: dragon
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 3499
+        height: 2479
+      Pivot: {x: 1749.5, y: 1239.5}
+      Mesh:
+        TableCoordinate: []
+        TableIndexVertex: 
+  - Name: dragon1
+    SizeOriginal: {x: 3508, y: 2480}
+    TableCell:
+    - Name: dragon1
+      Rectangle:
+        serializedVersion: 2
+        x: 0
+        y: 9
+        width: 3499
+        height: 2469
+      Pivot: {x: 1749.5, y: 1234.5}
+      Mesh:
+        TableCoordinate: []
+        TableIndexVertex: 
