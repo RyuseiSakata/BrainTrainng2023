@@ -12,6 +12,13 @@ public enum TextKinds
 
 public class UIManager : MonoBehaviour
 {
+    //ボタンの配置
+    [SerializeField] GameObject buttonLayout_0;
+    [SerializeField] GameObject buttonLayout_1;
+
+    //ボタンサイズ
+    [SerializeField] GameObject[] buttons;
+
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
     [SerializeField] Text countDownText;
@@ -53,7 +60,7 @@ public class UIManager : MonoBehaviour
                 break;
             case TextKinds.Score:
                 if(scoreText!=null)
-                    scoreText.text = "スコア："+value.ToString("0000");
+                    scoreText.text = value.ToString("000000");
                 break;
         }
     }
@@ -114,5 +121,35 @@ public class UIManager : MonoBehaviour
         yield break;
     }
 
+    //設定をUIに反映
+    public void configInit()
+    {
+        //操作方法（タッチのみでないの場合）
+        if (Config.operateMode != 1)
+        {
+            //ボタン配置
+            if (Config.buttonLayout == 0)
+            {
+                buttonLayout_0.SetActive(true);
+                buttonLayout_1.SetActive(false);
+            }
+            else
+            {
+                buttonLayout_0.SetActive(false);
+                buttonLayout_1.SetActive(true);
+            }
+        }
+        else
+        {
+            buttonLayout_0.SetActive(false);
+            buttonLayout_1.SetActive(false);
+        }
 
+        //ボタンサイズ
+        float size = 0.06f * (Config.buttonSize-1) + 0.76f;
+        for (int i=0; i<buttons.Length; i++)
+        {
+            buttons[i].GetComponent<RectTransform>().localScale = new Vector3(size, size, 1);
+        }
+    }
 }

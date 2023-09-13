@@ -34,7 +34,7 @@ public class Stage : MonoBehaviour
 
     public bool CanUserOperate { get; set; } = false;   //ユーザが操作できるか否かのフラグ
 
-    [SerializeField] AudioManager audioManaeger;
+    [SerializeField] AudioManager audioManager;
 
     [SerializeField] WordList wordList;  //消した単語リスト
 
@@ -274,12 +274,7 @@ public class Stage : MonoBehaviour
 
         decideDestination();    //目標行数の決定
 
-        string s = "DEBB:";
-        activeBlockList.ForEach(e =>
-        {
-            s += e.DestinationRow + ",";
-        });
-        Debug.Log(s);
+
 
         //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
         while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
@@ -295,10 +290,11 @@ public class Stage : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        audioManaeger.playSeOneShot(AudioKinds.BlockMove);
+        audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
 
 
         yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
+
 
         //Debug.Log("着地");
 
@@ -340,16 +336,22 @@ public class Stage : MonoBehaviour
         CanUserOperate = false;  //ユーザの操作を不可能に
         playerInput.updateTapPosition();
 
-        //destinationRowとcurrentRowが異なるときに修正
+        
+        //destinationRowとcurrentRowが異なるときに修正,落下停止バグを防ぐ(Debug用ループ)
         for (int i = 0; i < BlockArray.GetLength(0); i++)
         {
             for (int j = 0; j < BlockArray.GetLength(1); j++)
-            {
+            {/*
                 if (BlockArray[i, j] != null)
                 {
                     BlockArray[i, j].DestinationRow = BlockArray[i, j].CurrentRow;
-                    Debug.Log("destinationの修正");
+                    Debug.Log($"destinationの修正({i},{j},{BlockArray[i, j].chara}->{BlockArray[i, j].DestinationRow},{BlockArray[i, j].CurrentRow}");
+                }*/
+                if (BlockArray[i, j] != null && BlockArray[i, j].DestinationRow != BlockArray[i, j].CurrentRow)
+                {
+                    Debug.Log("!!違う");
                 }
+
             }
         }
         yield break;
@@ -401,13 +403,23 @@ public class Stage : MonoBehaviour
                             }
                         });
                     }
-                    audioManaeger.playSeOneShot(AudioKinds.BlockMove);
+                    audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
                 });
             }
 
-            activeBlockList.Clear();    //activeBlockListの要素を全削除
 
-            
+            //destinationRowとcurrentRowが異なるときに修正,落下停止バグを防ぐ
+            activeBlockList.ForEach(block =>
+            {
+                var fallBlock = BlockArray[block.CurrentRow, block.CurrentCol];
+                if (fallBlock != null)
+                {
+                    fallBlock.DestinationRow = fallBlock.CurrentRow;
+                    //Debug.Log($"変更：{fallBlock.CurrentRow},{fallBlock.CurrentCol},{fallBlock.chara}");
+                }
+            });
+
+            activeBlockList.Clear();    //activeBlockListの要素を全削除
 
         } while (targetList.Count > 0);
 
@@ -555,7 +567,7 @@ public class Stage : MonoBehaviour
                                     if (!destroyList.Contains(b)) destroyList.Add(b);
                                 }
                                 float pitch = 0.6f + comboNum * 0.4f;
-                                audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
+                                audioManager.playSeOneShot(AudioKinds.SE_FindWord, pitch);
                                 if (word.Length > 2) scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
                                 if (word.Length > 2) damagePerChain += word.Length - 2;    //文字数-2
                                 sameEraseNum++; //同時消し数の加算
@@ -636,7 +648,7 @@ public class Stage : MonoBehaviour
 
                                 }
                                 float pitch = 0.6f + comboNum * 0.4f;
-                                audioManaeger.playSeOneShot(AudioKinds.FindWord, pitch);
+                                audioManager.playSeOneShot(AudioKinds.SE_FindWord, pitch);
                                 if (word.Length > 2) scorePerChain += 100 * (int)Mathf.Pow(2, word.Length - 3); //1単語当たりのスコア 100*2^(文字数-3)
                                 if (word.Length > 2) damagePerChain += word.Length - 2;    //文字数-2
                                 sameEraseNum++; //同時消し数の加算
@@ -789,7 +801,7 @@ public class Stage : MonoBehaviour
                     }
                     //yield return new WaitForSeconds(0.0001f);
                 }
-                audioManaeger.playSeOneShot(AudioKinds.BlockMove);
+                audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
             }
             
         }
@@ -897,11 +909,11 @@ public class Stage : MonoBehaviour
         {
             if (checkState(block.currentRowLine, block.CurrentCol + value) == GridState.OutStage || checkState(block.currentRowLine, block.CurrentCol + value) == GridState.Disactive)
             {
-                audioManaeger.playSeOneShot(AudioKinds.CanNotMove);
+                audioManager.playSeOneShot(AudioKinds.SE_CanNotMove);
                 return;
             }
         }
-        audioManaeger.playSeOneShot(AudioKinds.BlockMove);
+        audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
         foreach (var block in activeBlockList)
         {
             block.CurrentCol += value;

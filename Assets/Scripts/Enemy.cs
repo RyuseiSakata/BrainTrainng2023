@@ -131,20 +131,22 @@ namespace Battle {
             {
                 NextActionCount -= 1;
                 actionCount++;  //s“®‰ñ”‚ª‘‰Á
+
+                switch (myType)
+                {
+                    case EnemyType.Fase1:
+                        yield return fase1Action(target);
+                        break;
+                    case EnemyType.Fase2:
+                        yield return fase2Action(target);
+                        break;
+                    case EnemyType.Dragon:
+                        yield return dragonAction(target);
+                        break;
+                }
             }
 
-            switch (myType)
-            {
-                case EnemyType.Fase1:
-                    yield return fase1Action(target);
-                    break;
-                case EnemyType.Fase2:
-                    yield return fase2Action(target);
-                    break;
-                case EnemyType.Dragon:
-                    yield return dragonAction(target);
-                    break;
-            }
+            
             yield break;
         }
         //HP‚ğİ’è‚Å‚«‚é

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Title
-{ 
+{
     public class PlayerInput : MonoBehaviour
     {
+        [SerializeField] GameObject optionPanel;
+
         //通常モードボタンを押したとき
         public void pushNormalButton()
         {
@@ -26,6 +28,12 @@ namespace Title
             #else
                 Application.Quit();//ゲームプレイ終了
             #endif
+        }
+
+        //オプションボタンを押したとき
+        public void pushOptionButton()
+        {
+            optionPanel.SetActive(true);
         }
     }
 }

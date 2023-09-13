@@ -4,28 +4,39 @@ using UnityEngine;
 
 public enum AudioKinds
 {
-    FindWord = 0,   //単語をみつけた音
-    BlockMove = 1,  //ブロックを動かす音、置く音
-    CanNotMove = 2, //ブロックを動かせないと
+    SE_FindWord = 0,   //単語をみつけた音
+    SE_BlockMove = 1,  //ブロックを動かす音、置く音
+    SE_CanNotMove = 2, //ブロックを動かせないと
+    BGM_Main = 3,   //BGM
 }
 
 public class AudioManager : MonoBehaviour
 {
-    private AudioSource audioSource;
+    [SerializeField] AudioSource seAudioSource;
+    [SerializeField] AudioSource bgmAudioSource;
 
     [SerializeField] AudioClip[] seList;
+    [SerializeField] AudioClip[] bgmList;
 
     private const float defaultPitch = 1.0f;
 
-    void Awake()
+    private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        bgmAudioSource.volume = Config.musicVolume;
+
+        playBgm(AudioKinds.BGM_Main);
     }
 
-    public void playSeOneShot(AudioKinds audioKinds = AudioKinds.FindWord, float pitch = defaultPitch, float volumeScale = 0.5f)
+    public void playSeOneShot(AudioKinds audioKinds = AudioKinds.SE_FindWord, float pitch = defaultPitch)
     {
-        audioSource.pitch = pitch;
-        audioSource.PlayOneShot(seList[(int)audioKinds], volumeScale);
+        seAudioSource.pitch = pitch;
+        seAudioSource.PlayOneShot(seList[(int)audioKinds], Config.seVolume);
+    }
+
+    public void playBgm(AudioKinds audioKinds = AudioKinds.BGM_Main)
+    {
+        bgmAudioSource.clip = seList[(int)audioKinds];
+        bgmAudioSource.Play();
     }
 
 }

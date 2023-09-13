@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour
     private EnemyType[] enemyArray = { EnemyType.Fase1, EnemyType.Fase2, EnemyType.Dragon };    //ƒoƒgƒ‹‚Ì“G‚Ì•Ï”‚ğ‡”Ô‚ÉŠi”[‚·‚é”z—ñ
 
     private bool gameEndFlag = false;    //ƒQ[ƒ€I—¹‚Ìƒtƒ‰ƒO
+
     private void Start()
     {
         score = 0;
@@ -48,7 +49,9 @@ public class GameController : MonoBehaviour
 
     private IEnumerator mainLoop()
     {
-        if(SceneChanger.getCurrentSceneName() == "MainScene")
+        uIManager.configInit(); //İ’è‚Ì”½‰f
+
+        if (SceneChanger.getCurrentSceneName() == "MainScene")
         {
             yield return uIManager.showCountDown();
 
@@ -229,5 +232,6 @@ public class GameController : MonoBehaviour
 
         yield break;
     }
+
 }
 

@@ -127,26 +127,29 @@ public class Block : MonoBehaviour
             transform.localPosition = Vector3.MoveTowards(transform.localPosition, destinationPos, fallSpeed * stage.fallBoost * Time.deltaTime);
             currentRow = getRowFrom(transform.localPosition.y);   //現在の行数を高さにより計算
             currentRowLine = getRowLineFrom(transform.localPosition.y);
+
+            //もともとif (!isLocked)の外
+            if (currentRow == DestinationRow)
+            {
+
+                BlockState = false;
+                text.text = chara;
+                if (stage.BlockArray[CurrentRow, CurrentCol] == null)
+                {
+                    stage.BlockArray[CurrentRow, CurrentCol] = this;
+                }
+                else
+                {
+                    Debug.Log("CONF");
+                    DestinationRow -= 1;
+                }
+
+                stage.CanUserOperate = false;
+
+            }
         }
 
-        if (currentRow == DestinationRow)
-        {
-
-            BlockState = false;
-            text.text = chara;
-            if(stage.BlockArray[CurrentRow, CurrentCol] == null)
-            {
-                stage.BlockArray[CurrentRow, CurrentCol] = this;
-            }
-            else
-            {
-                Debug.Log("CONF");
-                DestinationRow -= 1;
-            }
-            
-            stage.CanUserOperate = false;
-            
-        }
+        
     }
 
     //Blockの回転を行う
