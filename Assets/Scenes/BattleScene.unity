@@ -2671,8 +2671,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca5e517008e83a4bab36a14947bcc4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHpText: {fileID: 1038587061}
-  enemyHpText: {fileID: 1233049585}
+  enemyNameText: {fileID: 1038587061}
   chargeTurnText: {fileID: 206053989}
   playerHpSlider: {fileID: 1558650391}
   enemyHpSlider: {fileID: 151441349}
@@ -3493,7 +3492,7 @@ GameObject:
   - component: {fileID: 1038587061}
   - component: {fileID: 1038587063}
   m_Layer: 5
-  m_Name: enemyHpText
+  m_Name: enemyNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3516,8 +3515,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 500, y: 378.00003}
-  m_SizeDelta: {x: 300, y: 100}
+  m_AnchoredPosition: {x: 544.24, y: 378.00003}
+  m_SizeDelta: {x: 464.14, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1038587061
 MonoBehaviour:
@@ -3552,7 +3551,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u3069\u3089\u3054\u3093"
+  m_Text: 
 --- !u!222 &1038587062
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4564,7 +4563,7 @@ GameObject:
   - component: {fileID: 1233049585}
   - component: {fileID: 1233049587}
   m_Layer: 5
-  m_Name: playerHpText
+  m_Name: playerNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

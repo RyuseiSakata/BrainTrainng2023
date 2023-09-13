@@ -165,10 +165,10 @@ namespace Battle {
                 switch (myType)
                 {
                     case EnemyType.Slime:
-                        yield return fase1Action(target);
+                        yield return slimeAction(target);
                         break;
                     case EnemyType.Minotaurosu:
-                        yield return fase2Action(target);
+                        yield return minotaurosuAction(target);
                         break;
                     case EnemyType.Dragon:
                         yield return dragonAction(target);
@@ -186,6 +186,7 @@ namespace Battle {
             switch (enemyType)
             {
                 case EnemyType.Slime:
+                    battleUIManager.uiUpdate(UIKinds.EnemyName, "すらいむ");
                     slimeObject.SetActive(true);
                     minotaurosuObject.SetActive(false);
                     dragonObject.SetActive(false);
@@ -193,6 +194,7 @@ namespace Battle {
                     NextActionCount = 2;
                     break;
                 case EnemyType.Minotaurosu:
+                    battleUIManager.uiUpdate(UIKinds.EnemyName, "みのたうろす");
                     slimeObject.SetActive(false);
                     minotaurosuObject.SetActive(true);
                     dragonObject.SetActive(false);
@@ -200,6 +202,7 @@ namespace Battle {
                     NextActionCount = 2;
                     break;
                 case EnemyType.Dragon:
+                    battleUIManager.uiUpdate(UIKinds.EnemyName, "どらごん");
                     slimeObject.SetActive(false);
                     minotaurosuObject.SetActive(false);
                     dragonObject.SetActive(true);
@@ -252,7 +255,7 @@ namespace Battle {
         }
 
         //フェーズ1の敵
-        private IEnumerator fase1Action(Player target)
+        private IEnumerator slimeAction(Player target)
         {
             Debug.Log($"ENEMY:{actionCount}");
             switch (actionCount)
@@ -260,19 +263,19 @@ namespace Battle {
                 //通常攻撃(1)
                 case 2:
                     slimeAnim.playAttackAnim();
-                    yield return normalAttack(target, 1.5f);
+                    yield return normalAttack(target, 1f);
                     NextActionCount = 3;
                     break;
                 //通常攻撃(1)
                 case 5:
                     slimeAnim.playAttackAnim();
-                    yield return normalAttack(target, 1.5f);
+                    yield return normalAttack(target, 1f);
                     NextActionCount = 4;
                     break;
                 //通常攻撃(2)
                 case 9:
                     slimeAnim.playAttackAnim();
-                    yield return normalAttack(target, 3f);
+                    yield return normalAttack(target, 1.5f);
                     NextActionCount = 2;
                     break;
                 //お邪魔ブロック（ランダム1個）
@@ -290,7 +293,7 @@ namespace Battle {
         }
 
         //フェーズ2の敵
-        private IEnumerator fase2Action(Player target)
+        private IEnumerator minotaurosuAction(Player target)
         {
             int randNum = Random.Range(0, 1);
 
@@ -300,7 +303,7 @@ namespace Battle {
                 //通常攻撃（1）＋10行目削除
                 case 2:
                     minotaurosuAnim.playAttackAnim();
-                    yield return normalAttack(target, 1f);
+                    yield return normalAttack(target, 3.5f);
                     yield return stage.rowLineDelete(10);
                     Debug.Log("ENEMY:10行目を削除");
                     NextActionCount = 3;
@@ -308,14 +311,14 @@ namespace Battle {
                 //通常攻撃（1.3）+お邪魔ブロック（ランダム4個以下）
                 case 5:
                     minotaurosuAnim.playAttackAnim();
-                    yield return normalAttack(target, 1.3f);
+                    yield return normalAttack(target, 1.5f);
                     yield return randomObstacleAttack(4);
                     NextActionCount = 5;
                     break;
-                //通常攻(2.5）またはplayerの回復5
+                //通常攻(2.5）または回復5
                 case 10:
                     minotaurosuAnim.playAttackAnim();
-                    if (randNum == 0) yield return normalAttack(target, 2.5f);
+                    if (randNum == 0) yield return normalAttack(target, 3f);
                     else heal(5);
                     NextActionCount = 2;
                     break;
@@ -342,39 +345,56 @@ namespace Battle {
                 //通常攻撃(1)
                 case 1:
                     dragonAnim.playAttackAnim();
-                    yield return stage.colLineDelete(2);
-                    yield return stage.colLineDelete(3);
-                    yield return stage.colLineDelete(4);
+                    int randNum = Random.Range(0, 3);
+                    if (randNum == 0)
+                    {
+                        yield return stage.colLineDelete(2);
+                        yield return stage.colLineDelete(4);
+                    }
+                    else if(randNum == 1)
+                    {
+                        yield return stage.colLineDelete(3);
+                        yield return randomObstacleAttack(3);
+                    }
+                    else
+                    {
+                        yield return normalAttack(target, 2f);
+                        yield return stage.colLineDelete(1);
+                        yield return stage.colLineDelete(5);
+                    }
+                    
                     NextActionCount = 2;
                     break;
                 //通常攻撃(1)
                 case 3:
                     dragonAnim.playAttackAnim();
-                    yield return normalAttack(target, 0.5f);
+                    yield return normalAttack(target, 1.5f);
                     NextActionCount = 2;
                     break;
                 //通常攻撃(2)
                 case 5:
                     dragonAnim.playAttackAnim();
-                    yield return normalAttack(target, 1f);
+                    yield return normalAttack(target, 2f);
                     yield return randomObstacleAttack(1);
                     NextActionCount = 3;
                     break;
                 //お邪魔ブロック（ランダム1個）
                 case 8:
                     dragonAnim.playAttackAnim();
-                    yield return normalAttack(target, 0.8f);
+                    yield return normalAttack(target, 1.5f);
                     yield return randomObstacleAttack(2);
                     NextActionCount = 3;
                     break;
                 case 11:
                     dragonAnim.playAttackAnim();
-                    yield return normalAttack(target, 1.2f);
+                    yield return normalAttack(target, 1.25f);
                     yield return randomObstacleAttack(1);
                     NextActionCount = 3;
                     break;
                 case 14:
                     dragonAnim.playAttackAnim();
+                    float damageAmount = hpAmount >15f ? (30 - hpAmount) / 3f : 4f;
+                    yield return normalAttack(target, damageAmount);
                     yield return stage.rowLineDelete(Random.Range(5, 11));
                     NextActionCount = 3;
                     break;
