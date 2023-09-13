@@ -6,8 +6,8 @@ using Battle;
 
 public enum EnemyType
 {
-    Fase1,
-    Fase2,
+    Slime,
+    Minotaurosu,
     Dragon,
 }
 
@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
     }
 
     [SerializeField] int faseCount = 0;  //現在のフェーズ数
-    private EnemyType[] enemyArray = { EnemyType.Fase1, EnemyType.Fase2, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
+    private EnemyType[] enemyArray = { EnemyType.Slime, EnemyType.Minotaurosu, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
 
     private bool gameEndFlag = false;    //ゲーム終了のフラグ
 

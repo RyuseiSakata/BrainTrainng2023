@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class OptionManager : MonoBehaviour
 {
-    
     [SerializeField] Slider musicSlider;        //Music音量の調整スライダー
     [SerializeField] Slider seSlider;           //SE音量の調整スライダー
     [SerializeField] Slider buttonSizeSlider;   //ボタンサイズの調整スライダー
