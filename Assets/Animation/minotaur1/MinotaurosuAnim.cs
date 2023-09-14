@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DragonAnim : MonoBehaviour
+public class MinotaurosuAnim : MonoBehaviour
 {
     [SerializeField] private GameObject gameObject1;
-    Dragon script;
+    Minotaurosu script;
     // Start is called before the first frame update
     void Start()
     {
-        script = gameObject1.GetComponent<Dragon>();
+        script = gameObject1.GetComponent<Minotaurosu>();
         script.SA();
     }
 

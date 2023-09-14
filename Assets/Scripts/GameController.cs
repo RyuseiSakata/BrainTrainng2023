@@ -6,8 +6,8 @@ using Battle;
 
 public enum EnemyType
 {
-    Fase1,
-    Fase2,
+    Slime,
+    Minotaurosu,
     Dragon,
 }
 
@@ -28,6 +28,9 @@ public class GameController : MonoBehaviour
     private int score = 0;
     public static float playerAttack;   //消した文字によるプレイヤーの攻撃量
 
+    public static float gameTime = 0; //ゲームのプレイ時間
+    public static bool isSetTimer = false;  //時間を測定するかのフラグ
+
     //ターン数のプロパティ
     public int NumberOfTurns
     {
@@ -36,15 +39,27 @@ public class GameController : MonoBehaviour
     }
 
     [SerializeField] int faseCount = 0;  //現在のフェーズ数
-    private EnemyType[] enemyArray = { EnemyType.Fase1, EnemyType.Fase2, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
+    private EnemyType[] enemyArray = { EnemyType.Slime, EnemyType.Minotaurosu, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
 
     private bool gameEndFlag = false;    //ゲーム終了のフラグ
 
     private void Start()
     {
         score = 0;
-        
+        gameTime = 0;
+        isSetTimer = false;
+
+
         StartCoroutine("mainLoop");
+    }
+
+    private void Update()
+    {
+        //Timerの測定を行う
+        if (isSetTimer)
+        {
+            gameTime += Time.deltaTime;
+        }
     }
 
     private IEnumerator mainLoop()
@@ -160,7 +175,7 @@ public class GameController : MonoBehaviour
         yield return initBattle(enemyType);  //バトル開始
 
         yield return uIManager.showCountDown();
-
+        isSetTimer = true;   //時間の計測を開始
         /*
          * 一定間隔で攻撃するなら以下のコード
         //player.StartCoroutine("action");
@@ -229,7 +244,7 @@ public class GameController : MonoBehaviour
             }
 
         }
-
+        isSetTimer = false; //時間の計測を中断
         yield break;
     }
 

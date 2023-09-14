@@ -9,15 +9,17 @@ namespace Battle
     {
         PlayerHP,
         EnemyHP,
+        EnemyName,
         NextActionCount,
+        GameTime,
     }
     public class BattleUIManager : MonoBehaviour
     {
-        [SerializeField] Text playerHpText;
-        [SerializeField] Text enemyHpText;
+        [SerializeField] Text enemyNameText;
         [SerializeField] Text chargeTurnText;
         [SerializeField] Slider playerHpSlider;
         [SerializeField] Slider enemyHpSlider;
+        [SerializeField] Text gameTimeText;
 
         //UIテキストの変更を行う
         public void uiUpdate(UIKinds uiKinds, float value)
@@ -36,6 +38,16 @@ namespace Battle
             }
         }
 
+        //UIテキストの変更を行う
+        public void uiUpdate(UIKinds uiKinds, string value)
+        {
+            switch (uiKinds)
+            {
+                case UIKinds.EnemyName:
+                    enemyNameText.text = value;
+                    break;
+            }
+        }
     }
 
 }
