@@ -29,6 +29,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text formalText;
     [SerializeField] Text gameTimeText; //バトルモードのみ
 
+    [SerializeField] AudioManager audioManager;
+
     /*デバッグ用*/
     [SerializeField] InputField fallInputField; //自由落下速度調整用の入力欄
 
@@ -79,6 +81,7 @@ public class UIManager : MonoBehaviour
 
             gameTimeText.text = min.ToString("00")+ ":" + second.ToString("00");
         }
+        audioManager.playSeOneShot(AudioKinds.SE_Countdown);
         countDownText.text = "3";
         yield return new WaitForSeconds(1f);
         countDownText.text = "2";
@@ -86,7 +89,7 @@ public class UIManager : MonoBehaviour
         countDownText.text = "1";
         yield return new WaitForSeconds(1f);
         countDownText.text = "Start";
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1.2f);
         countDownText.text = "";
         if (gameTimeText != null) gameTimeText.text = "";
         darkPanel.SetActive(false);

@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] UIManager uIManager;
     [SerializeField] Stage stage;
+    [SerializeField] AudioManager audioManager;
 
     //バトルシーン用
     [SerializeField] Battle.Player player;
@@ -69,6 +70,7 @@ public class GameController : MonoBehaviour
         if (SceneChanger.getCurrentSceneName() == "MainScene")
         {
             yield return uIManager.showCountDown();
+            audioManager.playBgm(AudioKinds.BGM_Main);
 
             while (!gameEndFlag)
             {
@@ -174,7 +176,11 @@ public class GameController : MonoBehaviour
         EnemyType enemyType = enemyArray[faseCount];
         yield return initBattle(enemyType);  //バトル開始
 
+        audioManager.pauseBgm();    //BGMを一時停止
         yield return uIManager.showCountDown();
+        audioManager.playBgm(AudioKinds.BGM_Main);
+        
+
         isSetTimer = true;   //時間の計測を開始
         /*
          * 一定間隔で攻撃するなら以下のコード
@@ -196,7 +202,7 @@ public class GameController : MonoBehaviour
             }
 
             //文字の消え具合　また　ターンにより攻撃を行う場合
-            yield return player.attack(enemy, PlayerAttackKinds.Word);
+            yield return player.attack(enemy);
 
             //死んだかの処理
             if (enemy.HpAmount <= 0f)
@@ -217,7 +223,7 @@ public class GameController : MonoBehaviour
 
             yield return new WaitForSeconds(0.2f);
             yield return enemy.action(player);
-            yield return player.attack(enemy, PlayerAttackKinds.Word);
+            yield return player.attack(enemy);
 
             //死んだかの処理
             if (enemy.HpAmount <= 0f)

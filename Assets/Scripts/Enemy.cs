@@ -26,6 +26,7 @@ namespace Battle {
         private EnemyType myType;
         [SerializeField] BattleUIManager battleUIManager;
         [SerializeField] Stage stage;
+        [SerializeField] AudioManager audioManager;
 
         [SerializeField] float hpAmount;
         public static float maxHp;
@@ -263,24 +264,28 @@ namespace Battle {
                 //通常攻撃(1)
                 case 2:
                     slimeAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_SlimeAttack);
                     yield return normalAttack(target, 1f);
                     NextActionCount = 3;
                     break;
                 //通常攻撃(1)
                 case 5:
                     slimeAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_SlimeAttack);
                     yield return normalAttack(target, 1f);
                     NextActionCount = 4;
                     break;
                 //通常攻撃(2)
                 case 9:
                     slimeAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_SlimeAttack);
                     yield return normalAttack(target, 1.5f);
                     NextActionCount = 2;
                     break;
                 //お邪魔ブロック（ランダム1個）
                 case 11:
                     slimeAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_SlimeAttack);
                     yield return randomObstacleAttack(3);
                     NextActionCount = 2;
                     actionCount = 0;
@@ -303,6 +308,7 @@ namespace Battle {
                 //通常攻撃（1）＋10行目削除
                 case 2:
                     minotaurosuAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_MinotaurosuAttack);
                     yield return normalAttack(target, 3.5f);
                     yield return stage.rowLineDelete(10);
                     Debug.Log("ENEMY:10行目を削除");
@@ -311,6 +317,7 @@ namespace Battle {
                 //通常攻撃（1.3）+お邪魔ブロック（ランダム4個以下）
                 case 5:
                     minotaurosuAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_MinotaurosuAttack);
                     yield return normalAttack(target, 1.5f);
                     yield return randomObstacleAttack(4);
                     NextActionCount = 5;
@@ -318,6 +325,7 @@ namespace Battle {
                 //通常攻(2.5）または回復5
                 case 10:
                     minotaurosuAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_MinotaurosuAttack);
                     if (randNum == 0) yield return normalAttack(target, 3f);
                     else heal(5);
                     NextActionCount = 2;
@@ -325,6 +333,7 @@ namespace Battle {
                 //お邪魔ブロック（ランダム7個以下）
                 case 12:
                     minotaurosuAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_MinotaurosuAttack);
                     yield return randomObstacleAttack(7);
                     NextActionCount = 2;
                     actionCount = 0;
@@ -345,6 +354,7 @@ namespace Battle {
                 //通常攻撃(1)
                 case 1:
                     dragonAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_DragonAttack);
                     int randNum = Random.Range(0, 3);
                     if (randNum == 0)
                     {
@@ -368,12 +378,14 @@ namespace Battle {
                 //通常攻撃(1)
                 case 3:
                     dragonAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_DragonAttack);
                     yield return normalAttack(target, 1.5f);
                     NextActionCount = 2;
                     break;
                 //通常攻撃(2)
                 case 5:
                     dragonAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_DragonAttack);
                     yield return normalAttack(target, 2f);
                     yield return randomObstacleAttack(1);
                     NextActionCount = 3;
@@ -381,18 +393,21 @@ namespace Battle {
                 //お邪魔ブロック（ランダム1個）
                 case 8:
                     dragonAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_DragonAttack);
                     yield return normalAttack(target, 1.5f);
                     yield return randomObstacleAttack(2);
                     NextActionCount = 3;
                     break;
                 case 11:
                     dragonAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_DragonAttack);
                     yield return normalAttack(target, 1.25f);
                     yield return randomObstacleAttack(1);
                     NextActionCount = 3;
                     break;
                 case 14:
                     dragonAnim.playAttackAnim();
+                    audioManager.playSeOneShot(AudioKinds.SE_DragonAttack);
                     float damageAmount = hpAmount >15f ? (30 - hpAmount) / 3f : 4f;
                     yield return normalAttack(target, damageAmount);
                     yield return stage.rowLineDelete(Random.Range(5, 11));

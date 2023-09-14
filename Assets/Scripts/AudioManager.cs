@@ -7,7 +7,13 @@ public enum AudioKinds
     SE_FindWord = 0,   //単語をみつけた音
     SE_BlockMove = 1,  //ブロックを動かす音、置く音
     SE_CanNotMove = 2, //ブロックを動かせないと
-    BGM_Main = 3,   //BGM
+    SE_Enter = 3,   //決定音
+    SE_Countdown = 4,   //カウントダウン
+    SE_PlayerAttack = 5,    //playerの攻撃SE
+    SE_SlimeAttack = 6,    //スライムの攻撃SE
+    SE_MinotaurosuAttack = 7,    //ミノタウロスの攻撃SE
+    SE_DragonAttack = 8,    //ドラゴンの攻撃SE
+    BGM_Main = 9,   //BGM
 }
 
 public class AudioManager : MonoBehaviour
@@ -16,7 +22,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField] AudioSource bgmAudioSource;
 
     [SerializeField] AudioClip[] seList;
-    [SerializeField] AudioClip[] bgmList;
 
     private const float defaultPitch = 1.0f;
 
@@ -24,7 +29,7 @@ public class AudioManager : MonoBehaviour
     {
         bgmAudioSource.volume = Config.musicVolume;
 
-        playBgm(AudioKinds.BGM_Main);
+        
     }
 
     public void playSeOneShot(AudioKinds audioKinds = AudioKinds.SE_FindWord, float pitch = defaultPitch)
@@ -33,10 +38,28 @@ public class AudioManager : MonoBehaviour
         seAudioSource.PlayOneShot(seList[(int)audioKinds], Config.seVolume);
     }
 
+    public IEnumerator playSeOneShotWait(AudioKinds audioKinds = AudioKinds.SE_FindWord, float pitch = defaultPitch)
+    {
+        seAudioSource.pitch = pitch;
+        seAudioSource.PlayOneShot(seList[(int)audioKinds], Config.seVolume);
+        yield return new WaitWhile(() => seAudioSource.isPlaying);
+        yield break;
+    }
+
     public void playBgm(AudioKinds audioKinds = AudioKinds.BGM_Main)
     {
         bgmAudioSource.clip = seList[(int)audioKinds];
         bgmAudioSource.Play();
+    }
+
+    public void pauseBgm()
+    {
+        bgmAudioSource.Pause();
+    }
+
+    public bool isSePlaying()
+    {
+        return seAudioSource.isPlaying;
     }
 
 }
