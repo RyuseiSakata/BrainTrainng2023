@@ -242,10 +242,10 @@ public class GameController : MonoBehaviour
             {
                 yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
                 FaseCount++;    //次のフェーズへ
-                Debug.Log("Fase:" + FaseCount);
                 //すべての敵に勝ったなら
                 if (enemyArray.Length <= FaseCount)
                 {
+                    FaseCount--;
                     endGame(EndState.WIN);
                 }
 
@@ -259,13 +259,13 @@ public class GameController : MonoBehaviour
             //死んだかの処理
             if (enemy.HpAmount <= 0f)
             {
-                FaseCount++;    //次のフェーズへ
-                Debug.Log("Fase:" + FaseCount);
+                
                 yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
-
+                FaseCount++;    //次のフェーズへ
                 //すべての敵に勝ったなら
                 if (enemyArray.Length <= FaseCount)
                 {
+                    FaseCount--;
                     endGame(EndState.WIN);
                 }
 
