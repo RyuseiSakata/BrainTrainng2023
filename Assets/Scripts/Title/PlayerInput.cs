@@ -9,29 +9,48 @@ namespace Title
         [SerializeField] GameObject optionPanel;
         [SerializeField] AudioManager audioManager;
 
+        private bool canClick = true;   //Audioの再生終了街の時にボタンを押せなくする
+
         //通常モードボタンを押したとき
         public void pushNormalButton()
         {
-            StartCoroutine(actionNormalButton());
+            if (canClick)
+            {
+                canClick = false;
+                StartCoroutine(actionNormalButton());
+            }
+            
         }
 
         //バトルモードボタンを押したとき
         public void pushBattleButton()
         {
-            StartCoroutine(actionBattleButton());
+            if (canClick)
+            {
+                canClick = false;
+                StartCoroutine(actionBattleButton());
+            }
         }
 
         //終了ボタンを押したとき
         public void pushQuitButton()
         {
-            StartCoroutine(actionQuitButton());
+            if (canClick)
+            {
+                canClick = false;
+                StartCoroutine(actionQuitButton());
+            }
         }
 
         //オプションボタンを押したとき
         public void pushOptionButton()
         {
-            audioManager.playSeOneShot(AudioKinds.SE_Enter);
-            optionPanel.SetActive(true);
+            if (canClick)
+            {
+                audioManager.playSeOneShot(AudioKinds.SE_Enter);
+                optionPanel.SetActive(true);
+            }
+            
         }
 
 
