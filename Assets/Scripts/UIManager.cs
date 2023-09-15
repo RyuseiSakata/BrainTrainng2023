@@ -79,7 +79,7 @@ public class UIManager : MonoBehaviour
             int min = second > 99 * 60 ? 99 : (second / 60);
             second = second % 60;
 
-            gameTimeText.text = min.ToString("00")+ ":" + second.ToString("00");
+            gameTimeText.text = "‚½‚¢‚Þ " + min.ToString("00")+ ":" + second.ToString("00");
         }
         audioManager.playSeOneShot(AudioKinds.SE_Countdown);
         countDownText.text = "3";

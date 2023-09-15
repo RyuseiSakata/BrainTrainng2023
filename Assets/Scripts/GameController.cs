@@ -22,6 +22,7 @@ public enum EndState
 public class GameController : MonoBehaviour
 {
     [SerializeField] UIManager uIManager;
+    [SerializeField] BattleUIManager battleUIManager;
     [SerializeField] Stage stage;
     [SerializeField] AudioManager audioManager;
 
@@ -30,13 +31,7 @@ public class GameController : MonoBehaviour
     [SerializeField] Battle.Enemy enemy;
 
     private int numberOfTurns = 0;  //ターン数
-
-    private int score = 0;
-    public static float playerAttack;   //消した文字によるプレイヤーの攻撃量
-
-    public static float gameTime = 0; //ゲームのプレイ時間
-    public static bool isSetTimer = false;  //時間を測定するかのフラグ
-
+                                    
     //ターン数のプロパティ
     public int NumberOfTurns
     {
@@ -44,7 +39,23 @@ public class GameController : MonoBehaviour
         set { numberOfTurns = value; }
     }
 
-    [SerializeField] int faseCount = 0;  //現在のフェーズ数
+    private int score = 0;  //スコア
+    public static float playerAttack;   //消した文字によるプレイヤーの攻撃量
+
+    public static float gameTime = 0; //ゲームのプレイ時間
+    public static bool isSetTimer = false;  //時間を測定するかのフラグ
+
+    private int faseCount = 0;  //現在のフェーズ数
+    public int FaseCount
+    {
+        get => faseCount;
+        set
+        {
+            faseCount = value;
+            battleUIManager.uiUpdate(UIKinds.Fase,faseCount);
+        }
+    }
+
     private EnemyType[] enemyArray = { EnemyType.Slime, EnemyType.Minotaurosu, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
 
     private bool gameEndFlag = false;    //ゲーム終了のフラグ
@@ -195,7 +206,7 @@ public class GameController : MonoBehaviour
 
     private IEnumerator startBattle()
     {
-        EnemyType enemyType = enemyArray[faseCount];
+        EnemyType enemyType = enemyArray[FaseCount];
         yield return initBattle(enemyType);  //バトル開始
 
         audioManager.pauseBgm();    //BGMを一時停止
@@ -229,12 +240,11 @@ public class GameController : MonoBehaviour
             //死んだかの処理
             if (enemy.HpAmount <= 0f)
             {
-                faseCount++;    //次のフェーズへ
-                Debug.Log("fase:" + faseCount);
                 yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
-
+                FaseCount++;    //次のフェーズへ
+                Debug.Log("Fase:" + FaseCount);
                 //すべての敵に勝ったなら
-                if (enemyArray.Length <= faseCount)
+                if (enemyArray.Length <= FaseCount)
                 {
                     endGame(EndState.WIN);
                 }
@@ -249,12 +259,12 @@ public class GameController : MonoBehaviour
             //死んだかの処理
             if (enemy.HpAmount <= 0f)
             {
-                faseCount++;    //次のフェーズへ
-                Debug.Log("fase:" + faseCount);
+                FaseCount++;    //次のフェーズへ
+                Debug.Log("Fase:" + FaseCount);
                 yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
 
                 //すべての敵に勝ったなら
-                if (enemyArray.Length <= faseCount)
+                if (enemyArray.Length <= FaseCount)
                 {
                     endGame(EndState.WIN);
                 }
