@@ -929,6 +929,12 @@ public class Stage : MonoBehaviour
             return;
         }
 
+        //どちらかのブロックが非アクティブなら
+        if (!activeBlockList[0].BlockState || !activeBlockList[1].BlockState)
+        {
+            return;
+        }
+
         activeBlockList.ForEach(e =>
         {
             e.isLocked = true;
@@ -938,6 +944,12 @@ public class Stage : MonoBehaviour
         activeBlockList[1].rotate(activeBlockList[0], theta);  //回転を反映
 
         decideDestination();    //再度目標地点を設定
+
+        //横並びなら　（バグ対策）
+        if (activeBlockList[0].CurrentRow == activeBlockList[1].CurrentRow)
+        {
+            activeBlockList[1].DestinationRow = activeBlockList[0].DestinationRow;
+        }
         
         activeBlockList.ForEach(e =>
         {

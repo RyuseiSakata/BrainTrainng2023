@@ -7,17 +7,28 @@ namespace Result
     public class PlayerInput : MonoBehaviour
     {
         [SerializeField] AudioManager audioManager;
+        private bool canClick = true;   //Audioの再生終了街の時にボタンを押せなくする
 
         //タイトルボタンを押したとき
         public void pushTitleButton()
         {
-            StartCoroutine(actionTitleButton());
+            if (canClick)
+            {
+                canClick = false;
+                StartCoroutine(actionTitleButton());
+            }
+                
         }
 
         //終了ボタンを押したとき
         public void pushQuitButton()
         {
-            StartCoroutine(actionQuitButton());
+            if (canClick)
+            {
+                canClick = false;
+                StartCoroutine(actionQuitButton());
+            }
+                
         }
 
         //タイトルボタンを押したときに呼ばれるコルーチン
