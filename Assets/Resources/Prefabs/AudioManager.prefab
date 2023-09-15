@@ -244,5 +244,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 947e3b2dffe5a16488479cb89d649791, type: 3}
   - {fileID: 8300000, guid: b92c33bc288431b48bb180acf059874a, type: 3}
   - {fileID: 8300000, guid: 444cc8ffef669a4409cadd4dfc9d2896, type: 3}
+  - {fileID: 8300000, guid: 52381b5173b209b47a9992485eb569d6, type: 3}
+  - {fileID: 8300000, guid: 01bdbe82946b2da42af120239440c698, type: 3}
+  - {fileID: 8300000, guid: cb3d688ede3d9ae4d86773a1ca550cbd, type: 3}
+  - {fileID: 8300000, guid: ec07753e529e8304398c2668ac45b71e, type: 3}
+  - {fileID: 8300000, guid: de8b95991d57e0f4f9390659ead0ae42, type: 3}
+  - {fileID: 8300000, guid: 1ce6d6038b3baed45a07db42a8bda68f, type: 3}
   - {fileID: 8300000, guid: dc426511451e6524393bccf37a5460e0, type: 3}
-  bgmList: []

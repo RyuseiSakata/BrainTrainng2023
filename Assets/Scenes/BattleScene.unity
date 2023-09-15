@@ -324,6 +324,7 @@ MonoBehaviour:
   debugText: {fileID: 379742528}
   battleUIManager: {fileID: 665633863}
   stage: {fileID: 231471974}
+  audioManager: {fileID: 261937153}
   hpAmount: 10
   player: {fileID: 447164067}
 --- !u!4 &83026313
@@ -1957,6 +1958,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleUIManager: {fileID: 665633863}
   stage: {fileID: 231471974}
+  audioManager: {fileID: 261937153}
   hpAmount: 20
   attackPower: 1
   enemy: {fileID: 83026312}
@@ -2725,6 +2727,7 @@ MonoBehaviour:
   hiraganaText: {fileID: 1736214576}
   formalText: {fileID: 1574774884}
   gameTimeText: {fileID: 664584643}
+  audioManager: {fileID: 261937153}
   fallInputField: {fileID: 0}
 --- !u!4 &665633862
 Transform:
@@ -4901,6 +4904,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uIManager: {fileID: 665633861}
   stage: {fileID: 231471974}
+  audioManager: {fileID: 261937153}
   player: {fileID: 447164067}
   enemy: {fileID: 83026312}
   faseCount: 0

@@ -8,8 +8,6 @@ namespace Battle
 
     public enum PlayerAttackKinds
     {
-        Normal,
-        Combo,  //コンボ数によるダメージ
         Word,   //単語削除によるダメ―ジ
     }
 
@@ -18,6 +16,7 @@ namespace Battle
         private YushaAnim yushaAnim;
         [SerializeField] BattleUIManager battleUIManager;
         [SerializeField] Stage stage;
+        [SerializeField] AudioManager audioManager;
 
         [SerializeField] float hpAmount;
         [SerializeField] float attackPower;
@@ -70,47 +69,20 @@ namespace Battle
         }
 
         //Enemyに攻撃を行うメソッド
-        public IEnumerator attack(Enemy target, PlayerAttackKinds attackKinds = PlayerAttackKinds.Normal)
+        public IEnumerator attack(Enemy target)
         {
             float damageAmount;
-            Debug.Log("dA:" + GameController.playerAttack);
-            switch (attackKinds)
-            {
-                case PlayerAttackKinds.Normal:
-                    yushaAnim.playAttackAnim();
-                    damageAmount = attackPower;
-                    yield return target.damage(damageAmount);
-                    Debug.Log("敵にNormal Attack:" + damageAmount);
-                    break;
-                case PlayerAttackKinds.Combo:
-                    yushaAnim.playAttackAnim();
-                    damageAmount = attackPower * stage.ComboNum;
-                    yield return target.damage(damageAmount);
-                    Debug.Log("敵にNormal Attack:" + damageAmount);
-                    break;
-                case PlayerAttackKinds.Word:
-                    damageAmount = attackPower * GameController.playerAttack;
-                    if (damageAmount > 0)
-                    {
-                        yushaAnim.playAttackAnim();
-                    }
-                    yield return target.damage(damageAmount);                    
-                    Debug.Log("単語による攻撃："+damageAmount);
-                    GameController.playerAttack = 0;
-                    break;
-            }
 
-            yield break;
-        }
-
-        //時間行動を管理するコルーチン
-        private IEnumerator action()
-        {
-            while (enemy.HpAmount > 0f && HpAmount > 0f)
+            damageAmount = attackPower * GameController.playerAttack;
+            if (damageAmount > 0)
             {
-                yield return new WaitForSeconds(3f);
-                yield return attack(enemy, PlayerAttackKinds.Normal);
+                yushaAnim.playAttackAnim();
+                audioManager.playSeOneShot(AudioKinds.SE_PlayerAttack);
             }
+            yield return target.damage(damageAmount);                    
+            Debug.Log("単語による攻撃："+damageAmount);
+            GameController.playerAttack = 0;
+
             yield break;
         }
 
