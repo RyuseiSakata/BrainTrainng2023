@@ -11,6 +11,13 @@ public enum EnemyType
     Dragon,
 }
 
+public enum EndState
+{
+    WIN,
+    LOSE,
+    FILLED,
+}
+
 
 public class GameController : MonoBehaviour
 {
@@ -23,8 +30,6 @@ public class GameController : MonoBehaviour
     [SerializeField] Battle.Enemy enemy;
 
     private int numberOfTurns = 0;  //ターン数
-
-    private string popUpText = "Finish";
 
     private int score = 0;
     public static float playerAttack;   //消した文字によるプレイヤーの攻撃量
@@ -43,6 +48,7 @@ public class GameController : MonoBehaviour
     private EnemyType[] enemyArray = { EnemyType.Slime, EnemyType.Minotaurosu, EnemyType.Dragon };    //バトルの敵の変数を順番に格納する配列
 
     private bool gameEndFlag = false;    //ゲーム終了のフラグ
+    private EndState endState = EndState.FILLED;
 
     private void Start()
     {
@@ -92,10 +98,25 @@ public class GameController : MonoBehaviour
             while (!gameEndFlag)
             {
                 yield return startBattle(); //バトル開始
-                
+
             }
-            
-            yield return uIManager.showPopUp(popUpText);
+
+            audioManager.stopBgm();
+            switch (endState)
+            {
+                case EndState.WIN:
+                    audioManager.playSeOneShot(AudioKinds.SE_WIN);
+                    yield return uIManager.showPopUp("CLEAR", 3.5f);
+                    break;
+                case EndState.LOSE:
+                    audioManager.playSeOneShot(AudioKinds.SE_LOSE);
+                    yield return uIManager.showPopUp("MISS", 3.5f);
+                    break;
+                case EndState.FILLED:
+                    audioManager.playSeOneShot(AudioKinds.SE_LOSE);
+                    yield return uIManager.showPopUp("MISS", 3.5f);
+                    break;
+            }
 
             SceneChanger.changeTo(SceneType.Result);
             
@@ -104,10 +125,11 @@ public class GameController : MonoBehaviour
         yield break;
     }
 
-    public void endGame()
+    public void endGame(EndState state)
     {
         Debug.Log("endGame");
         gameEndFlag = true;
+        endState = state;
         stage.GameOverFlag = true;  //ゲームオーバーのフラグを立てる
     }
 
@@ -214,8 +236,7 @@ public class GameController : MonoBehaviour
                 //すべての敵に勝ったなら
                 if (enemyArray.Length <= faseCount)
                 {
-                    popUpText = "Clear";
-                    endGame();
+                    endGame(EndState.WIN);
                 }
 
                 break;
@@ -235,16 +256,14 @@ public class GameController : MonoBehaviour
                 //すべての敵に勝ったなら
                 if (enemyArray.Length <= faseCount)
                 {
-                    popUpText = "Clear";
-                    endGame();
+                    endGame(EndState.WIN);
                 }
 
                 break;
             }
             if (player.HpAmount <= 0f)
             {
-                endGame();
-                popUpText = "You Lose";
+                endGame(EndState.LOSE);
                 break;
 
             }

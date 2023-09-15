@@ -153,7 +153,7 @@ public class Block : MonoBehaviour
     }
 
     //Blockの回転を行う
-    public void rotate(Block center, float theta)
+    public bool rotate(Block center, float theta)
     {
         int p_r = CurrentRow;   //テスト用
         int p_c = CurrentCol;   //テスト用
@@ -180,6 +180,7 @@ public class Block : MonoBehaviour
             Debug.Log("回転に失敗");
             //補正処理を入れるならここ
             transform.position = prePos;
+            return false;
         }
         else
         {
@@ -191,6 +192,8 @@ public class Block : MonoBehaviour
             {
                 Debug.Log("不適切な変換" + "(" + p_r + "," + p_c + ")--->(" + currentRow + "," + currentCol + ")");
             }
+
+            return true;
         }        
     }
 

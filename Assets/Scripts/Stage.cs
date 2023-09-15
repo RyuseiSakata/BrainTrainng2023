@@ -328,7 +328,7 @@ public class Stage : MonoBehaviour
         //ゲームオーバーの判定
         if (GameOverFlag)
         {
-            gameController.endGame();
+            gameController.endGame(EndState.FILLED);
             yield break;
         }
 
@@ -935,13 +935,19 @@ public class Stage : MonoBehaviour
             return;
         }
 
+        
         activeBlockList.ForEach(e =>
         {
             e.isLocked = true;
         });
 
         //各ブロックの行番号と列番号を取得
-        activeBlockList[1].rotate(activeBlockList[0], theta);  //回転を反映
+        //回転を反映
+        //成功ならSE再生
+        if (activeBlockList[1].rotate(activeBlockList[0], theta))
+        {
+            audioManager.playSeOneShot(AudioKinds.SE_BlockRotate);
+        }  
 
         decideDestination();    //再度目標地点を設定
 
