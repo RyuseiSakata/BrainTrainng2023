@@ -13,7 +13,10 @@ public enum AudioKinds
     SE_SlimeAttack = 6,    //ƒXƒ‰ƒCƒ€‚ÌUŒ‚SE
     SE_MinotaurosuAttack = 7,    //ƒ~ƒmƒ^ƒEƒƒX‚ÌUŒ‚SE
     SE_DragonAttack = 8,    //ƒhƒ‰ƒSƒ“‚ÌUŒ‚SE
-    BGM_Main = 9,   //BGM
+    SE_BlockRotate = 9,    //ƒuƒƒbƒN‰ñ“]‰¹
+    SE_LOSE = 10,    //”s–k‚Ì‰¹
+    SE_WIN = 11,    //Ÿ—˜‚Ì‰¹
+    BGM_Main = 12,   //BGM
 }
 
 public class AudioManager : MonoBehaviour
@@ -55,6 +58,11 @@ public class AudioManager : MonoBehaviour
     public void pauseBgm()
     {
         bgmAudioSource.Pause();
+    }
+
+    public void stopBgm()
+    {
+        bgmAudioSource.Stop();
     }
 
     public bool isSePlaying()
