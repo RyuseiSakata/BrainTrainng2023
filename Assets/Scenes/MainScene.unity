@@ -3698,7 +3698,7 @@ MonoBehaviour:
   - {fileID: 2084700503}
   scoreText: {fileID: 618915704}
   comboText: {fileID: 897348106}
-  countDownText: {fileID: 2099346347}
+  countDownText: {fileID: 2099346345}
   popUpText: {fileID: 1231514353}
   darkPanel: {fileID: 904724024}
   book: {fileID: 368947728}
@@ -5017,11 +5017,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uIManager: {fileID: 1202892936}
+  battleUIManager: {fileID: 0}
   stage: {fileID: 450358701}
   audioManager: {fileID: 583944499}
   player: {fileID: 0}
   enemy: {fileID: 0}
-  faseCount: 0
 --- !u!4 &1490713312
 Transform:
   m_ObjectHideFlags: 0
@@ -6170,6 +6170,7 @@ GameObject:
   - component: {fileID: 2099346346}
   - component: {fileID: 2099346348}
   - component: {fileID: 2099346347}
+  - component: {fileID: 2099346349}
   m_Layer: 5
   m_Name: countDownText
   m_TagString: Untagged
@@ -6239,6 +6240,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099346345}
   m_CullTransparentMesh: 1
+--- !u!95 &2099346349
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099346345}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 20112fd9f7ff1974ab045f81f4b97ae6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2121755771
 GameObject:
   m_ObjectHideFlags: 0

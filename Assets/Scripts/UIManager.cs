@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
-    [SerializeField] Text countDownText;
+    [SerializeField] GameObject countDownText;
     [SerializeField] GameObject popUpText;
     [SerializeField] GameObject darkPanel;
     [SerializeField] GameObject book;
@@ -59,7 +59,7 @@ public class UIManager : MonoBehaviour
                 comboText.text = value.ToString("00");
                 break;
             case TextKinds.CountDown:
-                countDownText.text = value.ToString("0");
+                countDownText.GetComponent<Text>().text = value.ToString("0");
                 break;
             case TextKinds.Score:
                 if(scoreText!=null)
@@ -71,6 +71,9 @@ public class UIManager : MonoBehaviour
     //ゲームスタート時のカウントダウンの表示を行うコルーチン
     public IEnumerator showCountDown()
     {
+        Text text = countDownText.GetComponent<Text>();
+        Animator anim = countDownText.GetComponent<Animator>();
+
         darkPanel.SetActive(true);
 
         if(gameTimeText != null)
@@ -82,15 +85,18 @@ public class UIManager : MonoBehaviour
             gameTimeText.text = "たいむ " + min.ToString("00")+ ":" + second.ToString("00");
         }
         audioManager.playSeOneShot(AudioKinds.SE_Countdown);
-        countDownText.text = "3";
+        text.text = "3";
+        anim.SetTrigger("upstart");
         yield return new WaitForSeconds(1f);
-        countDownText.text = "2";
+        text.text = "2";
+        anim.SetTrigger("upstart");
         yield return new WaitForSeconds(1f);
-        countDownText.text = "1";
+        text.text = "1";
+        anim.SetTrigger("upstart");
         yield return new WaitForSeconds(1f);
-        countDownText.text = "Start";
+        text.text = "Start";
         yield return new WaitForSeconds(1.2f);
-        countDownText.text = "";
+        text.text = "";
         if (gameTimeText != null) gameTimeText.text = "";
         darkPanel.SetActive(false);
 
