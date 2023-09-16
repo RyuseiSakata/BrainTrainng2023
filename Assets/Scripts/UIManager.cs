@@ -9,6 +9,8 @@ public enum TextKinds
     Combo,
     CountDown,
     Score,
+    MaxCombo,
+    Rank,
 }
 
 public class UIManager : MonoBehaviour
@@ -22,13 +24,23 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
+    [SerializeField] Text maxComboText;
+    [SerializeField] Text rankText;
     [SerializeField] GameObject countDownText;
     [SerializeField] GameObject popUpText;
     [SerializeField] GameObject darkPanel;
     [SerializeField] GameObject book;
     [SerializeField] Text hiraganaText;
     [SerializeField] Text formalText;
-    [SerializeField] Text gameTimeText; //バトルモードのみ
+
+    //バトルモードのみ
+    [SerializeField] Text gameTimeText; 
+    [SerializeField] GameObject winPanel;   
+    [SerializeField] GameObject losePanel;   
+    [SerializeField] GameObject battleModeUI;    
+    [SerializeField] GameObject playerObject;
+    [SerializeField] GameObject enemyObject;
+
 
     [SerializeField] AudioManager audioManager;
 
@@ -67,8 +79,21 @@ public class UIManager : MonoBehaviour
                 countDownText.GetComponent<Text>().text = value.ToString("0");
                 break;
             case TextKinds.Score:
-                if(scoreText!=null)
+                if (scoreText != null)
                     scoreText.text = value.ToString("0000000");
+                break;
+            case TextKinds.MaxCombo:
+                if (maxComboText != null)
+                    maxComboText.text = value.ToString("");
+                break;
+        }
+    }
+
+    public void textUpdate(TextKinds textKinds, string value)
+    {
+        switch (textKinds) { 
+            case TextKinds.Rank:
+                rankText.text = value;
                 break;
         }
     }
@@ -189,5 +214,26 @@ public class UIManager : MonoBehaviour
             instance.transform.GetChild(1).GetComponent<Text>().text = wordList.CollectList.Last().Word;
             instance.transform.SetSiblingIndex(0);
         }
+    }
+
+    public IEnumerator showResultPanel(EndState endState, float time)
+    {
+        battleModeUI.SetActive(false);
+        playerObject.SetActive(false);
+        
+        if(endState == EndState.WIN)
+        {
+            enemyObject.SetActive(false);   //敵を消す
+            winPanel.SetActive(true);
+        }
+        else
+        {
+            losePanel.SetActive(true);
+        }
+        
+        yield return new WaitForSeconds(time);
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
+        yield break;
     }
 }

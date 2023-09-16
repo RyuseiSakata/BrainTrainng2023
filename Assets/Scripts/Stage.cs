@@ -31,6 +31,7 @@ public class Stage : MonoBehaviour
     private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
     private int comboNum = 0;   //コンボ数
     private int chainNum = 0;   //連鎖数
+    private int maxComboNum = 0;    //最大コンボ数
 
     public bool CanUserOperate { get; set; } = false;   //ユーザが操作できるか否かのフラグ
 
@@ -52,6 +53,15 @@ public class Stage : MonoBehaviour
         {
             comboNum = value;
             uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
+        }
+    }//最大コンボ数のプロパティ
+    public int MaxComboNum
+    {
+        get => maxComboNum;
+        set
+        {
+            maxComboNum = value;
+            uIManager.textUpdate(TextKinds.MaxCombo, maxComboNum);  //コンボ数のUI更新
         }
     }
 
@@ -311,6 +321,12 @@ public class Stage : MonoBehaviour
             ChainNum += 1;
         }
         ChainNum -= 1;//連鎖数の調整
+
+        //最大コンボ数の更新
+        if(ComboNum > MaxComboNum)
+        {
+            MaxComboNum = ComboNum;
+        }
 
         yield return fallBottom();   //空の場合に下まで下す処理
 

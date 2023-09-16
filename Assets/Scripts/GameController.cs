@@ -46,6 +46,12 @@ public class GameController : MonoBehaviour
     public static bool isSetTimer = false;  //時間を測定するかのフラグ
 
     private int faseCount = 0;  //現在のフェーズ数
+    private bool isNormal = false;
+
+    //ランク（階級）
+    [SerializeField] private int[] rankBorderes;
+    [SerializeField] private string[] rankNames;
+
     public int FaseCount
     {
         get => faseCount;
@@ -66,8 +72,6 @@ public class GameController : MonoBehaviour
         score = 0;
         gameTime = 0;
         isSetTimer = false;
-
-
         StartCoroutine("mainLoop");
     }
 
@@ -86,6 +90,7 @@ public class GameController : MonoBehaviour
 
         if (SceneChanger.getCurrentSceneName() == "MainScene")
         {
+            isNormal = true;
             yield return uIManager.showCountDown();
             audioManager.playBgm(AudioKinds.BGM_Main);
 
@@ -99,12 +104,13 @@ public class GameController : MonoBehaviour
 
             yield return uIManager.showPopUp();
 
-            SceneChanger.changeTo(SceneType.Result);
+            SceneChanger.changeTo(SceneType.NormalResult);
 
         }
         // バトルモードなら
         else if(SceneChanger.getCurrentSceneName() == "BattleScene")
         {
+            isNormal = false;
             //endGameが呼ばれゲーム終了となるまで
             while (!gameEndFlag)
             {
@@ -117,19 +123,19 @@ public class GameController : MonoBehaviour
             {
                 case EndState.WIN:
                     audioManager.playSeOneShot(AudioKinds.SE_WIN);
-                    yield return uIManager.showPopUp("CLEAR", 3.5f);
+                    yield return uIManager.showResultPanel(EndState.WIN, 3.5f);
                     break;
                 case EndState.LOSE:
                     audioManager.playSeOneShot(AudioKinds.SE_LOSE);
-                    yield return uIManager.showPopUp("MISS", 3.5f);
+                    yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
                     break;
                 case EndState.FILLED:
                     audioManager.playSeOneShot(AudioKinds.SE_LOSE);
-                    yield return uIManager.showPopUp("MISS", 3.5f);
+                    yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
                     break;
             }
 
-            SceneChanger.changeTo(SceneType.Result);
+            SceneChanger.changeTo(SceneType.AdventureResult);
             
         }
 
@@ -154,13 +160,20 @@ public class GameController : MonoBehaviour
 
         if (score > 9999999)
         {
-            uIManager.textUpdate(TextKinds.Score, 9999999);
+            uIManager.textUpdate(TextKinds.Score, 9999999);    
         }
         else
         {
             uIManager.textUpdate(TextKinds.Score, score);
         }
-        
+
+        //ノーマルモードなら
+        if (isNormal)
+        {
+            string rank = getRank();
+            uIManager.textUpdate(TextKinds.Rank, rank);  //スコアからランクを求める
+        }
+
     }
 
     public void calculateDamage(int mode = 0, int damagePerChain = 0, int sameEraseNum = 0)
@@ -283,5 +296,22 @@ public class GameController : MonoBehaviour
         yield break;
     }
 
+    private string getRank()
+    {
+        string ret = rankNames[0];
+        for(int i = 0; i < rankBorderes.Length; i++)
+        {
+            if (score >= rankBorderes[i])
+            {
+                ret = rankNames[i];
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return ret;
+    }
 }
 
