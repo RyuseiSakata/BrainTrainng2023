@@ -84,7 +84,10 @@ public class UIManager : MonoBehaviour
                 break;
             case TextKinds.MaxCombo:
                 if (maxComboText != null)
-                    maxComboText.text = value.ToString("");
+                {
+                    if (value > 99) value = 99;
+                    maxComboText.text = value.ToString("00");
+                }
                 break;
         }
     }

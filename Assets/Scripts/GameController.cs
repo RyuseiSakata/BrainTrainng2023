@@ -39,16 +39,17 @@ public class GameController : MonoBehaviour
         set { numberOfTurns = value; }
     }
 
-    private int score = 0;  //スコア
+    public static int score = 0;  //スコア
     public static float playerAttack;   //消した文字によるプレイヤーの攻撃量
 
     public static float gameTime = 0; //ゲームのプレイ時間
     public static bool isSetTimer = false;  //時間を測定するかのフラグ
 
-    private int faseCount = 0;  //現在のフェーズ数
+    public static int faseCount = 0;  //現在のフェーズ数
     private bool isNormal = false;
 
     //ランク（階級）
+    public static string rank; //現在のランク
     [SerializeField] private int[] rankBorderes;
     [SerializeField] private string[] rankNames;
 
@@ -69,6 +70,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        faseCount = 0;
         score = 0;
         gameTime = 0;
         isSetTimer = false;
@@ -258,7 +260,6 @@ public class GameController : MonoBehaviour
                 //すべての敵に勝ったなら
                 if (enemyArray.Length <= FaseCount)
                 {
-                    FaseCount--;
                     endGame(EndState.WIN);
                 }
 
@@ -278,7 +279,6 @@ public class GameController : MonoBehaviour
                 //すべての敵に勝ったなら
                 if (enemyArray.Length <= FaseCount)
                 {
-                    FaseCount--;
                     endGame(EndState.WIN);
                 }
 
@@ -296,7 +296,7 @@ public class GameController : MonoBehaviour
         yield break;
     }
 
-    private string getRank()
+    public string getRank()
     {
         string ret = rankNames[0];
         for(int i = 0; i < rankBorderes.Length; i++)
@@ -310,7 +310,8 @@ public class GameController : MonoBehaviour
                 break;
             }
         }
-
+        rank = ret;
+        Debug.Log(ret + rank);
         return ret;
     }
 }

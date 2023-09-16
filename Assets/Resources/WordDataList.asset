@@ -12,4 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e00dbe0ee1c4b14e89ecf150fde0131, type: 3}
   m_Name: WordDataList
   m_EditorClassIdentifier: 
-  collectList: []
+  collectList:
+  - hiragana: "\u3051\u3093\u3051\u3093"
+    word: "\u7D4C\u9A13"
+    meaning: 
+  - hiragana: "\u3051\u3093\u3051\u3093"
+    word: "\u7D4C\u9A13"
+    meaning: 
+  - hiragana: "\u3051\u3093\u3051\u3093"
+    word: "\u7D4C\u9A13"
+    meaning: 
+  - hiragana: "\u3051\u3093\u3051\u3093"
+    word: "\u7D4C\u9A13"
+    meaning: 
+  - hiragana: "\u3051\u3093\u3051\u3093"
+    word: "\u7D4C\u9A13"
+    meaning: 
