@@ -32,6 +32,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject book;
     [SerializeField] Text hiraganaText;
     [SerializeField] Text formalText;
+    [SerializeField] GameObject faseText;
 
     //バトルモードのみ
     [SerializeField] Text gameTimeText; 
@@ -221,6 +222,7 @@ public class UIManager : MonoBehaviour
 
     public IEnumerator showResultPanel(EndState endState, float time)
     {
+        faseText.SetActive(false);
         battleModeUI.SetActive(false);
         playerObject.SetActive(false);
         

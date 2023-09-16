@@ -2878,6 +2878,7 @@ MonoBehaviour:
   book: {fileID: 344728916}
   hiraganaText: {fileID: 1736214576}
   formalText: {fileID: 1574774884}
+  faseText: {fileID: 379742526}
   gameTimeText: {fileID: 664584643}
   winPanel: {fileID: 658147477}
   losePanel: {fileID: 1938793155}
