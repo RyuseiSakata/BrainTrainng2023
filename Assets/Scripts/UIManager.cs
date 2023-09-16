@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public enum TextKinds
 {
@@ -21,7 +22,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
-    [SerializeField] Text countDownText;
+    [SerializeField] GameObject countDownText;
     [SerializeField] GameObject popUpText;
     [SerializeField] GameObject darkPanel;
     [SerializeField] GameObject book;
@@ -33,6 +34,10 @@ public class UIManager : MonoBehaviour
 
     /*デバッグ用*/
     [SerializeField] InputField fallInputField; //自由落下速度調整用の入力欄
+
+    [SerializeField] private WordList wordList;
+    [SerializeField] private Transform wordViewContent;
+    [SerializeField] private GameObject wordViewElementPrefab;
 
 
     private void Update()
@@ -59,11 +64,11 @@ public class UIManager : MonoBehaviour
                 comboText.text = value.ToString("00");
                 break;
             case TextKinds.CountDown:
-                countDownText.text = value.ToString("0");
+                countDownText.GetComponent<Text>().text = value.ToString("0");
                 break;
             case TextKinds.Score:
                 if(scoreText!=null)
-                    scoreText.text = value.ToString("000000");
+                    scoreText.text = value.ToString("0000000");
                 break;
         }
     }
@@ -71,6 +76,9 @@ public class UIManager : MonoBehaviour
     //ゲームスタート時のカウントダウンの表示を行うコルーチン
     public IEnumerator showCountDown()
     {
+        Text text = countDownText.GetComponent<Text>();
+        Animator anim = countDownText.GetComponent<Animator>();
+
         darkPanel.SetActive(true);
 
         if(gameTimeText != null)
@@ -79,18 +87,21 @@ public class UIManager : MonoBehaviour
             int min = second > 99 * 60 ? 99 : (second / 60);
             second = second % 60;
 
-            gameTimeText.text = min.ToString("00")+ ":" + second.ToString("00");
+            gameTimeText.text = "たいむ " + min.ToString("00")+ ":" + second.ToString("00");
         }
         audioManager.playSeOneShot(AudioKinds.SE_Countdown);
-        countDownText.text = "3";
+        text.text = "3";
+        anim.SetTrigger("upstart");
         yield return new WaitForSeconds(1f);
-        countDownText.text = "2";
+        text.text = "2";
+        anim.SetTrigger("upstart");
         yield return new WaitForSeconds(1f);
-        countDownText.text = "1";
+        text.text = "1";
+        anim.SetTrigger("upstart");
         yield return new WaitForSeconds(1f);
-        countDownText.text = "Start";
+        text.text = "Start";
         yield return new WaitForSeconds(1.2f);
-        countDownText.text = "";
+        text.text = "";
         if (gameTimeText != null) gameTimeText.text = "";
         darkPanel.SetActive(false);
 
@@ -166,5 +177,14 @@ public class UIManager : MonoBehaviour
         {
             buttons[i].GetComponent<RectTransform>().localScale = new Vector3(size, size, 1);
         }
+    }
+
+    //Normalのワードビューに最新単語を追加する
+    public void addWordView()
+    {
+        var instance = Instantiate(wordViewElementPrefab, wordViewContent);
+        instance.transform.GetChild(0).GetComponent<Text>().text = wordList.CollectList.Last().Hiragana;
+        instance.transform.GetChild(1).GetComponent<Text>().text = wordList.CollectList.Last().Word;
+        instance.transform.SetSiblingIndex(0);
     }
 }

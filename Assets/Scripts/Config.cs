@@ -11,7 +11,7 @@ public static class Config
     public const float StageHeight = 9f;  //ステージ高さ
     public const float StageWidth = StageHeight / ((maxRow - 1) / maxCol);  //ステージ幅
     public const float BlockWidth = StageWidth / maxCol;  //ブロックの幅
-    public const float deltaX = -0.28f;
+    public const float deltaX = -0.2f;
 
     public static bool isCaluculatedSum = false;    //重み合計を計算したかのフラグ
     public static int sumProbability = 0;           //重み合計

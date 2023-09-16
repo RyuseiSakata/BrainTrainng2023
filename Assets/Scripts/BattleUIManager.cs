@@ -12,6 +12,7 @@ namespace Battle
         EnemyName,
         NextActionCount,
         GameTime,
+        Fase,
     }
     public class BattleUIManager : MonoBehaviour
     {
@@ -19,7 +20,7 @@ namespace Battle
         [SerializeField] Text chargeTurnText;
         [SerializeField] Slider playerHpSlider;
         [SerializeField] Slider enemyHpSlider;
-        [SerializeField] Text gameTimeText;
+        [SerializeField] Text faseText;
 
         //UIテキストの変更を行う
         public void uiUpdate(UIKinds uiKinds, float value)
@@ -34,6 +35,9 @@ namespace Battle
                     break;
                 case UIKinds.NextActionCount:
                     chargeTurnText.text = value.ToString("00");
+                    break;
+                case UIKinds.Fase:
+                    faseText.text = "ばとる  " + (value+1).ToString("0") + " / 3";
                     break;
             }
         }

@@ -22,7 +22,6 @@ namespace Battle {
         private MinotaurosuAnim minotaurosuAnim;
         private DragonAnim dragonAnim;
 
-        [SerializeField]Text debugText;
         private EnemyType myType;
         [SerializeField] BattleUIManager battleUIManager;
         [SerializeField] Stage stage;
@@ -63,11 +62,6 @@ namespace Battle {
             slimeAnim = slimeObject.GetComponent<SlimeAnim>();
             minotaurosuAnim = minotaurosuObject.GetComponent<MinotaurosuAnim>();
             dragonAnim = dragonObject.GetComponent<DragonAnim>();
-        }
-
-        private void Update()
-        {
-            debugText.text = "ACTION:" + actionCount.ToString("00");
         }
 
         //ダメージ計算を行うメソッド
