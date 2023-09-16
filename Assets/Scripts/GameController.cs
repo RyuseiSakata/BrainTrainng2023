@@ -104,7 +104,7 @@ public class GameController : MonoBehaviour
 
             yield return uIManager.showPopUp();
 
-            SceneChanger.changeTo(SceneType.Result);
+            SceneChanger.changeTo(SceneType.NormalResult);
 
         }
         // バトルモードなら
@@ -123,19 +123,19 @@ public class GameController : MonoBehaviour
             {
                 case EndState.WIN:
                     audioManager.playSeOneShot(AudioKinds.SE_WIN);
-                    yield return uIManager.showPopUp("CLEAR", 3.5f);
+                    yield return uIManager.showResultPanel(EndState.WIN, 3.5f);
                     break;
                 case EndState.LOSE:
                     audioManager.playSeOneShot(AudioKinds.SE_LOSE);
-                    yield return uIManager.showPopUp("MISS", 3.5f);
+                    yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
                     break;
                 case EndState.FILLED:
                     audioManager.playSeOneShot(AudioKinds.SE_LOSE);
-                    yield return uIManager.showPopUp("MISS", 3.5f);
+                    yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
                     break;
             }
 
-            SceneChanger.changeTo(SceneType.Result);
+            SceneChanger.changeTo(SceneType.AdventureResult);
             
         }
 

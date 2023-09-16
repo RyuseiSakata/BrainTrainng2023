@@ -32,7 +32,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject book;
     [SerializeField] Text hiraganaText;
     [SerializeField] Text formalText;
-    [SerializeField] Text gameTimeText; //バトルモードのみ
+
+    //バトルモードのみ
+    [SerializeField] Text gameTimeText; 
+    [SerializeField] GameObject winPanel;   
+    [SerializeField] GameObject losePanel;   
+    [SerializeField] GameObject battleModeUI;    
+    [SerializeField] GameObject playerObject;
+    [SerializeField] GameObject enemyObject;
+
 
     [SerializeField] AudioManager audioManager;
 
@@ -206,5 +214,26 @@ public class UIManager : MonoBehaviour
             instance.transform.GetChild(1).GetComponent<Text>().text = wordList.CollectList.Last().Word;
             instance.transform.SetSiblingIndex(0);
         }
+    }
+
+    public IEnumerator showResultPanel(EndState endState, float time)
+    {
+        battleModeUI.SetActive(false);
+        playerObject.SetActive(false);
+        
+        if(endState == EndState.WIN)
+        {
+            enemyObject.SetActive(false);   //敵を消す
+            winPanel.SetActive(true);
+        }
+        else
+        {
+            losePanel.SetActive(true);
+        }
+        
+        yield return new WaitForSeconds(time);
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
+        yield break;
     }
 }

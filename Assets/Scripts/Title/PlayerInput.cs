@@ -67,7 +67,7 @@ namespace Title
         public IEnumerator actionBattleButton()
         {
             yield return audioManager.playSeOneShotWait(AudioKinds.SE_Enter);
-            SceneChanger.changeTo(SceneType.Battle);
+            SceneChanger.changeTo(SceneType.Adventure);
             yield break;
         }
 

@@ -7,8 +7,9 @@ public enum SceneType
 {
     Title,
     Normal,
-    Battle,
-    Result,
+    Adventure,
+    NormalResult,
+    AdventureResult,
 }
 
 public class SceneChanger : MonoBehaviour
@@ -24,11 +25,14 @@ public class SceneChanger : MonoBehaviour
             case SceneType.Normal:
                 SceneManager.LoadScene("MainScene");
                 break;
-            case SceneType.Battle:
+            case SceneType.Adventure:
                 SceneManager.LoadScene("BattleScene");
                 break;
-            case SceneType.Result:
-                SceneManager.LoadScene("ResultScene");
+            case SceneType.NormalResult:
+                SceneManager.LoadScene("NormalResult");
+                break;
+            case SceneType.AdventureResult:
+                SceneManager.LoadScene("AdventureResult");
                 break;
             default:
                 Debug.Log("SceneChanger:èàóùÇ™Ç†ÇËÇ‹ÇπÇÒ");
