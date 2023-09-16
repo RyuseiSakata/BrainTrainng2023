@@ -31,7 +31,7 @@ public class Stage : MonoBehaviour
     private bool isChained;  //連鎖をしたかを表すフラグ（ここでいう連鎖は消えた後一度落下処理が行われ、再度消える処理が行われた回数である）
     private int comboNum = 0;   //コンボ数
     private int chainNum = 0;   //連鎖数
-    private int maxComboNum = 0;    //最大コンボ数
+    public static int maxComboNum = 0;    //最大コンボ数
 
     public bool CanUserOperate { get; set; } = false;   //ユーザが操作できるか否かのフラグ
 
@@ -89,7 +89,7 @@ public class Stage : MonoBehaviour
         }
 
         wordList.CollectList.Clear();   //消した単語リストを全削除
-
+        maxComboNum = 0;
         firstSetBlock(); //ブロックの初期配置
 
 

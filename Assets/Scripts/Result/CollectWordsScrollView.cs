@@ -19,6 +19,7 @@ public class CollectWordsScrollView : MonoBehaviour
     private void showCollectWordsScrollView()
     {
         //消した単語リストを総当たり
+        /*
         foreach(var word in wordList.CollectList)
         {
             var instance = Instantiate(wordWrapperPrefab, content.transform);
@@ -27,6 +28,18 @@ public class CollectWordsScrollView : MonoBehaviour
 
             var wordHiragana = back.GetChild(0);      //wordHiraganaを取得
             var wordFormal = back.GetChild(1);      //wordFormalを取得
+            wordHiragana.GetComponent<Text>().text = word.Hiragana; //平仮名表記のテキストを格納
+            wordFormal.GetComponent<Text>().text = word.Word; //正式表記のテキストを格納
+        }*/
+
+        //消した単語リストを総当たり
+        foreach(var word in wordList.CollectList)
+        {
+            var instance = Instantiate(wordWrapperPrefab, content.transform);
+
+
+            var wordHiragana = instance.transform.GetChild(0);      //wordHiraganaを取得
+            var wordFormal = instance.transform.GetChild(1);      //wordFormalを取得
             wordHiragana.GetComponent<Text>().text = word.Hiragana; //平仮名表記のテキストを格納
             wordFormal.GetComponent<Text>().text = word.Word; //正式表記のテキストを格納
         }
