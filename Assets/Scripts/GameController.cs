@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
     public static bool isSetTimer = false;  //時間を測定するかのフラグ
 
     private int faseCount = 0;  //現在のフェーズ数
+    private bool isNormal = false;
 
     //ランク（階級）
     [SerializeField] private int[] rankBorderes;
@@ -89,6 +90,7 @@ public class GameController : MonoBehaviour
 
         if (SceneChanger.getCurrentSceneName() == "MainScene")
         {
+            isNormal = true;
             yield return uIManager.showCountDown();
             audioManager.playBgm(AudioKinds.BGM_Main);
 
@@ -108,6 +110,7 @@ public class GameController : MonoBehaviour
         // バトルモードなら
         else if(SceneChanger.getCurrentSceneName() == "BattleScene")
         {
+            isNormal = false;
             //endGameが呼ばれゲーム終了となるまで
             while (!gameEndFlag)
             {
@@ -157,17 +160,20 @@ public class GameController : MonoBehaviour
 
         if (score > 9999999)
         {
-            uIManager.textUpdate(TextKinds.Score, 9999999);
-            string rank = getRank();
-            uIManager.textUpdate(TextKinds.Rank, rank);  //スコアからランクを求める
+            uIManager.textUpdate(TextKinds.Score, 9999999);    
         }
         else
         {
             uIManager.textUpdate(TextKinds.Score, score);
-            string rank = getRank();
-            uIManager.textUpdate(TextKinds.Rank, rank); //スコアからランクを求める
         }
-        
+
+        //ノーマルモードなら
+        if (isNormal)
+        {
+            string rank = getRank();
+            uIManager.textUpdate(TextKinds.Rank, rank);  //スコアからランクを求める
+        }
+
     }
 
     public void calculateDamage(int mode = 0, int damagePerChain = 0, int sameEraseNum = 0)

@@ -85,8 +85,7 @@ public class UIManager : MonoBehaviour
     {
         switch (textKinds) { 
             case TextKinds.Rank:
-                if (rankText != null)
-                    rankText.text = value;
+                rankText.text = value;
                 break;
         }
     }
