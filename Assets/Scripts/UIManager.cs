@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public enum TextKinds
 {
@@ -33,6 +34,10 @@ public class UIManager : MonoBehaviour
 
     /*デバッグ用*/
     [SerializeField] InputField fallInputField; //自由落下速度調整用の入力欄
+
+    [SerializeField] private WordList wordList;
+    [SerializeField] private Transform wordViewContent;
+    [SerializeField] private GameObject wordViewElementPrefab;
 
 
     private void Update()
@@ -172,5 +177,14 @@ public class UIManager : MonoBehaviour
         {
             buttons[i].GetComponent<RectTransform>().localScale = new Vector3(size, size, 1);
         }
+    }
+
+    //Normalのワードビューに最新単語を追加する
+    public void addWordView()
+    {
+        var instance = Instantiate(wordViewElementPrefab, wordViewContent);
+        instance.transform.GetChild(0).GetComponent<Text>().text = wordList.CollectList.Last().Hiragana;
+        instance.transform.GetChild(1).GetComponent<Text>().text = wordList.CollectList.Last().Word;
+        instance.transform.SetSiblingIndex(0);
     }
 }

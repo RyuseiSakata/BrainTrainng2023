@@ -549,6 +549,7 @@ public class Stage : MonoBehaviour
                                 //コレクションリストに追加
                                 WordData addWord = new WordData(word, formalList[wIndex],"");
                                 wordList.CollectList.Add(addWord);  //消した言葉リストに追加
+                                uIManager.addWordView();
 
                                 //本の表示
                                 yield return uIManager.updateBook(word, formalList[wIndex]);
@@ -629,6 +630,7 @@ public class Stage : MonoBehaviour
                                 //コレクションリストに追加
                                 WordData addWord = new WordData(word, formalList[wIndex], "");
                                 wordList.CollectList.Add(addWord);  //消した言葉リストに追加
+                                uIManager.addWordView();
 
                                 //本の表示
                                 yield return uIManager.updateBook(word, formalList[wIndex]);
