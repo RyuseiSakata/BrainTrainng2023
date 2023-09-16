@@ -70,6 +70,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        faseCount = 0;
         score = 0;
         gameTime = 0;
         isSetTimer = false;
@@ -259,7 +260,6 @@ public class GameController : MonoBehaviour
                 //‚·‚×‚Ä‚Ì“G‚ÉŸ‚Á‚½‚È‚ç
                 if (enemyArray.Length <= FaseCount)
                 {
-                    FaseCount--;
                     endGame(EndState.WIN);
                 }
 
@@ -279,7 +279,6 @@ public class GameController : MonoBehaviour
                 //‚·‚×‚Ä‚Ì“G‚ÉŸ‚Á‚½‚È‚ç
                 if (enemyArray.Length <= FaseCount)
                 {
-                    FaseCount--;
                     endGame(EndState.WIN);
                 }
 
