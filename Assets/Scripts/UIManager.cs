@@ -182,9 +182,12 @@ public class UIManager : MonoBehaviour
     //Normalのワードビューに最新単語を追加する
     public void addWordView()
     {
-        var instance = Instantiate(wordViewElementPrefab, wordViewContent);
-        instance.transform.GetChild(0).GetComponent<Text>().text = wordList.CollectList.Last().Hiragana;
-        instance.transform.GetChild(1).GetComponent<Text>().text = wordList.CollectList.Last().Word;
-        instance.transform.SetSiblingIndex(0);
+        if(wordViewContent != null)
+        {
+            var instance = Instantiate(wordViewElementPrefab, wordViewContent);
+            instance.transform.GetChild(0).GetComponent<Text>().text = wordList.CollectList.Last().Hiragana;
+            instance.transform.GetChild(1).GetComponent<Text>().text = wordList.CollectList.Last().Word;
+            instance.transform.SetSiblingIndex(0);
+        }
     }
 }
