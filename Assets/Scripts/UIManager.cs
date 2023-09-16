@@ -9,6 +9,8 @@ public enum TextKinds
     Combo,
     CountDown,
     Score,
+    MaxCombo,
+    Rank,
 }
 
 public class UIManager : MonoBehaviour
@@ -22,6 +24,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Text scoreText;
     [SerializeField] Text comboText;
+    [SerializeField] Text maxComboText;
+    [SerializeField] Text rankText;
     [SerializeField] GameObject countDownText;
     [SerializeField] GameObject popUpText;
     [SerializeField] GameObject darkPanel;
@@ -67,8 +71,22 @@ public class UIManager : MonoBehaviour
                 countDownText.GetComponent<Text>().text = value.ToString("0");
                 break;
             case TextKinds.Score:
-                if(scoreText!=null)
+                if (scoreText != null)
                     scoreText.text = value.ToString("0000000");
+                break;
+            case TextKinds.MaxCombo:
+                if (maxComboText != null)
+                    maxComboText.text = value.ToString("");
+                break;
+        }
+    }
+
+    public void textUpdate(TextKinds textKinds, string value)
+    {
+        switch (textKinds) { 
+            case TextKinds.Rank:
+                if (rankText != null)
+                    rankText.text = value;
                 break;
         }
     }

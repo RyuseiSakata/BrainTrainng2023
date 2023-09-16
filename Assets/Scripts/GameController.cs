@@ -46,6 +46,11 @@ public class GameController : MonoBehaviour
     public static bool isSetTimer = false;  //時間を測定するかのフラグ
 
     private int faseCount = 0;  //現在のフェーズ数
+
+    //ランク（階級）
+    [SerializeField] private int[] rankBorderes;
+    [SerializeField] private string[] rankNames;
+
     public int FaseCount
     {
         get => faseCount;
@@ -66,8 +71,6 @@ public class GameController : MonoBehaviour
         score = 0;
         gameTime = 0;
         isSetTimer = false;
-
-
         StartCoroutine("mainLoop");
     }
 
@@ -155,10 +158,14 @@ public class GameController : MonoBehaviour
         if (score > 9999999)
         {
             uIManager.textUpdate(TextKinds.Score, 9999999);
+            string rank = getRank();
+            uIManager.textUpdate(TextKinds.Rank, rank);  //スコアからランクを求める
         }
         else
         {
             uIManager.textUpdate(TextKinds.Score, score);
+            string rank = getRank();
+            uIManager.textUpdate(TextKinds.Rank, rank); //スコアからランクを求める
         }
         
     }
@@ -283,5 +290,22 @@ public class GameController : MonoBehaviour
         yield break;
     }
 
+    private string getRank()
+    {
+        string ret = rankNames[0];
+        for(int i = 0; i < rankBorderes.Length; i++)
+        {
+            if (score >= rankBorderes[i])
+            {
+                ret = rankNames[i];
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        return ret;
+    }
 }
 
