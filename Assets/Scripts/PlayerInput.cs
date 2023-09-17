@@ -41,41 +41,40 @@ public class PlayerInput : MonoBehaviour
         if (stage.CanUserOperate)
         {
             //キーボード UIボタン
-            if (Input.GetKey(KeyCode.S) || isDownButtonHold)
+
+            //下加速
+            var onDown = Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow);
+            if (onDown || isDownButtonHold)
             {
                 stage.fallBoost = 14f;
             }
-            else if (!Input.GetKey(KeyCode.S) || !isDownButtonHold)
+            else if (!onDown || !isDownButtonHold)
             {
                 stage.fallBoost = 1f;
             }
 
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            //回転
+            if (Input.GetKeyDown(KeyCode.Space))
             {
-                if (Input.GetKeyDown(KeyCode.D))
-                {
-                    stage.rotateBlock(+90f);
-                }
-
-                if (Input.GetKeyDown(KeyCode.A))
-                {
-                    stage.rotateBlock(-90f);
-                }
+                stage.rotateBlock(+90f);
             }
-            else
+
+            //右移動
+            var onlyRight = (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) && (!Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.LeftArrow));
+            if ((onlyRight || isRightButtonHold) && moveRightInterval <= 0)
             {
-                if (((Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.S)) || isRightButtonHold) && moveRightInterval <= 0)
-                {
-                    stage.moveColumn(+1);
-                    moveRightInterval = 0.2f;
-                }
-
-                if (((Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D)) || isLeftButtonHold) && moveLeftInterval <= 0)
-                {
-                    stage.moveColumn(-1);
-                    moveLeftInterval = 0.2f;
-                }
+                stage.moveColumn(+1);
+                moveRightInterval = 0.2f;
             }
+
+            //左移動
+            var onlyLeft = (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) && (!Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.RightArrow));
+            if (( onlyLeft || isLeftButtonHold) && moveLeftInterval <= 0)
+            {
+                stage.moveColumn(-1);
+                moveLeftInterval = 0.2f;
+            }
+            
 
             // ボタンのみモードではない かつ ボタン以外の所をタッチ かつ タッチされているかチェック
             if (Config.operateMode != 0 && isNothingPanelHold && Input.touchCount > 0)
