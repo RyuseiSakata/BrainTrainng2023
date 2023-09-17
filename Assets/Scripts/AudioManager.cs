@@ -16,7 +16,8 @@ public enum AudioKinds
     SE_BlockRotate = 9,    //ƒuƒƒbƒN‰ñ“]‰¹
     SE_LOSE = 10,    //”s–kŽž‚Ì‰¹
     SE_WIN = 11,    //Ÿ—˜Žž‚Ì‰¹
-    BGM_Main = 12,   //BGM
+    SE_Whistle = 12,    //ƒQ[ƒ€I—¹Žž‚Ì“J‚Ì‰¹
+    BGM_Main = 13,   //BGM
 }
 
 public class AudioManager : MonoBehaviour
@@ -45,7 +46,8 @@ public class AudioManager : MonoBehaviour
     {
         seAudioSource.pitch = pitch;
         seAudioSource.PlayOneShot(seList[(int)audioKinds], Config.seVolume);
-        yield return new WaitWhile(() => seAudioSource.isPlaying);
+        //yield return new WaitWhile(() => seAudioSource.isPlaying);
+        yield return new WaitForSeconds(0.2f);
         yield break;
     }
 

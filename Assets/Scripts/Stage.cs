@@ -51,7 +51,8 @@ public class Stage : MonoBehaviour
         get => comboNum;
         set
         {
-            comboNum = value;
+            if (value > 99) comboNum = 99;
+            else comboNum = value;
             uIManager.textUpdate(TextKinds.Combo, comboNum);  //コンボ数のUI更新
         }
     }//最大コンボ数のプロパティ
@@ -123,7 +124,6 @@ public class Stage : MonoBehaviour
             }
             Debug.Log(s);
         }
-
     }
 
     //指定した(row,col)の状態を獲得する
@@ -563,7 +563,8 @@ public class Stage : MonoBehaviour
                             else
                             {
                                 //コレクションリストに追加
-                                WordData addWord = new WordData(word, formalList[wIndex],"");
+                                WordData addWord = new WordData(word, formalList[wIndex]);
+                                if (wordList.CollectList.Count >= Config.maxWordNum) wordList.CollectList.RemoveAt(0);   //あまりにも消え単語が多い場合
                                 wordList.CollectList.Add(addWord);  //消した言葉リストに追加
                                 uIManager.addWordView();
 
@@ -644,7 +645,8 @@ public class Stage : MonoBehaviour
                             else
                             {
                                 //コレクションリストに追加
-                                WordData addWord = new WordData(word, formalList[wIndex], "");
+                                WordData addWord = new WordData(word, formalList[wIndex]);
+                                if (wordList.CollectList.Count >= Config.maxWordNum) wordList.CollectList.RemoveAt(0);   //あまりにも消え単語が多い場合
                                 wordList.CollectList.Add(addWord);  //消した言葉リストに追加
                                 uIManager.addWordView();
 

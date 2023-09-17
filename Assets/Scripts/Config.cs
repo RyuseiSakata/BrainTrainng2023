@@ -44,4 +44,6 @@ public static class Config
     public static int buttonSize = 5;       //ボタンサイズ
     public static int buttonLayout = 0; //ボタンの配置 0:（移動->左 回転->右）1:（移動->右 回転->左）
 
+    public static int maxWordNum = 99999999; //単語の最大保存数(とりまほぼ無限に設定)
+
 }

@@ -135,7 +135,6 @@ GameObject:
   - component: {fileID: 37662148}
   - component: {fileID: 37662147}
   - component: {fileID: 37662146}
-  - component: {fileID: 37662145}
   m_Layer: 5
   m_Name: CollectWordsScrollView
   m_TagString: Untagged
@@ -165,21 +164,6 @@ RectTransform:
   m_AnchoredPosition: {x: 344.55, y: 49.548}
   m_SizeDelta: {x: 764.673, y: 556.022}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &37662145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 37662143}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0698570cdba3da449073c3bf0a7ee06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  content: {fileID: 113718307}
-  wordWrapperPrefab: {fileID: 6556083029577853613, guid: 9d7335dc0a86e1e438ba8347e10c89c8, type: 3}
-  wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
 --- !u!114 &37662146
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1420,6 +1404,8 @@ MonoBehaviour:
   maxComboText: {fileID: 1344170215}
   wordNumText: {fileID: 1736288434}
   wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
+  content: {fileID: 113718307}
+  wordWrapperPrefab: {fileID: 6556083029577853613, guid: 9d7335dc0a86e1e438ba8347e10c89c8, type: 3}
 --- !u!4 &1222399033
 Transform:
   m_ObjectHideFlags: 0
@@ -1740,7 +1726,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -142, y: 155}
+  m_AnchoredPosition: {x: -197.40001, y: 155}
   m_SizeDelta: {x: 285.522, y: 79.554}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1473380161
@@ -1776,7 +1762,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u3053"
+  m_Text: "\u3057\u3085\u308B\u3044"
 --- !u!222 &1473380162
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2060,8 +2046,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -319.18802, y: 168}
-  m_SizeDelta: {x: 297.254, y: 80.978}
+  m_AnchoredPosition: {x: -395.90222, y: 166.89}
+  m_SizeDelta: {x: 230.668, y: 83.198}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1736288434
 MonoBehaviour:
