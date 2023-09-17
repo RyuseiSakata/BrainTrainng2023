@@ -4706,7 +4706,13 @@ MonoBehaviour:
   book: {fileID: 368947728}
   hiraganaText: {fileID: 1171425621}
   formalText: {fileID: 1834077308}
+  faseText: {fileID: 0}
   gameTimeText: {fileID: 0}
+  winPanel: {fileID: 0}
+  losePanel: {fileID: 0}
+  battleModeUI: {fileID: 0}
+  playerObject: {fileID: 0}
+  enemyObject: {fileID: 0}
   audioManager: {fileID: 583944499}
   fallInputField: {fileID: 1299876723}
   wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
@@ -6259,12 +6265,16 @@ MonoBehaviour:
   audioManager: {fileID: 583944499}
   player: {fileID: 0}
   enemy: {fileID: 0}
-  rankBorderes: 00000000e80300008813000010270000
+  rankBorderes: 00000000b80b0000581b000010270000983a000030750000c8af000070110100
   rankNames:
   - "\u521D\u5FC3\u8005"
+  - "\u521D\u7D1A\u8005"
   - "\u4E2D\u7D1A\u8005"
   - "\u4E0A\u7D1A\u8005"
+  - "\u9054\u4EBA"
   - "\u4ED9\u4EBA"
+  - "\u4F1D\u8AAC"
+  - "\u795E"
 --- !u!4 &1490713312
 Transform:
   m_ObjectHideFlags: 0
