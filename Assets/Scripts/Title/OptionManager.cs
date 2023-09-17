@@ -16,6 +16,10 @@ public class OptionManager : MonoBehaviour
     [SerializeField] Dropdown operateMethodDropdown;    //操作方法のドロップダウン
     [SerializeField] Toggle[] buttonLayoutToggles;  //ボタン配置のトグル
 
+    [SerializeField] Button adventureButton;    //アドベンチャーボタン
+
+    [SerializeField] AudioManager audioManager;
+
     private void Start()
     {
         musicSlider.value = Config.musicVolume;
@@ -28,6 +32,7 @@ public class OptionManager : MonoBehaviour
     private void Update()
     {
         Config.musicVolume = musicSlider.value;
+        audioManager.bgmAudioSource.volume = Config.musicVolume;
         Config.seVolume = seSlider.value;
         Config.buttonSize = Mathf.FloorToInt(buttonSizeSlider.value);
         musicVolumeText.text = (musicSlider.value * 100).ToString("##0") + "％";
@@ -38,6 +43,7 @@ public class OptionManager : MonoBehaviour
     public void pushCloseButton()
     {
         gameObject.SetActive(false);
+        adventureButton.Select();  //アドベンチャーボタンを選択状態に
     }
 
     //操作方法のドロップダウンが変更されたときに呼ぶ
