@@ -45,7 +45,8 @@ public class AudioManager : MonoBehaviour
     {
         seAudioSource.pitch = pitch;
         seAudioSource.PlayOneShot(seList[(int)audioKinds], Config.seVolume);
-        yield return new WaitWhile(() => seAudioSource.isPlaying);
+        //yield return new WaitWhile(() => seAudioSource.isPlaying);
+        yield return new WaitForSeconds(0.2f);
         yield break;
     }
 
