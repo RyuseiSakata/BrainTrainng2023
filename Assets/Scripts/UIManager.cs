@@ -87,7 +87,7 @@ public class UIManager : MonoBehaviour
                 if (maxComboText != null)
                 {
                     if (value > 99) value = 99;
-                    maxComboText.text = value.ToString("00");
+                    maxComboText.text = value.ToString("#0");
                 }
                 break;
         }
@@ -114,7 +114,7 @@ public class UIManager : MonoBehaviour
         {
             int second = Mathf.FloorToInt(GameController.gameTime);
             int min = second > 99 * 60 ? 99 : (second / 60);
-            second = second % 60;
+            second = second > 99 * 60 ? 59 : second % 60;
 
             gameTimeText.text = "‚½‚¢‚Þ " + min.ToString("00")+ ":" + second.ToString("00");
         }
@@ -213,6 +213,11 @@ public class UIManager : MonoBehaviour
     {
         if(wordViewContent != null)
         {
+            //Œy—Ê‰»‚Ì‚½‚ßÁ‚µ‚½•¶Žš‚Í10ŒÂ‚Ü‚Å•\Ž¦
+            if(wordViewContent.childCount >= 10)
+            {
+                Destroy(wordViewContent.GetChild(wordViewContent.childCount - 1).gameObject);
+            }
             var instance = Instantiate(wordViewElementPrefab, wordViewContent);
             instance.transform.GetChild(0).GetComponent<Text>().text = wordList.CollectList.Last().Hiragana;
             instance.transform.GetChild(1).GetComponent<Text>().text = wordList.CollectList.Last().Word;

@@ -13,18 +13,9 @@ MonoBehaviour:
   m_Name: WordDataList
   m_EditorClassIdentifier: 
   collectList:
-  - hiragana: "\u3051\u3093\u3051\u3093"
-    word: "\u7D4C\u9A13"
-    meaning: 
-  - hiragana: "\u3051\u3093\u3051\u3093"
-    word: "\u7D4C\u9A13"
-    meaning: 
-  - hiragana: "\u3051\u3093\u3051\u3093"
-    word: "\u7D4C\u9A13"
-    meaning: 
-  - hiragana: "\u3051\u3093\u3051\u3093"
-    word: "\u7D4C\u9A13"
-    meaning: 
-  - hiragana: "\u3051\u3093\u3051\u3093"
-    word: "\u7D4C\u9A13"
-    meaning: 
+  - hiragana: "\u3042\u3042\u307E\u3044"
+    word: "\u5C22\u90E8"
+  - hiragana: "\u3042\u3043\u307E\u3044"
+    word: "\u5C22\u90E8"
+  - hiragana: 
+    word: "\u5C22\u90E8"

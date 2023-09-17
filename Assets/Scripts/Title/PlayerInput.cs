@@ -53,6 +53,17 @@ namespace Title
             
         }
 
+        //クレジットボタンを押したとき
+        public void pushCreditButton()
+        {
+            if (canClick)
+            {
+                audioManager.playSeOneShot(AudioKinds.SE_Enter);
+                
+            }
+
+        }
+
 
 
         //通常モードボタンを押したときに呼ばれるコルーチン

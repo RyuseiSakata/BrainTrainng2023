@@ -32,11 +32,20 @@ public class CollectWordsScrollView : MonoBehaviour
             wordFormal.GetComponent<Text>().text = word.Word; //正式表記のテキストを格納
         }*/
 
+        //重複をのぞいたリストを作成
+        List<WordData> showList = new List<WordData>();
+        foreach(var data in wordList.CollectList)
+        {
+            if (!showList.Contains(data))
+            {
+                showList.Add(data);
+            }
+        }
+
         //消した単語リストを総当たり
-        foreach(var word in wordList.CollectList)
+        foreach(var word in showList)
         {
             var instance = Instantiate(wordWrapperPrefab, content.transform);
-
 
             var wordHiragana = instance.transform.GetChild(0);      //wordHiraganaを取得
             var wordFormal = instance.transform.GetChild(1);      //wordFormalを取得

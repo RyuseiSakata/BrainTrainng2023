@@ -16,7 +16,8 @@ public enum AudioKinds
     SE_BlockRotate = 9,    //ƒuƒƒbƒN‰ñ“]‰¹
     SE_LOSE = 10,    //”s–k‚Ì‰¹
     SE_WIN = 11,    //Ÿ—˜‚Ì‰¹
-    BGM_Main = 12,   //BGM
+    SE_Whistle = 12,    //ƒQ[ƒ€I—¹‚Ì“J‚Ì‰¹
+    BGM_Main = 13,   //BGM
 }
 
 public class AudioManager : MonoBehaviour

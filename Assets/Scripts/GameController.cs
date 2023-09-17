@@ -104,6 +104,7 @@ public class GameController : MonoBehaviour
                 yield return new WaitForSeconds(0.3f);
             }
 
+            audioManager.playSeOneShot(AudioKinds.SE_Whistle);
             yield return uIManager.showPopUp();
 
             SceneChanger.changeTo(SceneType.NormalResult);
