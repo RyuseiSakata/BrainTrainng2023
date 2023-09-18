@@ -13,6 +13,10 @@ public enum GridState
 
 public class Stage : MonoBehaviour
 {
+    private List<int> dropitrs = new List<int>();
+    private int dropItr = 0;
+    private string dropList = "とまとりんごごりらみかんなすびぱそこんせんぷうきてれびつくえけんちく" ;
+
     public float fallBoost = 1; 
 
     [SerializeField] GameObject blockPrefab;
@@ -78,6 +82,11 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
+        for(int I=0; I<dropList.Length; I++)
+        {
+            dropitrs.Add(I);
+        }
+
         //起動後一度も重み合計を計算していないなら
         if (!Config.isCaluculatedSum)
         {
@@ -260,10 +269,13 @@ public class Stage : MonoBehaviour
                 break;
             }
         }
-
+        var num = Random.Range(0, dropitrs.Count);
+        dropItr = dropitrs[num];
+        dropitrs.Remove(num);
 
         //Debug.Log("LOG:" + Config.character[ret].ToString() + "の出現確率:" + (100f * Config.probability[ret] / Config.sumProbability).ToString("") + "%");
-        return Config.character[ret].ToString();
+        //return Config.character[ret].ToString();
+        return dropList[dropItr].ToString();
     }
 
     //ブロックの落下処理を行うコルーチン spawnFlagをfalseにするとスポーン処理を行わない

@@ -13,6 +13,11 @@ namespace Result
         [SerializeField] private Text scoreText;
         [SerializeField] private Text rankText;
 
+        [SerializeField] GameObject rankingPanel;
+        [SerializeField] private Ranking ranking;
+        [SerializeField] private Text[] rankingNameText;
+        [SerializeField] private Text[] rankingScoreText;
+
         //ƒoƒgƒ‹
         [SerializeField] private Text timeText;
         [SerializeField] private Text clearText;
@@ -26,9 +31,10 @@ namespace Result
         [SerializeField] Scrollbar scrollbar;
         [SerializeField] Button toTitleButton;
 
+
         private void Start()
         {
-            
+            StartCoroutine(updateRanking());
             showCollectWordsScrollView();
 
             if (SceneChanger.getCurrentSceneName() == "NormalResult")
@@ -52,6 +58,7 @@ namespace Result
 
         private void Update()
         {
+            
             if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
             {
                 scrollbar.Select();
@@ -60,6 +67,11 @@ namespace Result
             if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
             {
                 toTitleButton.Select();
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                closeRankingPanel();
             }
         }
 
@@ -123,6 +135,32 @@ namespace Result
             }
         }
 
+        private IEnumerator updateRanking()
+        {
+            ranking.writeRankingData(GameController.playerName,GameController.score);
+            yield return new WaitUntil(()=>Ranking.isLoaded == true);
+            Ranking.isLoaded = false;
+
+            List<RankingData> rankingList =  Ranking.rankingList;
+            Debug.Log(rankingList.Count);
+            for(int i=0; i< rankingList.Count; i++)
+            {
+                rankingNameText[i].text = rankingList[i].name;
+                rankingScoreText[i].text = rankingList[i].score.ToString("0000000");
+            }
+
+            yield break;
+        }
+
+        public void showRankingPanel()
+        {
+            rankingPanel.SetActive(true);
+        }
+
+        public void closeRankingPanel()
+        {
+            rankingPanel.SetActive(false);
+        }
 
     }
 }
