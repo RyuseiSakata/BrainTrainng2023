@@ -2236,6 +2236,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 155495570}
   rankText: {fileID: 1517900920}
+  timeText: {fileID: 0}
+  clearText: {fileID: 0}
+  maxComboText: {fileID: 1344170215}
+  wordNumText: {fileID: 1736288434}
+  wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
+  content: {fileID: 113718307}
+  wordWrapperPrefab: {fileID: 6556083029577853613, guid: 9d7335dc0a86e1e438ba8347e10c89c8, type: 3}
+  scrollbar: {fileID: 234312910}
+  toTitleButton: {fileID: 1370546118}
   rankingPanel: {fileID: 1318524420}
   ranking: {fileID: 1318524422}
   rankingNameText:
@@ -2250,15 +2259,7 @@ MonoBehaviour:
   - {fileID: 507691944}
   - {fileID: 259535639}
   - {fileID: 763971511}
-  timeText: {fileID: 0}
-  clearText: {fileID: 0}
-  maxComboText: {fileID: 1344170215}
-  wordNumText: {fileID: 1736288434}
-  wordList: {fileID: 11400000, guid: 9bd21f958dd0d4c45bcc6c8a5d33996a, type: 2}
-  content: {fileID: 113718307}
-  wordWrapperPrefab: {fileID: 6556083029577853613, guid: 9d7335dc0a86e1e438ba8347e10c89c8, type: 3}
-  scrollbar: {fileID: 234312910}
-  toTitleButton: {fileID: 1370546118}
+  rankingTimeText: []
 --- !u!4 &1222399033
 Transform:
   m_ObjectHideFlags: 0
@@ -2542,7 +2543,7 @@ GameObject:
   - component: {fileID: 1355226532}
   - component: {fileID: 1355226531}
   m_Layer: 5
-  m_Name: Button (Legacy)
+  m_Name: RankingButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

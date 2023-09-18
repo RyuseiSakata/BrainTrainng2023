@@ -46,4 +46,5 @@ public static class Config
 
     public static int maxWordNum = 99999999; //’PŒê‚ÌÅ‘å•Û‘¶”(‚Æ‚è‚Ü‚Ù‚Ú–³ŒÀ‚Éİ’è)
 
+    //public static string[] playerNameRandom = { "‚Æ‚ ‚é—EÒ","‚Æ‚ ‚é‘ºl","‚Æ‚ ‚éƒhƒ‰ƒSƒ“","–¼–³‚µ‚³‚ñ"};
 }

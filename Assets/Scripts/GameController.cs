@@ -21,7 +21,7 @@ public enum EndState
 
 public class GameController : MonoBehaviour
 {
-    public static string playerName = "–¼–³‚µ‚³‚ñ";
+    public static string playerName = "";
     [SerializeField] UIManager uIManager;
     [SerializeField] BattleUIManager battleUIManager;
     [SerializeField] Stage stage;

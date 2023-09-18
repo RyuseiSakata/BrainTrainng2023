@@ -37,7 +37,8 @@ namespace Title
 
         private void Start()
         {
-
+            GameController.playerName = string.Empty;
+            nameInputField.text = GameController.playerName;
         }
 
         //通常モードボタンを押したとき

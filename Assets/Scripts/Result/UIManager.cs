@@ -13,11 +13,6 @@ namespace Result
         [SerializeField] private Text scoreText;
         [SerializeField] private Text rankText;
 
-        [SerializeField] GameObject rankingPanel;
-        [SerializeField] private Ranking ranking;
-        [SerializeField] private Text[] rankingNameText;
-        [SerializeField] private Text[] rankingScoreText;
-
         //バトル
         [SerializeField] private Text timeText;
         [SerializeField] private Text clearText;
@@ -31,20 +26,28 @@ namespace Result
         [SerializeField] Scrollbar scrollbar;
         [SerializeField] Button toTitleButton;
 
+        [SerializeField] GameObject rankingPanel;
+        [SerializeField] private Ranking ranking;
+        [SerializeField] private Text[] rankingNameText;
+        [SerializeField] private Text[] rankingScoreText;
+        [SerializeField] private Text[] rankingTimeText;
+
 
         private void Start()
         {
-            StartCoroutine(updateRanking());
+            
             showCollectWordsScrollView();
 
             if (SceneChanger.getCurrentSceneName() == "NormalResult")
             {
+                StartCoroutine(updateNormalRanking());    //ランキングの更新
                 scoreText.text = GameController.score.ToString("0000000");
                 rankText.text = GameController.rank;
                 maxComboText.text = Stage.maxComboNum.ToString("#0");
                 wordNumText.text = wordList.CollectList.Count.ToString("");
             }else if (SceneChanger.getCurrentSceneName() == "AdventureResult")
             {
+                StartCoroutine(updateAdventureRanking());    //ランキングの更新
                 int second = Mathf.FloorToInt(GameController.gameTime);
                 int min = second > 99 * 60 ? 99 : (second / 60);
                 second = second > 99 * 60 ? 59 : second % 60;
@@ -135,18 +138,38 @@ namespace Result
             }
         }
 
-        private IEnumerator updateRanking()
+        private IEnumerator updateNormalRanking()
         {
-            ranking.writeRankingData(GameController.playerName,GameController.score);
+            ranking.writeNormalRankingData(GameController.playerName,GameController.score);
             yield return new WaitUntil(()=>Ranking.isLoaded == true);
             Ranking.isLoaded = false;
 
             List<RankingData> rankingList =  Ranking.rankingList;
-            Debug.Log(rankingList.Count);
             for(int i=0; i< rankingList.Count; i++)
             {
                 rankingNameText[i].text = rankingList[i].name;
                 rankingScoreText[i].text = rankingList[i].score.ToString("0000000");
+            }
+
+            yield break;
+        }
+
+        private IEnumerator updateAdventureRanking()
+        {
+            
+            ranking.writeAdventureRanking(GameController.playerName, GameController.gameTime);
+            yield return new WaitUntil(() => Ranking.isLoaded == true);
+            Ranking.isLoaded = false;
+
+            List<RankingData> rankingList = Ranking.rankingList;
+            for (int i = 0; i < rankingList.Count; i++)
+            {
+                rankingNameText[i].text = rankingList[i].name;
+
+                int second = Mathf.FloorToInt(rankingList[i].time);
+                int min = second > 99 * 60 ? 99 : (second / 60);
+                second = second > 99 * 60 ? 59 : second % 60;
+                rankingTimeText[i].text = min.ToString("00") + ":" + second.ToString("00");
             }
 
             yield break;

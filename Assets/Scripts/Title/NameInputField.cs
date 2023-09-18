@@ -15,6 +15,12 @@ public class NameInputField : InputField
         ExternalCall("C:/Program Files/Common Files/Microsoft Shared/ink/tabtip.exe", null, false);
     }
 
+    public override void OnDeselect(BaseEventData eventData)
+    {
+        base.OnDeselect(eventData);
+        ExternalCall("C:/Program Files/Common Files/Microsoft Shared/ink/tabtip.exe", null, true);
+    }
+
 
     private static Process ExternalCall(string filename, string arguments, bool hideWindow)
     {
