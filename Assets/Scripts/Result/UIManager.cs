@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using System;
-using System.Globalization;
+
 
 namespace Result
 {
@@ -24,9 +23,12 @@ namespace Result
         [SerializeField] private WordList wordList;
         [SerializeField] GameObject content;
         [SerializeField] GameObject wordWrapperPrefab;
+        [SerializeField] Scrollbar scrollbar;
+        [SerializeField] Button toTitleButton;
 
         private void Start()
         {
+            
             showCollectWordsScrollView();
 
             if (SceneChanger.getCurrentSceneName() == "NormalResult")
@@ -45,6 +47,19 @@ namespace Result
                 clearText.text = GameController.faseCount.ToString("0") + " / 3";
                 maxComboText.text = Stage.maxComboNum.ToString("#0");
                 wordNumText.text = wordList.CollectList.Count.ToString("");
+            }
+        }
+
+        private void Update()
+        {
+            if(Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+            {
+                scrollbar.Select();
+            }
+            
+            if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+            {
+                toTitleButton.Select();
             }
         }
 

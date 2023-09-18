@@ -3377,7 +3377,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 725001622}
   m_HandleRect: {fileID: 725001621}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -6265,7 +6265,7 @@ MonoBehaviour:
   audioManager: {fileID: 583944499}
   player: {fileID: 0}
   enemy: {fileID: 0}
-  rankBorderes: 00000000b80b0000581b000010270000983a000030750000c8af000070110100
+  rankBorderes: 00000000d00700007017000010270000983a000030750000c8af000070110100
   rankNames:
   - "\u521D\u5FC3\u8005"
   - "\u521D\u7D1A\u8005"

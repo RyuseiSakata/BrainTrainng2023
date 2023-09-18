@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Title
 {
@@ -10,6 +11,27 @@ namespace Title
         [SerializeField] AudioManager audioManager;
 
         private bool canClick = true;   //Audioの再生終了街の時にボタンを押せなくする
+
+        [SerializeField] Button adventureButton;
+        [SerializeField] Button closeOptionPanelButton;
+        [SerializeField] Scrollbar scrollbar;
+
+        private void Update()
+        {
+            if (optionPanel.activeSelf)
+            {
+                if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+                {
+                    scrollbar.Select();
+                }
+
+                if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+                {
+                    closeOptionPanelButton.Select();
+                }
+            }
+            
+        }
 
         //通常モードボタンを押したとき
         public void pushNormalButton()
@@ -49,6 +71,7 @@ namespace Title
             {
                 audioManager.playSeOneShot(AudioKinds.SE_Enter);
                 optionPanel.SetActive(true);
+                closeOptionPanelButton.Select();
             }
             
         }

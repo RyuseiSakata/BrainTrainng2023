@@ -23,7 +23,7 @@ public enum AudioKinds
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] AudioSource seAudioSource;
-    [SerializeField] AudioSource bgmAudioSource;
+    public AudioSource bgmAudioSource;
 
     [SerializeField] AudioClip[] seList;
 
