@@ -15,7 +15,7 @@ public class Stage : MonoBehaviour
 {
     private List<int> dropitrs = new List<int>();
     private int dropItr = 0;
-    private string dropList = "‚Æ‚Ü‚Æ‚è‚ñ‚²‚²‚è‚ç" ;
+    private string dropList = "‚Ä‚ê‚Ñ‚Â‚­‚¦‚Ý‚©‚ñ" ;
 
     public float fallBoost = 1; 
 
@@ -274,10 +274,10 @@ public class Stage : MonoBehaviour
         dropitrs.Remove(num);
         if (dropitrs.Count <= 0)
         {
+            Debug.Log("Reset");
             for (int I = 0; I < 9; I++)
             {
                 dropitrs.Add(I);
-                Debug.Log("Reset");
             }
         }
 
