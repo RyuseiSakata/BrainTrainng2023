@@ -88,6 +88,7 @@ public class OptionManager : MonoBehaviour
     {
         int selectedValue = operateMethodDropdown.value;
         Config.operateMode = selectedValue;
+        Debug.Log(Config.operateMode);
     }
 
     //ボタン配置のトグルが押されたとき
