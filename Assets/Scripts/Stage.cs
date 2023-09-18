@@ -15,7 +15,7 @@ public class Stage : MonoBehaviour
 {
     private List<int> dropitrs = new List<int>();
     private int dropItr = 0;
-    private string dropList = "‚Æ‚Ü‚Æ‚è‚ñ‚²‚²‚è‚ç‚Ý‚©‚ñ‚È‚·‚Ñ‚Ï‚»‚±‚ñ‚¹‚ñ‚Õ‚¤‚«‚Ä‚ê‚Ñ‚Â‚­‚¦‚¯‚ñ‚¿‚­" ;
+    private string dropList = "‚Æ‚Ü‚Æ‚è‚ñ‚²‚²‚è‚ç" ;
 
     public float fallBoost = 1; 
 
@@ -82,7 +82,7 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
-        for(int I=0; I<dropList.Length; I++)
+        for(int I=0; I<9; I++)
         {
             dropitrs.Add(I);
         }
@@ -272,6 +272,14 @@ public class Stage : MonoBehaviour
         var num = Random.Range(0, dropitrs.Count);
         dropItr = dropitrs[num];
         dropitrs.Remove(num);
+        if (dropitrs.Count <= 0)
+        {
+            for (int I = 0; I < 9; I++)
+            {
+                dropitrs.Add(I);
+                Debug.Log("Reset");
+            }
+        }
 
         //Debug.Log("LOG:" + Config.character[ret].ToString() + "‚ÌoŒ»Šm—¦:" + (100f * Config.probability[ret] / Config.sumProbability).ToString("") + "%");
         //return Config.character[ret].ToString();
