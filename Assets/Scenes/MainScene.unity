@@ -1486,7 +1486,7 @@ RectTransform:
   m_GameObject: {fileID: 421541349}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 168022114}
@@ -1520,7 +1520,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: d48d76d35af366c4c80cbee1d4b74778, type: 3}
     m_FontSize: 100
-    m_FontStyle: 2
+    m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 100
@@ -1530,7 +1530,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u521D\u5FC3\u8005"
+  m_Text: "\u99C6\u3051\u51FA\u3057\u8005\n"
 --- !u!222 &421541352
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6267,7 +6267,7 @@ MonoBehaviour:
   enemy: {fileID: 0}
   rankBorderes: 00000000d00700007017000010270000983a000030750000c8af000070110100
   rankNames:
-  - "\u521D\u5FC3\u8005"
+  - "\u99C6\u3051\u51FA\u3057\u8005"
   - "\u521D\u7D1A\u8005"
   - "\u4E2D\u7D1A\u8005"
   - "\u4E0A\u7D1A\u8005"
