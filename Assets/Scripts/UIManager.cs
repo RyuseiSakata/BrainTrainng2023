@@ -179,7 +179,7 @@ public class UIManager : MonoBehaviour
     //設定をUIに反映
     public void configInit()
     {
-        Debug.Log("ずん"+ Config.operateMode);
+
         //操作方法（タッチのみでないの場合）
         if (Config.operateMode != 1)
         {
