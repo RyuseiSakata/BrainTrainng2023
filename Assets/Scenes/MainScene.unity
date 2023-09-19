@@ -3719,7 +3719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15fe3889014f0f84a99ca1a546d29e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sentence: "\u305B\u3057\u304D\u3088"
+  sentence: "\u306E\u304A\u3070\u304D\u306D\u3093\u3066"
 --- !u!81 &883812867
 AudioListener:
   m_ObjectHideFlags: 0

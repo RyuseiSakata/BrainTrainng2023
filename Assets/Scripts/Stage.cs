@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public enum GridState
 {
@@ -47,6 +48,8 @@ public class Stage : MonoBehaviour
     private int scorePerChain = 0;    //１連鎖内のスコアの合計　例）りんご、ごりら　-> 100+100
     public int damagePerChain = 0;    //攻撃ダメージ量
 
+    private TextAsset csvFile;  //CSVのファイル
+    private List<string[]> _csvData = new List<string[]>();
     public bool GameOverFlag { get; set; } = false; //ゲームオーバー判定用のフラグ　trueになるとfallコルーチンが終了
 
     //コンボ数のプロパティ
@@ -82,7 +85,19 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
+        csvFile = Resources.Load("Book4") as TextAsset;
+        StringReader reader = new StringReader(csvFile.text);
         
+
+        while(reader.Peek() != -1){
+            string line = reader.ReadLine();
+            _csvData.Add(line.Split(','));
+        }
+        
+        for(int i = 0;i<allWord.Count;i++){
+            allWord.Add(_csvData[i][1]);
+        }
+        Debug.Log("shuuryou");
         //起動後一度も重み合計を計算していないなら
         if (!Config.isCaluculatedSum)
         {
