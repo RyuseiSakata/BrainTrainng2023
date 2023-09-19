@@ -13,6 +13,10 @@ public enum GridState
 
 public class Stage : MonoBehaviour
 {
+    [SerializeField] private List<string> allWord;  //りゅうせいのに置き換える常用単語リスト
+    [SerializeField] private string dropWordString; //落下候補の文字(3単語)
+    private int dropWordItr = 0;    //dropWordListのイテレータ
+
     public float fallBoost = 1; 
 
     [SerializeField] GameObject blockPrefab;
@@ -78,6 +82,7 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
+        
         //起動後一度も重み合計を計算していないなら
         if (!Config.isCaluculatedSum)
         {
@@ -248,22 +253,70 @@ public class Stage : MonoBehaviour
     //文字を決定する
     private string decideCharacter()
     {
-        float randomNum = Random.Range(0f, Config.sumProbability);
+        /*
+            float randomNum = Random.Range(0f, Config.sumProbability);
 
-        int ret;    //返却する文字の要素番号
-        int sum = 0;    //ループ時までの合計値
-        for (ret = 0; ret < Config.probability.Length; ret++)
-        {
-            sum += Config.probability[ret];
-            if (randomNum < sum)
+            int ret;    //返却する文字の要素番号
+            int sum = 0;    //ループ時までの合計値
+            for (ret = 0; ret < Config.probability.Length; ret++)
             {
-                break;
+                sum += Config.probability[ret];
+                if (randomNum < sum)
+                {
+                    break;
+                }
             }
+
+            return Config.character[ret].ToString();  //完全ランダム落下
+        */
+        
+        //itrが落下候補よりも次の要素をさしているなら、単語を更新
+        if(dropWordItr >= dropWordString.Length)
+        {
+            dropWordItr = 0;    //イテレータをリセット
+
+            //分割する単語を3つ取得
+            var divThree = new List<string>();
+            for (int i=0; i<3; i++)
+            {
+                int getIndex = Random.Range(0, allWord.Count);  //ランダムに取得
+                divThree.Add(allWord[getIndex]);
+                allWord.RemoveAt(getIndex); //取得した単語を一時削除
+            }
+
+            //一時削除した単語を戻す
+            divThree.ForEach(e =>
+            {
+                allWord.Add(e);
+            });
+            Debug.Log($"DROPLIST1: [{divThree[0]}],[{divThree[1]}],[{divThree[2]}]が選ばれた。");
+
+            //3つの単語をさらに分割しランダムに並べる
+            var divSix = new List<string>();
+            divThree.ForEach(e =>
+            {
+                var pre = e.Substring(0, (e.Length+1)/2);         //前半部分
+                var suf = e.Substring((e.Length+1)/2);    //後半部分
+                divSix.Add(pre);
+                divSix.Add(suf);
+            });
+
+            //6つの分割区から落下候補を求める
+            dropWordString = "";
+            for(int i=0; i < 6; i++)
+            {
+                int getIndex = Random.Range(0, divSix.Count);
+                dropWordString += divSix[getIndex];
+                divSix.RemoveAt(getIndex);
+            }
+            Debug.Log($"DROPLIST2: [{dropWordString}]の順に落とします。");
         }
 
+        var dropChara = dropWordString[dropWordItr].ToString();
+        dropWordItr++;
 
-        //Debug.Log("LOG:" + Config.character[ret].ToString() + "の出現確率:" + (100f * Config.probability[ret] / Config.sumProbability).ToString("") + "%");
-        return Config.character[ret].ToString();
+        return dropChara;
+
     }
 
     //ブロックの落下処理を行うコルーチン spawnFlagをfalseにするとスポーン処理を行わない

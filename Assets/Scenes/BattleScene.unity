@@ -844,6 +844,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e06e66ec5b6d978489617d548fbfa291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allWord:
+  - "\u304D\u3088\u3046\u304B"
+  - "\u306B\u3093\u3052\u3093"
+  - "\u308A\u3093\u3054"
+  - "\u3059\u307E\u307B"
+  - "\u3053\u304F\u3070\u3093"
+  - "\u3064\u304F\u3048"
+  - "\u308C\u3044\u305E\u3046\u3053"
+  dropWordString: 
   fallBoost: 1
   blockPrefab: {fileID: 62084249457581635, guid: 2738bf8cb71710d4498e87ead6250cd6, type: 3}
   uIManager: {fileID: 665633861}

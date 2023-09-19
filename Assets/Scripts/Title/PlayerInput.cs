@@ -7,6 +7,7 @@ namespace Title
 {
     public class PlayerInput : MonoBehaviour
     {
+
         [SerializeField] GameObject optionPanel;
         [SerializeField] AudioManager audioManager;
 
@@ -15,6 +16,8 @@ namespace Title
         [SerializeField] Button adventureButton;
         [SerializeField] Button closeOptionPanelButton;
         [SerializeField] Scrollbar scrollbar;
+
+        [SerializeField] InputField nameInputField;
 
         private void Update()
         {
@@ -30,7 +33,12 @@ namespace Title
                     closeOptionPanelButton.Select();
                 }
             }
-            
+        }
+
+        private void Start()
+        {
+            GameController.playerName = string.Empty;
+            nameInputField.text = GameController.playerName;
         }
 
         //通常モードボタンを押したとき
@@ -117,6 +125,11 @@ namespace Title
             #endif
 
             yield break;
+        }
+
+        public void endEditName()
+        {
+            GameController.playerName = nameInputField.text;
         }
     }
 }
