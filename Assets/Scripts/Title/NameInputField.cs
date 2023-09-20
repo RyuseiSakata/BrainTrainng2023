@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,16 @@ public class NameInputField : InputField
     {
         base.OnSelect(eventData);
         //ExternalCall("C:\\Program Files\\Common Files\\Microsoft Shared\\ink\abtip.exe", null, false);
-        ExternalCall("C:/Program Files/Common Files/Microsoft Shared/ink/tabtip.exe", null, false);
+        //ExternalCall("C:/Program Files/Common Files/Microsoft Shared/ink/tabtip.exe", null, false);
+        TouchKeyBoard.Open(1);
     }
 
     public override void OnDeselect(BaseEventData eventData)
     {
         base.OnDeselect(eventData);
-        ExternalCall("C:/Program Files/Common Files/Microsoft Shared/ink/tabtip.exe", null, true);
+        TouchKeyBoard.Close();
+        //ExternalCall("C:/Program Files/Common Files/Microsoft Shared/ink/tabtip.exe", null, true);
+
     }
 
 
