@@ -85,7 +85,7 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
-        csvFile = Resources.Load("Book4") as TextAsset;
+        csvFile = Resources.Load("Book51") as TextAsset;
         StringReader reader = new StringReader(csvFile.text);
         
 

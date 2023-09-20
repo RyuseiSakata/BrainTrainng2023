@@ -35,12 +35,10 @@ public class Jage : MonoBehaviour
           foreach (var node in lattice.GetBestNodes())
           {
             if(!sepa.Contains(node.Surface)){
-              Debug.Log(node.Surface);
-              Debug.Log(node.PartsOfSpeech);
-              Debug.Log(node.Reading);
               sepa.Add($"{node.Surface}");
               sepa2.Add($"{node.PartsOfSpeech}");
-              Debug.Log(sepa[num].Length);
+              Debug.Log($"{node.Surface}");
+              Debug.Log($"{node.Cost}");
               if(sepa[num].Length < 3){
                 sepa.Remove($"{node.Surface}");
                 sepa2.Remove($"{node.PartsOfSpeech}");
@@ -56,11 +54,10 @@ public class Jage : MonoBehaviour
               foreach (var node in result)
               {
                   if(!sepa.Contains(node.Surface)){
-                  Debug.Log(node.Surface);
-                  Debug.Log(node.PartsOfSpeech);
                   sepa2.Add($"{node.PartsOfSpeech}");
                   sepa.Add($"{node.Surface}");
-                  Debug.Log(sepa[num].Length);
+                  Debug.Log($"{node.Surface}");
+              Debug.Log($"{node.Cost}");
                   if(sepa[num].Length < 3){
                     sepa.Remove($"{node.Surface}");
                     sepa2.Remove($"{node.PartsOfSpeech}");
