@@ -93,11 +93,11 @@ public class Stage : MonoBehaviour
             string line = reader.ReadLine();
             _csvData.Add(line.Split(','));
         }
-        
-        for(int i = 0;i<allWord.Count;i++){
+         //Debug.Log(allWord.Count);
+        for(int i = 0;i<_csvData.Count;i++){
             allWord.Add(_csvData[i][1]);
         }
-        Debug.Log("shuuryou");
+       
         //起動後一度も重み合計を計算していないなら
         if (!Config.isCaluculatedSum)
         {
