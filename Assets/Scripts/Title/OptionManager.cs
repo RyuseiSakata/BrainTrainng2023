@@ -19,6 +19,7 @@ public class OptionManager : MonoBehaviour
 
     [SerializeField] GameObject soundButton;
     [SerializeField] GameObject operateButton;
+    [SerializeField] GameObject creditButton;
 
     [SerializeField] Button adventureButton;    //アドベンチャーボタン
 
@@ -48,15 +49,28 @@ public class OptionManager : MonoBehaviour
             {
                 soundButton.GetComponent<Image>().color = new Color32(0, 0, 0, 200);
                 operateButton.GetComponent<Image>().color = new Color32(0, 0, 0, 100);
+                creditButton.GetComponent<Image>().color = new Color32(0, 0, 0, 100);
                 soundButton.transform.GetChild(1).gameObject.SetActive(true);
                 operateButton.transform.GetChild(1).gameObject.SetActive(false);
+                creditButton.transform.GetChild(1).gameObject.SetActive(false);
             }
-            else if(EventSystem.current.currentSelectedGameObject == operateButton)
+            else if (EventSystem.current.currentSelectedGameObject == operateButton)
             {
                 soundButton.GetComponent<Image>().color = new Color32(0, 0, 0, 100);
                 operateButton.GetComponent<Image>().color = new Color32(0, 0, 0, 200);
+                creditButton.GetComponent<Image>().color = new Color32(0, 0, 0, 100);
                 soundButton.transform.GetChild(1).gameObject.SetActive(false);
                 operateButton.transform.GetChild(1).gameObject.SetActive(true);
+                creditButton.transform.GetChild(1).gameObject.SetActive(false);
+            }
+            else if (EventSystem.current.currentSelectedGameObject == creditButton)
+            {
+                soundButton.GetComponent<Image>().color = new Color32(0, 0, 0, 100);
+                operateButton.GetComponent<Image>().color = new Color32(0, 0, 0, 100);
+                creditButton.GetComponent<Image>().color = new Color32(0, 0, 0, 200);
+                soundButton.transform.GetChild(1).gameObject.SetActive(false);
+                operateButton.transform.GetChild(1).gameObject.SetActive(false);
+                creditButton.transform.GetChild(1).gameObject.SetActive(true);
             }
         }
     }
@@ -74,6 +88,7 @@ public class OptionManager : MonoBehaviour
         soundButton.GetComponent<Button>().Select();
         soundButton.transform.GetChild(1).gameObject.SetActive(true);
         operateButton.transform.GetChild(1).gameObject.SetActive(false);
+        creditButton.transform.GetChild(1).gameObject.SetActive(false);
     }
 
     public void pushOperateButton()
@@ -81,6 +96,15 @@ public class OptionManager : MonoBehaviour
         operateButton.GetComponent<Button>().Select();
         soundButton.transform.GetChild(1).gameObject.SetActive(false);
         operateButton.transform.GetChild(1).gameObject.SetActive(true);
+        creditButton.transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    public void pushCreditButton()
+    {
+        creditButton.GetComponent<Button>().Select();
+        soundButton.transform.GetChild(1).gameObject.SetActive(false);
+        operateButton.transform.GetChild(1).gameObject.SetActive(false);
+        creditButton.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     //操作方法のドロップダウンが変更されたときに呼ぶ
