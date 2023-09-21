@@ -156,7 +156,7 @@ namespace Result
                     //i != 0　かつ　ひとつ前と同じスコアでない
                     if ( i != 0 && rankingList[i-1].score != rankingList[i].score)
                     {
-                        rank++;
+                        rank = i;
                     }
                     rankingLabelText[i].text = rankingLabel[rank];
                     rankingNameText[i].text = rankingList[i].name;
@@ -187,7 +187,7 @@ namespace Result
                     //ひとつ前と同じスコアでない　かつ　i != 0
                     if (i != 0 && rankingList[i - 1].score != rankingList[i].score)
                     {
-                        rank++;
+                        rank = i;
                     }
                     rankingLabelText[i].text = rankingLabel[rank];
                     rankingNameText[i].text = rankingList[i].name;
