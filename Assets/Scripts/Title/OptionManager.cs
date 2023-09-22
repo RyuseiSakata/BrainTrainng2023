@@ -80,6 +80,7 @@ public class OptionManager : MonoBehaviour
         gameObject.SetActive(false);
         soundButton.transform.GetChild(1).gameObject.SetActive(true);
         operateButton.transform.GetChild(1).gameObject.SetActive(false);
+        creditButton.transform.GetChild(1).gameObject.SetActive(false);
         adventureButton.Select();  //アドベンチャーボタンを選択状態に
     }
 
