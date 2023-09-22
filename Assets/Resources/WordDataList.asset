@@ -12,16 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e00dbe0ee1c4b14e89ecf150fde0131, type: 3}
   m_Name: WordDataList
   m_EditorClassIdentifier: 
-  collectList:
-  - hiragana: 
-    word: "\u5C22\u90E8"
-  - hiragana: w
-    word: "\u5C22\u90E8"
-  - hiragana: ww
-    word: "\u5C22\u90E8"
-  - hiragana: www
-    word: "\u5C22\u90E8"
-  - hiragana: "\u3042\u3042\u307E\u3044"
-    word: "\u5C22\u90E8"
-  - hiragana: "\u3042\u3043\u307E\u3044"
-    word: "\u5C22\u90E8"
+  collectList: []
