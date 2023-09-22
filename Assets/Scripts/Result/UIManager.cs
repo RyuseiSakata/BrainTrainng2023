@@ -27,7 +27,10 @@ namespace Result
         [SerializeField] Button toTitleButton;
 
         [SerializeField] GameObject rankingPanel;
+        [SerializeField] GameObject noDataPanel;
         [SerializeField] private Ranking ranking;
+        private string[] rankingLabel = { "1st", "2nd", "3rd", "4th", "5th" };
+        [SerializeField] private Text[] rankingLabelText;   //1stなど
         [SerializeField] private Text[] rankingNameText;
         [SerializeField] private Text[] rankingScoreText;
         [SerializeField] private Text[] rankingTimeText;
@@ -145,10 +148,24 @@ namespace Result
             Ranking.isLoaded = false;
 
             List<RankingData> rankingList =  Ranking.rankingList;
-            for(int i=0; i< rankingList.Count; i++)
+            int rank = 0;   //表示する順位
+            if(rankingList.Count != 0)
             {
-                rankingNameText[i].text = rankingList[i].name;
-                rankingScoreText[i].text = rankingList[i].score.ToString("0000000");
+                for (int i = 0; i < rankingList.Count; i++)
+                {
+                    //i != 0　かつ　ひとつ前と同じスコアでない
+                    if ( i != 0 && rankingList[i-1].score != rankingList[i].score)
+                    {
+                        rank = i;
+                    }
+                    rankingLabelText[i].text = rankingLabel[rank];
+                    rankingNameText[i].text = rankingList[i].name;
+                    rankingScoreText[i].text = rankingList[i].score.ToString("0000000");
+                }
+            }
+            else
+            {
+                noDataPanel.SetActive(true);
             }
 
             yield break;
@@ -162,15 +179,30 @@ namespace Result
             Ranking.isLoaded = false;
 
             List<RankingData> rankingList = Ranking.rankingList;
-            for (int i = 0; i < rankingList.Count; i++)
+            int rank = 0;  //表示する順位
+            if (rankingList.Count != 0)
             {
-                rankingNameText[i].text = rankingList[i].name;
+                for (int i = 0; i < rankingList.Count; i++)
+                {
+                    //ひとつ前と同じスコアでない　かつ　i != 0
+                    if (i != 0 && rankingList[i - 1].score != rankingList[i].score)
+                    {
+                        rank = i;
+                    }
+                    rankingLabelText[i].text = rankingLabel[rank];
+                    rankingNameText[i].text = rankingList[i].name;
 
-                int second = Mathf.FloorToInt(rankingList[i].time);
-                int min = second > 99 * 60 ? 99 : (second / 60);
-                second = second > 99 * 60 ? 59 : second % 60;
-                rankingTimeText[i].text = min.ToString("00") + ":" + second.ToString("00");
+                    int second = Mathf.FloorToInt(rankingList[i].time);
+                    int min = second > 99 * 60 ? 99 : (second / 60);
+                    second = second > 99 * 60 ? 59 : second % 60;
+                    rankingTimeText[i].text = min.ToString("00") + ":" + second.ToString("00");
+                }
             }
+            else
+            {
+                noDataPanel.SetActive(true);
+            }
+            
 
             yield break;
         }

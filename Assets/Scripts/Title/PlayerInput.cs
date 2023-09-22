@@ -129,6 +129,7 @@ namespace Title
 
         public void endEditName()
         {
+            if(nameInputField.text.Length >= 10)   nameInputField.text = nameInputField.text.Substring(0, 10);
             GameController.playerName = nameInputField.text;
         }
     }
