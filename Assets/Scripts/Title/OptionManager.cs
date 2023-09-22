@@ -77,6 +77,9 @@ public class OptionManager : MonoBehaviour
 
     public void pushCloseButton()
     {
+        soundButton.GetComponent<Image>().color = new Color32(0, 0, 0, 200);
+        operateButton.GetComponent<Image>().color = new Color32(0, 0, 0, 100);
+        creditButton.GetComponent<Image>().color = new Color32(0, 0, 0, 100);
         gameObject.SetActive(false);
         soundButton.transform.GetChild(1).gameObject.SetActive(true);
         operateButton.transform.GetChild(1).gameObject.SetActive(false);
