@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Battle;
 
@@ -9,6 +8,7 @@ public enum EnemyType
     Slime,
     Minotaurosu,
     Dragon,
+    Tutorial,
 }
 
 public enum EndState
@@ -21,11 +21,14 @@ public enum EndState
 
 public class GameController : MonoBehaviour
 {
+    private int _tutorialPart = 1;
+
     public static string playerName = "";
     [SerializeField] UIManager uIManager;
     [SerializeField] BattleUIManager battleUIManager;
     [SerializeField] Stage stage;
     [SerializeField] AudioManager audioManager;
+    [SerializeField] DiscriptionManager discriptionManager;
 
     //バトルシーン用
     [SerializeField] Battle.Player player;
@@ -141,6 +144,36 @@ public class GameController : MonoBehaviour
 
             SceneChanger.changeTo(SceneType.AdventureResult);
             
+        }else if (SceneChanger.getCurrentSceneName() == "TutorialScene")
+        {
+            isNormal = false;
+
+            //endGameが呼ばれゲーム終了となるまで
+            while (!gameEndFlag)
+            {
+                yield return startTutorial(); //バトル開始
+            }
+
+            audioManager.stopBgm();
+            switch (endState)
+            {
+                case EndState.WIN:
+                    audioManager.playSeOneShot(AudioKinds.SE_WIN);
+                    yield return uIManager.showResultPanel(EndState.WIN, 3.5f);
+                    break;
+                case EndState.LOSE:
+                    audioManager.playSeOneShot(AudioKinds.SE_LOSE);
+                    yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
+                    break;
+                case EndState.FILLED:
+                    audioManager.playSeOneShot(AudioKinds.SE_LOSE);
+                    yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
+                    break;
+            }
+
+            yield return discriptionManager.playDiscription(4); //モードの解説
+
+            SceneChanger.changeTo(SceneType.Title);
         }
 
         yield break;
@@ -295,6 +328,93 @@ public class GameController : MonoBehaviour
 
         }
         isSetTimer = false; //時間の計測を中断
+        yield break;
+    }
+
+    private IEnumerator startTutorial()
+    {
+        yield return initBattle(EnemyType.Tutorial);  //バトル開始
+        
+        /*
+            audioManager.pauseBgm();    //BGMを一時停止
+            audioManager.playBgm(AudioKinds.BGM_Main);
+        */
+
+        while (true)
+        {
+            
+            switch (_tutorialPart)
+            {
+                case 1:
+                    yield return discriptionManager.playDiscription(1);
+                    _tutorialPart = 2;
+                    break;
+
+                case 2: //1ループ待機
+                    yield return stage.fallTutorial();  //ブロックの落下処理
+                    _tutorialPart = 3;
+                    break;
+
+                case 3: //単語を作ろうを表示
+                    yield return discriptionManager.playDiscription(2);
+                    _tutorialPart = 4;
+                    break;
+
+                case 4: //単語が消えるまでプレイ
+                    yield return stage.fallTutorial();  //ブロックの落下処理
+                    if (playerAttack > 0) _tutorialPart = 5;//攻撃がある == ブロックが消えた
+                    break;
+
+                case 5: //消えたね、クリアしようの表示
+                    yield return discriptionManager.playDiscription(3);
+                    _tutorialPart = 99;
+                    break;
+
+                default:
+                    yield return stage.fallTutorial();  //ブロックの落下処理
+                    if (playerAttack > 0) _tutorialPart = 4;//攻撃がある == ブロックが消えた
+                    break;
+
+            }
+
+            NumberOfTurns++;    //ターン数を増加
+
+            if (gameEndFlag)
+            {
+                break;
+            }
+
+            //文字の消え具合　また　ターンにより攻撃を行う場合
+            yield return player.attack(enemy);
+
+            //死んだかの処理
+            if (enemy.HpAmount <= 0f)
+            {
+                //yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
+                endGame(EndState.WIN);
+                break;
+            }
+
+            yield return new WaitForSeconds(0.2f);
+            yield return enemy.action(player);
+            yield return player.attack(enemy);
+
+            //死んだかの処理
+            if (enemy.HpAmount <= 0f)
+            {
+                //yield return uIManager.showPopUp("You Win", 1.5f);  //勝利の余韻に浸る時間
+                endGame(EndState.WIN);
+                break;
+            }
+            
+            if (player.HpAmount <= 0f)
+            {
+                endGame(EndState.LOSE);
+                break;
+            }
+
+        }
+        
         yield break;
     }
 
