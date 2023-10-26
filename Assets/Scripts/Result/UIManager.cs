@@ -43,14 +43,14 @@ namespace Result
 
             if (SceneChanger.getCurrentSceneName() == "NormalResult")
             {
-                StartCoroutine(updateNormalRanking());    //ランキングの更新
+                //StartCoroutine(updateNormalRanking());    //ランキングの更新
                 scoreText.text = GameController.score.ToString("0000000");
                 rankText.text = GameController.rank;
                 maxComboText.text = Stage.maxComboNum.ToString("#0");
                 wordNumText.text = wordList.CollectList.Count.ToString("");
             }else if (SceneChanger.getCurrentSceneName() == "AdventureResult")
             {
-                StartCoroutine(updateAdventureRanking());    //ランキングの更新
+                //StartCoroutine(updateAdventureRanking());    //ランキングの更新
                 int second = Mathf.FloorToInt(GameController.gameTime);
                 int min = second > 99 * 60 ? 99 : (second / 60);
                 second = second > 99 * 60 ? 59 : second % 60;
