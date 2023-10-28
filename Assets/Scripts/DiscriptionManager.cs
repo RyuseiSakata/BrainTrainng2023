@@ -27,7 +27,7 @@ public class DiscriptionManager : MonoBehaviour
             discriptionBoards[1].SetActive(false);
             commentBoxes[1].SetActive(false);
 
-            //プレイしてみようの表示
+            //カウントについて
             discriptionBoards[2].SetActive(true);
             commentBoxes[2].SetActive(true);
             commentBox = commentBoxes[2].GetComponent<CommentBox>();
@@ -35,18 +35,16 @@ public class DiscriptionManager : MonoBehaviour
             discriptionBoards[2].SetActive(false);
             commentBoxes[2].SetActive(false);
 
-        }
-        else if (part == 2)
-        {
-            //単語を作ってみようの表示
+            //プレイしてみようの表示
             discriptionBoards[3].SetActive(true);
             commentBoxes[3].SetActive(true);
             commentBox = commentBoxes[3].GetComponent<CommentBox>();
             yield return new WaitUntil(() => commentBox.allEnd);
             discriptionBoards[3].SetActive(false);
             commentBoxes[3].SetActive(false);
+
         }
-        else if (part == 3)
+        else if (part == 2)
         {
             //単語を作ってみようの表示
             discriptionBoards[4].SetActive(true);
@@ -56,7 +54,7 @@ public class DiscriptionManager : MonoBehaviour
             discriptionBoards[4].SetActive(false);
             commentBoxes[4].SetActive(false);
         }
-        else if (part == 4)
+        else if (part == 3)
         {
             //単語を作ってみようの表示
             discriptionBoards[5].SetActive(true);
@@ -66,6 +64,27 @@ public class DiscriptionManager : MonoBehaviour
             discriptionBoards[5].SetActive(false);
             commentBoxes[5].SetActive(false);
         }
+        else if (part == 4)
+        {
+            //単語を作ってみようの表示
+            discriptionBoards[6].SetActive(true);
+            commentBoxes[6].SetActive(true);
+            commentBox = commentBoxes[6].GetComponent<CommentBox>();
+            yield return new WaitUntil(() => commentBox.allEnd);
+            discriptionBoards[6].SetActive(false);
+            commentBoxes[6].SetActive(false);
+        }
+        else if (part == 5)
+        {
+            //もう一回チュートリアル
+            discriptionBoards[7].SetActive(true);
+            commentBoxes[7].SetActive(true);
+            commentBox = commentBoxes[7].GetComponent<CommentBox>();
+            yield return new WaitUntil(() => commentBox.allEnd);
+            discriptionBoards[7].SetActive(false);
+            commentBoxes[7].SetActive(false);
+        }
         yield break;
     }
+
 }

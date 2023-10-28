@@ -169,6 +169,9 @@ namespace Battle {
                     case EnemyType.Dragon:
                         yield return dragonAction(target);
                         break;
+                    case EnemyType.Tutorial:
+                        yield return kakasiAction(target);
+                        break;
                 }
             }
 
@@ -434,7 +437,10 @@ namespace Battle {
         //チュートリアルの敵
         private IEnumerator kakasiAction(Player target)
         {
-
+            if(NextActionCount < 0)
+            {
+                NextActionCount = 99;
+            }
             yield break;
         }
     }

@@ -246,4 +246,11 @@ public class UIManager : MonoBehaviour
         losePanel.SetActive(false);
         yield break;
     }
+
+    public void restart()
+    {
+        faseText.SetActive(true);
+        battleModeUI.SetActive(true);
+        playerObject.SetActive(true);
+    }
 }

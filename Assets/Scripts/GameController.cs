@@ -28,7 +28,11 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleUIManager battleUIManager;
     [SerializeField] Stage stage;
     [SerializeField] AudioManager audioManager;
-    [SerializeField] DiscriptionManager discriptionManager;
+
+    [SerializeField] Transform canvas;
+    private DiscriptionManager discriptionManager;
+    private GameObject discriptionManagerObject;
+    [SerializeField] GameObject discriptionManagerPrefab;
 
     //バトルシーン用
     [SerializeField] Battle.Player player;
@@ -88,12 +92,18 @@ public class GameController : MonoBehaviour
         {
             gameTime += Time.deltaTime;
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            endGame(EndState.FILLED);
+        }
     }
 
     private IEnumerator mainLoop()
     {
         uIManager.configInit(); //設定の反映
 
+        
         if (SceneChanger.getCurrentSceneName() == "MainScene")
         {
             isNormal = true;
@@ -144,37 +154,56 @@ public class GameController : MonoBehaviour
 
             SceneChanger.changeTo(SceneType.AdventureResult);
             
-        }else if (SceneChanger.getCurrentSceneName() == "TutorialScene")
+        }
+        else if (SceneChanger.getCurrentSceneName() == "TutorialScene")
         {
-            isNormal = false;
 
-            //endGameが呼ばれゲーム終了となるまで
-            while (!gameEndFlag)
-            {
-                yield return startTutorial(); //バトル開始
-            }
+            bool isFilled = false;  //ブロックが満たされたか否か
 
-            audioManager.stopBgm();
-            switch (endState)
+            do
             {
-                case EndState.WIN:
-                    audioManager.playSeOneShot(AudioKinds.SE_WIN);
-                    yield return uIManager.showResultPanel(EndState.WIN, 3.5f);
-                    break;
-                case EndState.LOSE:
-                    audioManager.playSeOneShot(AudioKinds.SE_LOSE);
-                    yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
-                    break;
-                case EndState.FILLED:
-                    audioManager.playSeOneShot(AudioKinds.SE_LOSE);
-                    yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
-                    break;
-            }
+                isNormal = false;
+                gameEndFlag = false; 
+
+                //endGameが呼ばれゲーム終了となるまで
+                while (!gameEndFlag)
+                {
+                    yield return startTutorial(); //バトル開始
+                }
+
+                audioManager.stopBgm();
+
+                switch (endState)
+                {
+                    case EndState.WIN:
+                        audioManager.playSeOneShot(AudioKinds.SE_WIN);
+                        yield return uIManager.showResultPanel(EndState.WIN, 3.5f);
+                        isFilled = false;
+                        break;
+                    case EndState.LOSE: //ここは通らないはず
+                        audioManager.playSeOneShot(AudioKinds.SE_LOSE);
+                        yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
+                        isFilled = false;
+                        break;
+                    case EndState.FILLED:
+                        audioManager.playSeOneShot(AudioKinds.SE_LOSE);
+                        yield return uIManager.showResultPanel(EndState.LOSE, 3.5f);
+                        yield return discriptionManager.playDiscription(5); //もう一度チュートリアルを実行
+                        isFilled = true;
+                        stage.restart();    //再開
+                        Destroy(discriptionManagerObject);
+                        break;
+                }
+
+            } while (isFilled);
 
             yield return discriptionManager.playDiscription(4); //モードの解説
 
             SceneChanger.changeTo(SceneType.Title);
         }
+
+       
+
 
         yield break;
     }
@@ -333,12 +362,17 @@ public class GameController : MonoBehaviour
 
     private IEnumerator startTutorial()
     {
+        //説明オブジェクトの生成
+        discriptionManagerObject = Instantiate(discriptionManagerPrefab, canvas);
+        discriptionManager = discriptionManagerObject.GetComponent<DiscriptionManager>();
+
         yield return initBattle(EnemyType.Tutorial);  //バトル開始
+        _tutorialPart = 1;
+        gameEndFlag = false;
+
+        audioManager.stopSe();
+        audioManager.playBgm(AudioKinds.BGM_Main);
         
-        /*
-            audioManager.pauseBgm();    //BGMを一時停止
-            audioManager.playBgm(AudioKinds.BGM_Main);
-        */
 
         while (true)
         {

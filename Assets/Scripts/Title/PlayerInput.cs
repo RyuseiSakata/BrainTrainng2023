@@ -61,6 +61,16 @@ namespace Title
             }
         }
 
+        //チュートリアルボタンを押したとき
+        public void pushTutorialButton()
+        {
+            if (canClick)
+            {
+                canClick = false;
+                StartCoroutine(actionTutorialButton());
+            }
+        }
+
         //終了ボタンを押したとき
         public void pushQuitButton()
         {
@@ -109,6 +119,14 @@ namespace Title
         {
             yield return audioManager.playSeOneShotWait(AudioKinds.SE_Enter);
             SceneChanger.changeTo(SceneType.Adventure);
+            yield break;
+        }
+
+        //チュートリアルボタンを押したときに呼ばれるコルーチン
+        public IEnumerator actionTutorialButton()
+        {
+            yield return audioManager.playSeOneShotWait(AudioKinds.SE_Enter);
+            SceneChanger.changeTo(SceneType.Tutorial);
             yield break;
         }
 
