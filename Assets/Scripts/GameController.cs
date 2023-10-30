@@ -93,19 +93,16 @@ public class GameController : MonoBehaviour
             gameTime += Time.deltaTime;
         }
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            endGame(EndState.FILLED);
-        }
     }
 
     private IEnumerator mainLoop()
     {
-        uIManager.configInit(); //İ’è‚Ì”½‰f
+        
 
         
         if (SceneChanger.getCurrentSceneName() == "MainScene")
         {
+            uIManager.configInit(); //İ’è‚Ì”½‰f
             isNormal = true;
             yield return uIManager.showCountDown();
             audioManager.playBgm(AudioKinds.BGM_Main);
@@ -127,6 +124,7 @@ public class GameController : MonoBehaviour
         // ƒoƒgƒ‹ƒ‚[ƒh‚È‚ç
         else if(SceneChanger.getCurrentSceneName() == "BattleScene")
         {
+            uIManager.configInit(); //İ’è‚Ì”½‰f
             isNormal = false;
             //endGame‚ªŒÄ‚Î‚êƒQ[ƒ€I—¹‚Æ‚È‚é‚Ü‚Å
             while (!gameEndFlag)
