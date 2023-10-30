@@ -380,7 +380,7 @@ public class GameController : MonoBehaviour
                 case 1:
                     yield return discriptionManager.playDiscription(1);
                     _tutorialPart = 2;
-                    break;
+                    continue;
 
                 case 2: //1ループ待機
                     yield return stage.fallTutorial();  //ブロックの落下処理
@@ -390,7 +390,7 @@ public class GameController : MonoBehaviour
                 case 3: //単語を作ろうを表示
                     yield return discriptionManager.playDiscription(2);
                     _tutorialPart = 4;
-                    break;
+                    continue;
 
                 case 4: //単語が消えるまでプレイ
                     yield return stage.fallTutorial();  //ブロックの落下処理
@@ -400,7 +400,7 @@ public class GameController : MonoBehaviour
                 case 5: //消えたね、クリアしようの表示
                     yield return discriptionManager.playDiscription(3);
                     _tutorialPart = 99;
-                    break;
+                    continue;
 
                 default:
                     yield return stage.fallTutorial();  //ブロックの落下処理
