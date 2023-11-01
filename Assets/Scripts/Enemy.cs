@@ -17,6 +17,7 @@ namespace Battle {
         [SerializeField] GameObject slimeObject;
         [SerializeField] GameObject minotaurosuObject;
         [SerializeField] GameObject dragonObject;
+        [SerializeField] GameObject kakasiObject;
         
         private SlimeAnim slimeAnim;
         private MinotaurosuAnim minotaurosuAnim;
@@ -185,6 +186,7 @@ namespace Battle {
                     slimeObject.SetActive(true);
                     minotaurosuObject.SetActive(false);
                     dragonObject.SetActive(false);
+                    kakasiObject.SetActive(false);
                     maxHp = 7;
                     NextActionCount = 2;
                     break;
@@ -193,6 +195,7 @@ namespace Battle {
                     slimeObject.SetActive(false);
                     minotaurosuObject.SetActive(true);
                     dragonObject.SetActive(false);
+                    kakasiObject.SetActive(false);
                     maxHp = 14;
                     NextActionCount = 2;
                     break;
@@ -201,8 +204,18 @@ namespace Battle {
                     slimeObject.SetActive(false);
                     minotaurosuObject.SetActive(false);
                     dragonObject.SetActive(true);
+                    kakasiObject.SetActive(false);
                     maxHp = 30;
-                    NextActionCount =1;
+                    NextActionCount = 1;
+                    break;
+                case EnemyType.Tutorial:
+                    battleUIManager.uiUpdate(UIKinds.EnemyName, "かかし");
+                    slimeObject.SetActive(false);
+                    minotaurosuObject.SetActive(false);
+                    dragonObject.SetActive(false);
+                    kakasiObject.SetActive(true);
+                    maxHp = 3;
+                    NextActionCount = 99;
                     break;
             };
             
@@ -417,5 +430,12 @@ namespace Battle {
             yield break;
         }
 
+
+        //チュートリアルの敵
+        private IEnumerator kakasiAction(Player target)
+        {
+
+            yield break;
+        }
     }
 }

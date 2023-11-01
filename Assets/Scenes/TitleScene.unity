@@ -290,7 +290,6 @@ RectTransform:
   m_Children:
   - {fileID: 1517556656}
   - {fileID: 805209939}
-  - {fileID: 1493859947}
   m_Father: {fileID: 693409084}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -734,7 +733,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &315169509
 RectTransform:
   m_ObjectHideFlags: 0
@@ -752,8 +751,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -460, y: 280}
-  m_SizeDelta: {x: 950.4, y: 534.6}
+  m_AnchoredPosition: {x: -457, y: 261}
+  m_SizeDelta: {x: 959.904, y: 539.946}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &315169510
 MonoBehaviour:
@@ -2176,7 +2175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &783043742
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2358,6 +2357,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 144678462}
+  - {fileID: 1493859947}
   m_Father: {fileID: 84082751}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2597,107 +2597,107 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: '# NMeCab (this software)
 
-    
 
-    NMeCab is copyrighted free software
-    by Tsuyoshi Komuta, and is
 
-    released under any of the GPL (see the file
-    GPL) or the LGPL (see the
+    NMeCab is copyrighted free software by
+    Tsuyoshi Komuta, and is
+
+    released under any of the GPL (see the file GPL)
+    or the LGPL (see the
 
     file LGPL).
 
-    
 
-    
+
+
 
     # MeCab
 
-    
 
-    NMeCab
-    was ported and modified from MeCab, under GPL and LGPL.
 
-    
+    NMeCab was ported
+    and modified from MeCab, under GPL and LGPL.
 
-    MeCab is
-    copyrighted free software by Taku Kudo <taku@chasen.org> and
 
-    Nippon Telegraph
-    and Telephone Corporation, and is released under any
 
-    of the GPL, the LGPL,
-    or the BSD License.
+    MeCab is copyrighted free
+    software by Taku Kudo <taku@chasen.org> and
 
-    
+    Nippon Telegraph and Telephone
+    Corporation, and is released under any
 
-    
+    of the GPL, the LGPL, or the BSD
+    License.
+
+
+
+
 
     # MeCab.DotNet
 
-    
 
-    NMeCab use
-    part of MeCab.DotNet source code, under GPL and LGPL.
 
-    
+    NMeCab use part of MeCab.DotNet source
+    code, under GPL and LGPL.
 
-    MeCab.DotNet
-    was ported from NMeCab by Kouji Matsui (@kozy_kekyo,
 
-    @kekyo2) and is released
-    under any of the GPL or the LGPL.
 
-    
+    MeCab.DotNet was ported from NMeCab by Kouji
+    Matsui (@kozy_kekyo,
 
-    
+    @kekyo2) and is released under any of the GPL or the
+    LGPL.
+
+
+
+
 
     # IPAdic
 
-    
 
-    Copyright
-    2000, 2001, 2002, 2003 Nara Institute of Science
 
-    and Technology.  All Rights
-    Reserved.
+    Copyright 2000, 2001, 2002, 2003 Nara Institute
+    of Science
 
-    
+    and Technology.  All Rights Reserved.
 
-    Use, reproduction, and distribution of this software is
-    permitted.
 
-    Any copy of this software, whether in its original form or modified,
 
-    must
-    include both the above copyright notice and the following
+    Use, reproduction,
+    and distribution of this software is permitted.
+
+    Any copy of this software,
+    whether in its original form or modified,
+
+    must include both the above copyright
+    notice and the following
 
     paragraphs.
 
-    
 
-    Nara
-    Institute of Science and Technology (NAIST),
 
-    the copyright holders, disclaims
-    all warranties with regard to this
+    Nara Institute of Science and
+    Technology (NAIST),
 
-    software, including all implied warranties
-    of merchantability and
+    the copyright holders, disclaims all warranties with
+    regard to this
+
+    software, including all implied warranties of merchantability
+    and
 
     fitness, in no event shall NAIST be liable for
 
-    any
-    special, indirect or consequential damages or any damages
+    any special, indirect
+    or consequential damages or any damages
 
-    whatsoever resulting
-    from loss of use, data or profits, whether in an
+    whatsoever resulting from loss of
+    use, data or profits, whether in an
 
-    action of contract, negligence
-    or other tortuous action, arising out
+    action of contract, negligence or other
+    tortuous action, arising out
 
-    of or in connection with the use
-    or performance of this software.'
+    of or in connection with the use or performance
+    of this software.'
 --- !u!222 &902226013
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3015,7 +3015,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e9f3927fb5cf04d4b9f31e9912ec426b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8a632758984eb114eae181c72b6d2a24, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4081,7 +4081,7 @@ GameObject:
   - component: {fileID: 1493859949}
   - component: {fileID: 1493859948}
   m_Layer: 5
-  m_Name: Text (Legacy) (1)
+  m_Name: 'Text (Legacy) '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4096,16 +4096,16 @@ RectTransform:
   m_GameObject: {fileID: 1493859946}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_LocalScale: {x: 0.8000001, y: 0.8000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 84082751}
-  m_RootOrder: 2
+  m_Father: {fileID: 805209939}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -894, y: -117}
-  m_SizeDelta: {x: 75, y: 20.25}
+  m_AnchoredPosition: {x: -466.00003, y: -94}
+  m_SizeDelta: {x: 275, y: 2.475998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1493859948
 MonoBehaviour:

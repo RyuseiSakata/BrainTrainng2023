@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public static class Config
 {
 
@@ -16,8 +12,6 @@ public static class Config
     public static bool isCaluculatedSum = false;    //重み合計を計算したかのフラグ
     public static int sumProbability = 0;           //重み合計
     public const string character = "あいうえおかきくけこがぎぐげごさしすせそざじずぜぞたちつてとだぢづでどなにぬねのはひふへほばびぶべぼぱぴぷぺぽまみむめもやゆよらりるれろわをんー";
-    //public const string character = "りんご";
-    //public static int[] probability = { 1, 1, 1 };
     //各文字の出現確率の重み
     public static int[] probability = {
         10841,49126,62574,8497,10874,  //あ行

@@ -85,19 +85,31 @@ public class Stage : MonoBehaviour
 
     private void Awake()
     {
-        csvFile = Resources.Load("Book51") as TextAsset;
-        StringReader reader = new StringReader(csvFile.text);
-        
+        if (SceneChanger.getCurrentSceneName() != "TutorialScene")
+        {
+            csvFile = Resources.Load("Book51") as TextAsset;
+            StringReader reader = new StringReader(csvFile.text);
 
-        while(reader.Peek() != -1){
-            string line = reader.ReadLine();
-            _csvData.Add(line.Split(','));
+
+            while (reader.Peek() != -1)
+            {
+                string line = reader.ReadLine();
+                _csvData.Add(line.Split(','));
+            }
+            //Debug.Log(allWord.Count);
+            for (int i = 0; i < _csvData.Count; i++)
+            {
+                allWord.Add(_csvData[i][1]);
+            }
         }
-         //Debug.Log(allWord.Count);
-        for(int i = 0;i<_csvData.Count;i++){
-            allWord.Add(_csvData[i][1]);
+        else
+        {
+            allWord.Add("りんご");
+            allWord.Add("ごりら");
+            allWord.Add("りんご");
+            allWord.Add("ごりら");
         }
-       
+
         //起動後一度も重み合計を計算していないなら
         if (!Config.isCaluculatedSum)
         {
@@ -112,7 +124,6 @@ public class Stage : MonoBehaviour
         wordList.CollectList.Clear();   //消した単語リストを全削除
         maxComboNum = 0;
         firstSetBlock(); //ブロックの初期配置
-
 
         /*
             StartCoroutine("fall");
@@ -421,6 +432,114 @@ public class Stage : MonoBehaviour
         playerInput.updateTapPosition();
 
         
+        //destinationRowとcurrentRowが異なるときに修正,落下停止バグを防ぐ(Debug用ループ)
+        for (int i = 0; i < BlockArray.GetLength(0); i++)
+        {
+            for (int j = 0; j < BlockArray.GetLength(1); j++)
+            {/*
+                if (BlockArray[i, j] != null)
+                {
+                    BlockArray[i, j].DestinationRow = BlockArray[i, j].CurrentRow;
+                    Debug.Log($"destinationの修正({i},{j},{BlockArray[i, j].chara}->{BlockArray[i, j].DestinationRow},{BlockArray[i, j].CurrentRow}");
+                }*/
+                if (BlockArray[i, j] != null && BlockArray[i, j].DestinationRow != BlockArray[i, j].CurrentRow)
+                {
+                    Debug.Log("!!違う");
+                }
+
+            }
+        }
+        yield break;
+    }
+
+    //ブロックの落下処理を行うコルーチン spawnFlagをfalseにするとスポーン処理を行わない
+    public IEnumerator fallTutorial(bool spawnFlag = true)
+    {
+
+
+        CanUserOperate = true;  //ユーザの操作を可能に
+        ComboNum = 0;
+        ChainNum = 0;
+
+        if (spawnFlag)
+        {
+            spawnBlock();   //ブロックの生成
+        }
+        else
+        {
+            CanUserOperate = false;  //ユーザの操作を不可能に
+        }
+
+        decideDestination();    //目標行数の決定
+
+
+        //落ちる処理(すべて落下しきる＝すべてのBlockState=falseになるまで)
+        while (activeBlockList.Count != activeBlockList.FindAll(x => x.BlockState == false).Count)
+        {
+            activeBlockList.ForEach(b =>
+            {
+                if (b.BlockState)
+                {
+                    b.MoveDown();
+                }
+            });
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        audioManager.playSeOneShot(AudioKinds.SE_BlockMove);
+
+
+        yield return fallBottom();   //横並びのパターンにおいて着地まで下す処理
+
+
+        //Debug.Log("着地");
+
+        isChained = true;   //連鎖のフラグ　trueの限り続いている
+        while (isChained)
+        {
+            yield return judgeAndDelete();
+
+            gameController.calculateScore(scorePerChain, sameEraseNum); //スコア計算
+            gameController.calculateDamage(0, damagePerChain, sameEraseNum);   //プレイヤーの攻撃量を計算
+            sameEraseNum = 0;   //同時消し数のリセット
+            scorePerChain = 0;  //一連鎖あたりのスコアをリセット
+            damagePerChain = 0;  //一連鎖あたりのプレイヤーの攻撃量をリセット
+            ChainNum += 1;
+        }
+        ChainNum -= 1;//連鎖数の調整
+
+        //最大コンボ数の更新
+        if (ComboNum > MaxComboNum)
+        {
+            MaxComboNum = ComboNum;
+        }
+
+        yield return fallBottom();   //空の場合に下まで下す処理
+
+
+        // 0行目にブロックがあるならゲームオーバーにする
+        for (int i = 0; i < BlockArray.GetLength(1); i++)
+        {
+            if (BlockArray[0, i] != null)
+            {
+                GameOverFlag = true;
+                break;
+            }
+        }
+
+        //ゲームオーバーの判定
+        if (GameOverFlag)
+        {
+            gameController.endGame(EndState.FILLED);
+            yield break;
+        }
+
+        gameController.calculateDamage(1, damagePerChain, sameEraseNum);   //プレイヤーの攻撃量を計算
+        CanUserOperate = false;  //ユーザの操作を不可能に
+        playerInput.updateTapPosition();
+
+
         //destinationRowとcurrentRowが異なるときに修正,落下停止バグを防ぐ(Debug用ループ)
         for (int i = 0; i < BlockArray.GetLength(0); i++)
         {
@@ -1023,7 +1142,6 @@ public class Stage : MonoBehaviour
             return;
         }
 
-        
         activeBlockList.ForEach(e =>
         {
             e.isLocked = true;
