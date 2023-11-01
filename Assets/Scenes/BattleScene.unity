@@ -321,6 +321,7 @@ MonoBehaviour:
   slimeObject: {fileID: 953840567}
   minotaurosuObject: {fileID: 1857032230}
   dragonObject: {fileID: 534211886}
+  kakasiObject: {fileID: 1204117064}
   battleUIManager: {fileID: 665633863}
   stage: {fileID: 231471974}
   audioManager: {fileID: 261937153}
@@ -341,6 +342,7 @@ Transform:
   - {fileID: 534211887}
   - {fileID: 953840568}
   - {fileID: 1857032231}
+  - {fileID: 1204117065}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -858,6 +860,7 @@ MonoBehaviour:
   uIManager: {fileID: 665633861}
   gameController: {fileID: 1381770983}
   playerInput: {fileID: 1748596557}
+  blockParent: {fileID: 2085243659}
   activeBlockList: []
   SpawnPos:
   - {fileID: 322032807}
@@ -880,6 +883,7 @@ Transform:
   - {fileID: 626025694}
   - {fileID: 322032807}
   - {fileID: 102642373}
+  - {fileID: 2085243659}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1268,7 +1272,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ab1febc79dd00054fbb9ee50df555b9e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d69bd7c22c3b04b4ea8f2ec8f2c92cfe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4453,6 +4457,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1204117064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1204117065}
+  m_Layer: 0
+  m_Name: kakasiAnim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1204117065
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204117064}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -341, y: -197, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 83026313}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1219902601
 GameObject:
   m_ObjectHideFlags: 0
@@ -5100,6 +5135,8 @@ MonoBehaviour:
   battleUIManager: {fileID: 665633863}
   stage: {fileID: 231471974}
   audioManager: {fileID: 261937153}
+  canvas: {fileID: 1219902605}
+  discriptionManagerPrefab: {fileID: 2344362561123092111, guid: 6a00a2575d0530242b48a18ba1641bbc, type: 3}
   player: {fileID: 447164067}
   enemy: {fileID: 83026312}
   rankBorderes: 
@@ -5816,7 +5853,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ab1febc79dd00054fbb9ee50df555b9e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d69bd7c22c3b04b4ea8f2ec8f2c92cfe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7099,6 +7136,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082173110}
   m_CullTransparentMesh: 1
+--- !u!1 &2085243658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2085243659}
+  m_Layer: 0
+  m_Name: BlockParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2085243659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085243658}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 231471975}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2101549850
 GameObject:
   m_ObjectHideFlags: 0

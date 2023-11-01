@@ -66,6 +66,11 @@ public class AudioManager : MonoBehaviour
         bgmAudioSource.Stop();
     }
 
+    public void stopSe()
+    {
+        seAudioSource.Stop();
+    }
+
     public bool isSePlaying()
     {
         return seAudioSource.isPlaying;

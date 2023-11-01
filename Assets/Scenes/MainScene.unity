@@ -1148,6 +1148,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 168022113}
   m_CullTransparentMesh: 1
+--- !u!1 &205265202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 205265203}
+  m_Layer: 0
+  m_Name: BlockParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &205265203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205265202}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 450358702}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &217323236
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,7 +1305,7 @@ Transform:
   m_Children:
   - {fileID: 837831036}
   m_Father: {fileID: 450358702}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &296348331
 GameObject:
@@ -1745,6 +1776,7 @@ MonoBehaviour:
   uIManager: {fileID: 1202892936}
   gameController: {fileID: 1490713311}
   playerInput: {fileID: 719233741}
+  blockParent: {fileID: 205265203}
   activeBlockList: []
   SpawnPos:
   - {fileID: 1556041316}
@@ -1767,6 +1799,7 @@ Transform:
   - {fileID: 1301178298}
   - {fileID: 1556041316}
   - {fileID: 1490760930}
+  - {fileID: 205265203}
   - {fileID: 1857812758}
   - {fileID: 487797864}
   - {fileID: 268260180}
@@ -2348,7 +2381,7 @@ Transform:
   m_Children:
   - {fileID: 938626481}
   m_Father: {fileID: 450358702}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &569613639
 GameObject:
@@ -3294,7 +3327,7 @@ Transform:
   m_Children:
   - {fileID: 1175054217}
   m_Father: {fileID: 450358702}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &764482499
 GameObject:
@@ -6058,7 +6091,7 @@ RectTransform:
   m_Children:
   - {fileID: 1802673913}
   m_Father: {fileID: 450358702}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6265,6 +6298,8 @@ MonoBehaviour:
   battleUIManager: {fileID: 0}
   stage: {fileID: 450358701}
   audioManager: {fileID: 583944499}
+  canvas: {fileID: 0}
+  discriptionManagerPrefab: {fileID: 0}
   player: {fileID: 0}
   enemy: {fileID: 0}
   rankBorderes: 00000000d00700007017000010270000983a000030750000c8af000070110100
@@ -7039,7 +7074,7 @@ Transform:
   m_Children:
   - {fileID: 2121755772}
   m_Father: {fileID: 450358702}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1963382823
 GameObject:
@@ -7102,7 +7137,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ab1febc79dd00054fbb9ee50df555b9e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d69bd7c22c3b04b4ea8f2ec8f2c92cfe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7666,7 +7701,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ab1febc79dd00054fbb9ee50df555b9e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d69bd7c22c3b04b4ea8f2ec8f2c92cfe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

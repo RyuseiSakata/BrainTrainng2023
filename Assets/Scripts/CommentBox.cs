@@ -19,10 +19,10 @@ public class CommentBox : MonoBehaviour
 
     private void Update()
     {
-       
-        if (Input.GetKeyDown(KeyCode.Return))
+
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0))
         {
-            
+
             if (_isEnd)
             {
                 changeText();
@@ -31,7 +31,24 @@ public class CommentBox : MonoBehaviour
             {
                 skipText();
             }
-           
+
+        }
+
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);    // タッチ情報の取得
+                                                //タッチした瞬間
+            if (touch.phase == TouchPhase.Began)
+            {
+                if (_isEnd)
+                {
+                    changeText();
+                }
+                else
+                {
+                    skipText();
+                }
+            }
         }
     }
 

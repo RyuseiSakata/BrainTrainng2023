@@ -10,6 +10,7 @@ public enum SceneType
     Adventure,
     NormalResult,
     AdventureResult,
+    Tutorial,
 }
 
 public class SceneChanger : MonoBehaviour
@@ -33,6 +34,9 @@ public class SceneChanger : MonoBehaviour
                 break;
             case SceneType.AdventureResult:
                 SceneManager.LoadScene("AdventureResult");
+                break;
+            case SceneType.Tutorial:
+                SceneManager.LoadScene("TutorialScene");
                 break;
             default:
                 Debug.Log("SceneChanger:ˆ—‚ª‚ ‚è‚Ü‚¹‚ñ");

@@ -24,6 +24,7 @@ public class Stage : MonoBehaviour
     [SerializeField] UIManager uIManager;
     [SerializeField] GameController gameController;
     [SerializeField] PlayerInput playerInput;
+    [SerializeField] Transform blockParent;
 
     public Block[,] BlockArray { get; set; } = new Block[Config.maxRow + 1, Config.maxCol];  //ステージ全体のブロック配列
     public List<Block> activeBlockList = new List<Block>(); //落下するブロックのリスト
@@ -228,7 +229,7 @@ public class Stage : MonoBehaviour
         //nextBlock[0]をActiveにする
         foreach (var block in nextBlock[0])
         {
-            block.transform.SetParent(this.gameObject.transform);
+            block.transform.SetParent(blockParent);
             block.callActive();
             activeBlockList.Add(block);
             judgeTargetList.Add(block);
@@ -1251,5 +1252,39 @@ public class Stage : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
         yield break;
+    }
+
+    public void restart()
+    {
+        GameOverFlag = false;
+        uIManager.restart();
+        
+
+        for (int i = 0; i < BlockArray.GetLength(0); i++)
+            for (int j = 0; j < BlockArray.GetLength(1); j++)
+                BlockArray[i, j] = null;
+
+        foreach (Transform child in blockParent)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in SpawnPos[0])
+        {
+            if(child.gameObject.name != "back") 
+                Destroy(child.gameObject);
+        }
+        foreach (Transform child in SpawnPos[1])
+        {
+            if (child.gameObject.name != "back")
+                Destroy(child.gameObject);
+        }
+
+        activeBlockList.Clear();
+        judgeTargetList.Clear();
+        destroyList.Clear();
+        nextBlock[0].Clear();
+        nextBlock[1].Clear();
+
+        firstSetBlock(); //ブロックの初期配置
     }
 }
